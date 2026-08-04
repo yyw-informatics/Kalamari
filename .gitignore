@@ -1,3 +1,4 @@
+# ---- upstream Kalamari (unchanged) ----
 edirect
 share
 paper/paper.html
@@ -5,3 +6,89 @@ paper/paper.doc
 # pixi environments
 .pixi
 *.egg-info
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+# NB: never add a bare `build/` rule. src/taxonomy/build/ holds the committed
+# custom-taxonomy overlay (nodes.dmp / names.dmp / delnodes.txt) that
+# build_policy.py layers on top of the NCBI taxdump to resolve the 13
+# synthetic Kalamari taxids. Anchor the rules to the repo root instead.
+/build/
+/dist/
+
+# ---- Perl / ExtUtils::MakeMaker build output ----
+/Makefile
+/Makefile.old
+/blib/
+/pm_to_blib
+/MYMETA.*
+*.bs
+*.o
+
+# ---- kraken2 build output from t/20_env_Kalamari2.t ----
+/kraken2-*/
+/v*-beta.tar.gz
+/Kalamari2_test/
+/Kalamari2_v*/
+
+# ---- curation-triage: per-run output, regenerated on every run ----
+# tier1_metadata.py / collate.py write these. CI writes them at the repo root
+# and uploads them as expiring build artifacts; it never commits them.
+/worklist.tsv
+/worklist.md
+src/curation-triage/worklist.tsv
+src/curation-triage/worklist.md
+# sharded lead fragments (--emit-leads / --leads-dir)
+leads.*.ndjson
+/run/
+/frags/
+src/curation-triage/worklist_tier2.tsv
+src/curation-triage/worklist_tier2.md
+
+# ---- Tier 2: downloaded genome FASTA (never committed) ----
+# Tier 2 is the first tier that needs sequence. A genome is megabytes per
+# accession, so only the DERIVED results are committed (tier2_ani_cache.json,
+# tier2_typer_cache.json); the FASTA cache itself is local scratch.
+/.cache/
+
+# ---- DELIBERATELY COMMITTED - do not add ignore rules for these ----
+# The monthly workflow runs `tier1_metadata.py --offline` with no network, and
+# the golden tests rebuild the policy table from cache. These files are inputs,
+# not throwaway output. Ignoring any of them breaks CI:
+#   src/curation-triage/assembly_reports_cache.json  J1a offline cache (CI)
+#   src/curation-triage/nuccore_cache.json           Tier-0 offline cache
+#   src/curation-triage/taxon_policy.tsv             CI input + golden test
+#   src/curation-triage/confounded_manifest.tsv      hand-authored input
+#   src/curation-triage/ledger.ndjson                delta baseline; CI commits it
+#   src/curation-triage/reviews.tsv                  SME decisions (human-edited)
+#   src/curation-triage/coverage_report.tsv          Phase-B evidence (doc-linked)
+#   src/curation-triage/lpsn_cache.json              J2 LPSN offline cache (CI)
+#   src/curation-triage/amrfinderplus_db_manifest.tsv  the frozen AMRFinder database's digests
+
+# ---- machine-local configuration (never committed) ----
+# One NCBI taxdump directory per line, read by bin/curation-triage/taxonomy.py.
+# It is local on purpose: an absolute path in the repository would publish one
+# institution's filesystem layout and would be wrong on every other machine.
+/.taxdump-search
+
+# ---- editor / OS noise ----
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/

@@ -1,0 +1,14 @@
+# Configuration for the curation-triage add-on (Python).
+#
+# Kalamari itself is a Perl distribution built with Makefile.PL; this file does
+# NOT package Kalamari. It exists so that `pytest` behaves identically for every
+# contributor and in CI, instead of depending on which directory you happen to
+# be standing in.
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+# Pins the rootdir and makes a bare `pytest` at the repo root do the right thing.
+testpaths = ["bin/curation-triage/tests"]
+# bin/curation-triage/tests/conftest.py puts bin/curation-triage on sys.path, so
+# the modules import without an installed package or a PYTHONPATH.
+addopts = "-q"

@@ -1,0 +1,29 @@
+# Confounded-taxa manifest for the Kalamari curation-triage tool (Tier 0).
+#
+# A genome-unit is tagged confounded when its NCBI lineage (resolved species up
+# to the root) contains one of the trigger_taxids below. The tag sets the
+# `regime` and `resolver` columns of taxon_policy.tsv; it does NOT change a
+# unit's biological eligibility (these are all still eligible bacteria).
+#
+# Two regimes (docs/CURATION_TRIAGE_DESIGN.md section 5):
+#   A  ANI cannot split the pair (near-identical backbone; the signal is a small
+#      mobile/accessory gene set)              -> resolver = marker (overrides ANI)
+#   B  ANI/sketch already resolves or over-splits; the residual problem is the
+#      *label*                                 -> resolver = ANI  (+ custom-taxonomy name)
+#
+# The pinned tool, database and interpretation rule for each of these tasks
+# live in marker_manifest.tsv (Tier 2). Keep the two files consistent.
+#
+# Matching is by lineage containment, so a species-group trigger (Bacillus
+# cereus group, 86661) tags every member species, and a species trigger tags
+# only that species and anything below it.
+#
+# trigger_taxid	label	regime	resolver	note
+trigger_taxid	label	regime	resolver	note
+562	Shigella / EIEC vs Escherichia coli	A	marker	ipaH + cluster-specific + O/H markers (ShigEiFinder); Shigella is a Kalamari subspecies of E. coli
+86661	Bacillus anthracis vs B. cereus group	A	marker	BTyper3 group taxonomy + pXO1 (pagA/lef/cya) / pXO2 (capA/capB/capC) profile, read by our own versioned rule; see marker_manifest.tsv
+632	Yersinia pestis vs Y. pseudotuberculosis	A	marker	BIGSdb-Pasteur Yersinia cgMLST scheme 1 decides; the abricate plasmid screen is a pre-screen only (plasmid presence alone misclassifies plasmid-cured pestis)
+633	Yersinia pseudotuberculosis vs Y. pestis	A	marker	BIGSdb-Pasteur Yersinia cgMLST scheme 1 decides; the abricate plasmid screen is a pre-screen only (plasmid presence alone misclassifies plasmid-cured pestis)
+1639	Listeria monocytogenes lineages	B	ANI	4 Kalamari synthetic lineages I-IV; ANI/panel decides membership, LisSero serogroup + BIGSdb-Lm MLST-CC + cgMLST/LIN supply the labels as SEPARATE fields
+28901	Salmonella enterica subspecies	B	ANI	Kalamari synthetic + real subspecies; ANI cluster + serovar typing (SISTR/SeqSero2)
+1491	Clostridium botulinum groups	B	ANI	ANI/panel decides the group; AMRFinderPlus --plus (dated DB) types bont. The genomic group I-IV has no pinned classifier yet, so it is never inferred from the toxin type

@@ -1,0 +1,271 @@
+unit_id	scientificName	kalamari_taxid	species_taxid	accession_set	parent_assembly	eligibility	regime	resolver	species_name	superkingdom	total_length_bp	n_replicons	flags	note
+Acholeplasma_laidlawii~GCF_000018785.1	Acholeplasma_laidlawii	2148	2148	CP000896	GCF_000018785.1	eligible			Acholeplasma laidlawii	Bacteria	1496992	1		
+Acinetobacter_baumannii~GCF_009035845.1	Acinetobacter_baumannii	509170	470	CP045110	GCF_009035845.1	eligible			Acinetobacter baumannii	Bacteria	3981941	1		
+Acinetobacter_pittii~GCF_000191145.1	Acinetobacter_pittii	48296	48296	CP002177	GCF_000191145.1	eligible			Acinetobacter pittii	Bacteria	3862530	1		
+Actinobacillus_pleuropneumoniae~GCF_003290385.1	Actinobacillus_pleuropneumoniae	715	715	CP030753	GCF_003290385.1	eligible			Actinobacillus pleuropneumoniae	Bacteria	2318657	1		
+Aggregatibacter_aphrophilus~GCF_900636915.1	Aggregatibacter_aphrophilus	732	732	LR134327	GCF_900636915.1	eligible			Aggregatibacter aphrophilus	Bacteria	2337153	1		
+Agrobacterium_fabrum~GCF_000092025.1	Agrobacterium_fabrum	1176649	1176649	AE007869,AE007870	GCF_000092025.1	eligible			Agrobacterium fabrum	Bacteria	4917157	2		
+Aliivibrio_fischeri~GCF_000011805.1	Aliivibrio_fischeri	668	668	CP000020,CP000021	GCF_000011805.1	eligible			Aliivibrio fischeri	Bacteria	4227869	2		
+Alkaliphilus_transvaalensis~GCF_000016985.1	Alkaliphilus_transvaalensis	208226	208226	CP000724	GCF_000016985.1	eligible			Alkaliphilus metalliredigens	Bacteria	4929566	1		
+Amycolatopsis_mediterranei~GCF_000220945.1	Amycolatopsis_mediterranei	33910	33910	CP002896	GCF_000220945.1	eligible			Amycolatopsis mediterranei	Bacteria	10236779	1		
+Aquifex_aeolicus~GCF_000008625.1	Aquifex_aeolicus	63363	63363	AE000657	GCF_000008625.1	eligible			Aquifex aeolicus	Bacteria	1551335	1		
+Arcobacter_bivalviorum~GCF_003346815.1	Arcobacter_bivalviorum	663364	663364	CP031217	GCF_003346815.1	eligible			Halarcobacter bivalviorum	Bacteria	2684688	1		
+Arcobacter_cibarius~GCF_008808035.1	Arcobacter_cibarius	255507	255507	CP043857	GCF_008808035.1	eligible			Aliarcobacter cibarius	Bacteria	2105974	1		
+Arcobacter_ellisii~GCF_003544915.1	Arcobacter_ellisii	913109	913109	CP032097	GCF_003544915.1	eligible			Arcobacter ellisii	Bacteria	2799949	1		
+Arcobacter_halophilus~GCF_003346755.1	Arcobacter_halophilus	197482	197482	CP031218	GCF_003346755.1	eligible			Malaciobacter halophilus	Bacteria	2812536	1		
+Arcobacter_molluscorum~GCF_003544935.1	Arcobacter_molluscorum	1032072	1032072	CP032098	GCF_003544935.1	eligible			Malaciobacter molluscorum	Bacteria	2800582	1		
+Arcobacter_mytili~GCF_003346775.1	Arcobacter_mytili	603050	603050	CP031219	GCF_003346775.1	eligible			Malaciobacter mytili	Bacteria	2867150	1		
+Arcobacter_skirrowii~GCF_003544835.1	Arcobacter_skirrowii	28200	28200	CP032099	GCF_003544835.1	eligible			Aliarcobacter skirrowii	Bacteria	1969846	1		
+Arcobacter_suis~GCF_003544815.1	Arcobacter_suis	1278212	1278212	CP032100	GCF_003544815.1	eligible			Arcobacter suis	Bacteria	2639269	1		
+Arcobacter_thereius~GCF_004214815.1	Arcobacter_thereius	544718	544718	CP035926	GCF_004214815.1	eligible			Aliarcobacter thereius	Bacteria	1915080	1		
+Arcobacter_trophiarum~GCF_003355515.1	Arcobacter_trophiarum	708186	708186	CP031367	GCF_003355515.1	eligible			Aliarcobacter trophiarum	Bacteria	1915613	1		
+Arripis_trutta~strain-270544	Arripis_trutta	270544	270544	AP006810	strain:270544	exclude:organelle			Arripis trutta	Eukaryota	17244	1		molecule=mitochondrion
+Atlantibacter_hermannii~GCF_008064855.1	Atlantibacter_hermannii	565	565	CP042941	GCF_008064855.1	eligible			Atlantibacter hermannii	Bacteria	4315318	1		
+Bacillus_cereus~GCF_000283675.1	Bacillus_cereus	1396	1396	AP007209	GCF_000283675.1	eligible	A	marker	Bacillus cereus	Bacteria	5221581	1	confounded	confounded:Bacillus anthracis vs B. cereus group
+Bacillus_pumilus~GCF_000017885.4	Bacillus_pumilus	1408	1408	CP000813	GCF_000017885.4	eligible			Bacillus pumilus	Bacteria	3704641	1		
+Bacillus_subtilis~GCF_000009045.1	Bacillus_subtilis	1423	1423	AL009126	GCF_000009045.1	eligible			Bacillus subtilis	Bacteria	4215606	1		
+Bacillus_thuringiensis~GCF_000008505.1	Bacillus_thuringiensis	1428	1428	AE017355	GCF_000008505.1	eligible	A	marker	Bacillus thuringiensis	Bacteria	5237682	1	confounded	confounded:Bacillus anthracis vs B. cereus group
+Bacteroides_fragilis~GCF_000025985.1	Bacteroides_fragilis	817	817	CR626927	GCF_000025985.1	eligible			Bacteroides fragilis	Bacteria	5205140	1		
+Bacteroides_thetaiotaomicron~GCF_014131755.1	Bacteroides_thetaiotaomicron	818	818	CP040530	GCF_014131755.1	eligible			Bacteroides thetaiotaomicron	Bacteria	6271157	1		
+Bartonella_bacilliformis~GCF_000015445.1	Bartonella_bacilliformis	774	774	CP000524	GCF_000015445.1	eligible			Bartonella bacilliformis	Bacteria	1445021	1		
+Betacoronavirus_coronavirus~strain-2697049	Betacoronavirus_coronavirus	2697049	694009	MT233526	strain:2697049	exclude:virus			Severe acute respiratory syndrome-related coronavirus	Viruses	29847	1		
+Bifidobacterium_bifidum~GCF_017894325.1	Bifidobacterium_bifidum	1681	1681	CP058603	GCF_017894325.1	eligible			Bifidobacterium bifidum	Bacteria	2193720	1		
+Bifidobacterium_longum~GCF_000196555.1	Bifidobacterium_longum	216816	216816	AP010888	GCF_000196555.1	eligible			Bifidobacterium longum	Bacteria	2385164	1		
+Bordetella_bronchiseptica~GCF_900636925.1	Bordetella_bronchiseptica	518	518	LR134326	GCF_900636925.1	eligible			Bordetella bronchiseptica	Bacteria	5199761	1		
+Bordetella_pertussis~GCF_001605295.1	Bordetella_pertussis	520	520	CP010964	GCF_001605295.1	eligible			Bordetella pertussis	Bacteria	4102978	1		
+Borreliella_burgdorferi~GCF_000008685.1	Borreliella_burgdorferi	139	139	AE000783	GCF_000008685.1	eligible			Borreliella burgdorferi	Bacteria	910724	1		
+Bos_taurus~strain-9913	Bos_taurus	9913	9913	KC153975	strain:9913	exclude:organelle			Bos taurus	Eukaryota	16448	1		molecule=mitochondrion
+Brachybacterium_faecium~GCF_000023405.1	Brachybacterium_faecium	43669	43669	CP001643	GCF_000023405.1	eligible			Brachybacterium faecium	Bacteria	3614992	1		
+Bradyrhizobium_diazoefficiens~GCF_000011365.1	Bradyrhizobium_diazoefficiens	1355477	1355477	BA000040	GCF_000011365.1	eligible			Bradyrhizobium diazoefficiens	Bacteria	9105828	1		
+Brassica_oleracea~strain-3712	Brassica_oleracea	3712	3712	JF920286	strain:3712	exclude:organelle			Brassica oleracea	Eukaryota	360271	1		molecule=mitochondrion
+Buchnera_aphidicola~GCF_000009605.1	Buchnera_aphidicola	9	9	BA000003	GCF_000009605.1	eligible			Buchnera aphidicola	Bacteria	640681	1		
+Bundibugyo_ebolavirus~GCF_000889155.1	Bundibugyo_ebolavirus	565995	3052458	NC_014373	GCF_000889155.1	exclude:virus			Orthoebolavirus bundibugyoense	Viruses	18940	1		
+Burkholderia_pseudomallei~GCF_000011545.1	Burkholderia_pseudomallei	28450	28450	BX571965,BX571966	GCF_000011545.1	eligible			Burkholderia pseudomallei	Bacteria	7247547	2		
+Campylobacter_avium~GCF_002238335.1	Campylobacter_avium	522484	522485	CP022347	GCF_002238335.1	eligible			Campylobacter avium	Bacteria	1738633	1		
+Campylobacter_coli~GCF_003030205.1	Campylobacter_coli	195	195	CP028187	GCF_003030205.1	eligible			Campylobacter coli	Bacteria	1894971	1		
+Campylobacter_concisus~GCF_001298465.1	Campylobacter_concisus	199	199	CP012541	GCF_001298465.1	eligible			Campylobacter concisus	Bacteria	1840041	1		
+Campylobacter_cuniculorum~GCF_002104335.1	Campylobacter_cuniculorum	374106	374106	CP020867	GCF_002104335.1	eligible			Campylobacter cuniculorum	Bacteria	1931011	1		
+Campylobacter_fetus~GCF_000495505.1	Campylobacter_fetus	196	196	CP006833	GCF_000495505.1	eligible			Campylobacter fetus	Bacteria	1775480	1		
+Campylobacter_gracilis~GCF_001190745.1	Campylobacter_gracilis	824	824	CP012196	GCF_001190745.1	eligible			Campylobacter gracilis	Bacteria	2281652	1		
+Campylobacter_helveticus~GCF_002080395.1	Campylobacter_helveticus	28898	28898	CP020478	GCF_002080395.1	eligible			Campylobacter helveticus	Bacteria	1758726	1		
+Campylobacter_hyointestinalis_hyointestinalis~GCF_001643955.1	Campylobacter_hyointestinalis_hyointestinalis;Campylobacter_hyointestinalis_lawsonii	91352;91353	198	CP015575	GCF_001643955.1	eligible			Campylobacter hyointestinalis	Bacteria	1753385	1	shared_accession;label_conflict	
+Campylobacter_insulaenigrae~GCF_000816185.1	Campylobacter_insulaenigrae	260714	260714	CP007770	GCF_000816185.1	eligible			Campylobacter insulaenigrae	Bacteria	1465081	1		
+Campylobacter_jejuni_jejuni~GCF_000009085.1	Campylobacter_jejuni_jejuni	32022	197	AL111168	GCF_000009085.1	eligible			Campylobacter jejuni	Bacteria	1641481	1		
+Campylobacter_lanienae~GCF_002139935.1	Campylobacter_lanienae	75658	75658	CP015578	GCF_002139935.1	eligible			Campylobacter lanienae	Bacteria	1594554	1		
+Campylobacter_lari~GCF_000019205.1	Campylobacter_lari	201	201	CP000932	GCF_000019205.1	eligible			Campylobacter lari	Bacteria	1525460	1		
+Campylobacter_peloridis~GCF_000816785.1	Campylobacter_peloridis	488546	488546	CP007766	GCF_000816785.1	eligible			Campylobacter peloridis	Bacteria	1711369	1		
+Campylobacter_sputorum~GCF_002220735.1	Campylobacter_sputorum	206	206	CP019683	GCF_002220735.1	eligible			Campylobacter sputorum	Bacteria	1757292	1		
+Campylobacter_subantarcticus~GCF_000816265.1	Campylobacter_subantarcticus	497724	497724	CP007772	GCF_000816265.1	eligible			Campylobacter subantarcticus	Bacteria	1782536	1		
+Campylobacter_ureolyticus~GCF_001190755.1	Campylobacter_ureolyticus	827	827	CP012195	GCF_001190755.1	eligible			Campylobacter ureolyticus	Bacteria	1641887	1		
+Campylobacter_volucris~GCF_000816345.1	Campylobacter_volucris	1031542	1031542	CP007774	GCF_000816345.1	eligible			Campylobacter volucris	Bacteria	1517949	1		
+Candidatus_Desulforudis_audaxviator~GCF_000018425.1	Candidatus_Desulforudis_audaxviator	471827	471827	CP000860	GCF_000018425.1	eligible			Candidatus Desulforudis audaxviator	Bacteria	2349476	1		
+Candidatus_Korarchaeum_cryptofilum~GCF_000019605.1	Candidatus_Korarchaeum_cryptofilum	374847	498846	CP000968	GCF_000019605.1	eligible			Candidatus Korarchaeum cryptofilum	Archaea	1590757	1		
+Caulobacter_vibrioides~GCF_000022005.1	Caulobacter_vibrioides	155892	155892	CP001340	GCF_000022005.1	eligible			Caulobacter vibrioides	Bacteria	4042929	1		
+Chlamydia_pneumoniae~GCF_000008745.1	Chlamydia_pneumoniae	83558	83558	AE001363	GCF_000008745.1	eligible			Chlamydia pneumoniae	Bacteria	1230230	1		
+Chlamydia_psittaci~GCF_000204255.1	Chlamydia_psittaci	83554	83554	CP002586	GCF_000204255.1	eligible			Chlamydia psittaci	Bacteria	1171667	1		
+Chlamydia_trachomatis~GCF_000008725.1	Chlamydia_trachomatis	813	813	AE001273	GCF_000008725.1	eligible			Chlamydia trachomatis	Bacteria	1042519	1		
+Chlorobaculum_tepidum~GCF_000006985.1	Chlorobaculum_tepidum	1097	1097	AE006470	GCF_000006985.1	eligible			Chlorobaculum tepidum	Bacteria	2154946	1		
+Chloroflexus_aurantiacus~GCF_000018865.1	Chloroflexus_aurantiacus	1108	1108	CP000909	GCF_000018865.1	eligible			Chloroflexus aurantiacus	Bacteria	5258541	1		
+Citrobacter_amalonaticus~GCF_001558935.2	Citrobacter_amalonaticus	35703	35703	CP014070	GCF_001558935.2	eligible			Citrobacter amalonaticus	Bacteria	5030678	1		
+Citrobacter_freundii~GCF_000648515.1	Citrobacter_freundii	546	546	CP007557	GCF_000648515.1	eligible			Citrobacter freundii	Bacteria	5099034	1		
+Clavibacter_michiganensis_sepedonicus~GCF_000069225.1	Clavibacter_michiganensis_sepedonicus	31964	28447	AM849034	GCF_000069225.1	eligible			Clavibacter michiganensis	Bacteria	3258645	1		
+Clostridioides_difficile~GCF_000009205.1	Clostridioides_difficile	1496	1496	AM180355	GCF_000009205.1	eligible			Clostridioides difficile	Bacteria	4290252	1		
+Clostridium_acetobutylicum~GCF_000008765.1	Clostridium_acetobutylicum	1488	1488	AE001437	GCF_000008765.1	eligible			Clostridium acetobutylicum	Bacteria	3940880	1		
+Clostridium_argentinense~GCF_002074155.1	Clostridium_argentinense	29341	29341	CP014176	GCF_002074155.1	eligible			Clostridium argentinense	Bacteria	4662988	1		
+Clostridium_baratii~GCF_001991075.2	Clostridium_baratii	1561	1561	CP014204	GCF_001991075.2	eligible			Clostridium baratii	Bacteria	3091050	1		
+Clostridium_botulinum_groupI~GCF_000020285.1	Clostridium_botulinum_groupI	9000005	1491	CP001078	GCF_000020285.1	eligible	B	ANI	Clostridium botulinum	Bacteria	3659644	1	confounded	confounded:Clostridium botulinum groups
+Clostridium_botulinum_groupII~GCF_000019305.1	Clostridium_botulinum_groupII	9000004	1491	CP000939	GCF_000019305.1	eligible	B	ANI	Clostridium botulinum	Bacteria	3958233	1	confounded	confounded:Clostridium botulinum groups
+Clostridium_butyricum~GCF_001886875.1	Clostridium_butyricum	1492	1492	CP013239	GCF_001886875.1	eligible			Clostridium butyricum	Bacteria	3809831	1		
+Clostridium_perfringens~GCF_000013845.1	Clostridium_perfringens	1502	1502	CP000312	GCF_000013845.1	eligible			Clostridium perfringens	Bacteria	2897393	1		
+Corynebacterium_diphtheriae~GCF_021560115.1	Corynebacterium_diphtheriae	1717	1717	CP091095	GCF_021560115.1	eligible			Corynebacterium diphtheriae	Bacteria	2385153	1		
+Corynebacterium_glutamicum~GCF_000011325.1	Corynebacterium_glutamicum	1718	1718	BA000036	GCF_000011325.1	eligible			Corynebacterium glutamicum	Bacteria	3309401	1		
+Corynebacterium_pseudotuberculosis~GCF_002155265.1	Corynebacterium_pseudotuberculosis	1719	1719	CP021251	GCF_002155265.1	eligible			Corynebacterium pseudotuberculosis	Bacteria	2337763	1		
+Corynebacterium_urealyticum~GCF_000069945.1	Corynebacterium_urealyticum	43771	43771	AM942444	GCF_000069945.1	eligible			Corynebacterium urealyticum	Bacteria	2369219	1		
+Coxiella_burnetii~GCF_000007765.2	Coxiella_burnetii	777	777	AE016828	GCF_000007765.2	eligible			Coxiella burnetii	Bacteria	1995488	1		
+Cronobacter_condimenti~GCF_001277255.1	Cronobacter_condimenti	1163710	1163710	CP012264	GCF_001277255.1	eligible			Cronobacter condimenti	Bacteria	4347991	1		
+Cronobacter_dublinensis_dublinensis~GCF_001277235.1	Cronobacter_dublinensis_dublinensis	413498	413497	CP012266	GCF_001277235.1	eligible			Cronobacter dublinensis	Bacteria	4431067	1		
+Cronobacter_malonaticus~GCF_000504545.1	Cronobacter_malonaticus	413503	413503	CP006731	GCF_000504545.1	eligible			Cronobacter malonaticus	Bacteria	4377544	1		
+Cronobacter_muytjensii~GCF_001277195.1	Cronobacter_muytjensii	413501	413501	CP012268	GCF_001277195.1	eligible			Cronobacter muytjensii	Bacteria	4364114	1		
+Cronobacter_sakazakii~GCF_000982825.1	Cronobacter_sakazakii	28141	28141	CP011047	GCF_000982825.1	eligible			Cronobacter sakazakii	Bacteria	4511265	1		
+Cronobacter_turicensis~GCF_000027065.2	Cronobacter_turicensis	413502	413502	FN543093	GCF_000027065.2	eligible			Cronobacter turicensis	Bacteria	4384463	1		
+Cronobacter_universalis~GCF_001277175.1	Cronobacter_universalis	535744	535744	CP012257	GCF_001277175.1	eligible			Cronobacter universalis	Bacteria	4307096	1		
+Cryptococcus_neoformans_var_grubii~GCF_000149245.1	Cryptococcus_neoformans_var_grubii	5207	5207	CP003820,CP003821,CP003822,CP003823,CP003824,CP003825,CP003826,CP003827,CP003828,CP003829,CP003830,CP003831,CP003832,CP003833,CP003834	GCF_000149245.1	eukaryote			Cryptococcus neoformans	Eukaryota	18916112	15		
+Cryptosporidium_hominis~GCA_002223825.1	Cryptosporidium_hominis	237895	237895	LN877947,LN877948,LN877949,LN877950,LN877951,LN877952,LN877953,LN877954	GCA_002223825.1	eukaryote			Cryptosporidium hominis	Eukaryota	9043938	8		
+Cryptosporidium_parvum~GCF_000165345.1	Cryptosporidium_parvum	353152	5807	CM000429,CM000430,CM000431,CM000432,CM000433,CM000434,CM000435,CM000436	GCF_000165345.1	eukaryote			Cryptosporidium parvum	Eukaryota	9102324	8		
+Cupriavidus_taiwanensis~GCF_000069785.1	Cupriavidus_taiwanensis	164546	164546	CU633749,CU633750	GCF_000069785.1	eligible			Cupriavidus taiwanensis	Bacteria	5919322	2		
+Cyanothece~GCF_000017845.1	Cyanothece	43989	2546360	CP000806,CP000807	GCF_000017845.1	eligible			Crocosphaera subtropica	Bacteria	5363972	2		
+Deinococcus_radiodurans~GCF_000008565.1	Deinococcus_radiodurans	1299	1299	AE000513,AE001825	GCF_000008565.1	eligible			Deinococcus radiodurans	Bacteria	3060986	2		
+Delftia_acidovorans~GCF_000018665.1	Delftia_acidovorans	80866	80866	CP000884	GCF_000018665.1	eligible			Delftia acidovorans	Bacteria	6767514	1		
+Dictyoglomus_turgidum~GCF_000021645.1	Dictyoglomus_turgidum	513050	513050	CP001251	GCF_000021645.1	eligible			Dictyoglomus turgidum	Bacteria	1855560	1		
+Dolosigranulum_pigrum~GCF_017655925.1	Dolosigranulum_pigrum	29394	29394	CP040424	GCF_017655925.1	eligible			Dolosigranulum pigrum	Bacteria	1958196	1		
+Enterobacter_cloacae~GCF_000025565.1	Enterobacter_cloacae	550	550	CP001918	GCF_000025565.1	eligible			Enterobacter cloacae	Bacteria	5314581	1		
+Enterococcus_faecalis~GCF_000007785.1	Enterococcus_faecalis	1351	1351	AE016830	GCF_000007785.1	eligible			Enterococcus faecalis	Bacteria	3218031	1		
+Enterococcus_faecium~GCF_000174395.2	Enterococcus_faecium	1352	1352	CP003583	GCF_000174395.2	eligible			Enterococcus faecium	Bacteria	2698137	1		
+Escherichia_albertii~GCF_002741375.1	Escherichia_albertii	208962	208962	CP024282	GCF_002741375.1	eligible			Escherichia albertii	Bacteria	4852165	1		
+Escherichia_coli~GCF_003018575.1	Escherichia_coli	562	562	CP027582	GCF_003018575.1	eligible	A	marker	Escherichia coli	Bacteria	5680428	1	confounded	confounded:Shigella / EIEC vs Escherichia coli
+Escherichia_fergusonii~GCF_008064895.1	Escherichia_fergusonii	564	564	CP042945	GCF_008064895.1	eligible			Escherichia fergusonii	Bacteria	4638019	1		
+Exiguobacterium_antarcticum~GCF_000299435.1	Exiguobacterium_antarcticum	132920	132920	CP003063	GCF_000299435.1	eligible			Exiguobacterium antarcticum	Bacteria	2815863	1		
+Finegoldia_magna~GCF_000010185.1	Finegoldia_magna	1260	1260	AP008971	GCF_000010185.1	eligible			Finegoldia magna	Bacteria	1797577	1		
+Flavobacterium_psychrophilum~GCF_000064305.2	Flavobacterium_psychrophilum	96345	96345	AM398681	GCF_000064305.2	eligible			Flavobacterium psychrophilum	Bacteria	2860382	1		
+Francisella_philomiragia~GCF_018135955.1	Francisella_philomiragia	28110	28110	CP063138	GCF_018135955.1	eligible			Francisella philomiragia	Bacteria	1964480	1		
+Francisella_tularensis~GCF_000008985.1	Francisella_tularensis	263	263	AJ749949	GCF_000008985.1	eligible			Francisella tularensis	Bacteria	1892775	1		
+Fusobacterium_nucleatum~GCF_003019295.1	Fusobacterium_nucleatum	851	851	CP028101	GCF_003019295.1	eligible			Fusobacterium nucleatum	Bacteria	2180101	1		
+Gallus_gallus~strain-9031	Gallus_gallus	9031	9031	HQ857211	strain:9031	exclude:organelle			Gallus gallus	Eukaryota	17073	1		molecule=mitochondrion
+Gardnerella_vaginalis~GCF_000159155.2	Gardnerella_vaginalis	2702	2702	CP002104	GCF_000159155.2	eligible			Gardnerella vaginalis	Bacteria	1667350	1		
+Geobacter_sulfurreducens~GCF_000007985.2	Geobacter_sulfurreducens	35554	35554	AE017180	GCF_000007985.2	eligible			Geobacter sulfurreducens	Bacteria	3814128	1		
+Gloeobacter_violaceus~GCF_000011385.1	Gloeobacter_violaceus	33072	33072	BA000045	GCF_000011385.1	eligible			Gloeobacter violaceus	Bacteria	4659019	1		
+Grimontia_hollisae~GCF_009665295.1	Grimontia_hollisae	673	673	CP035690,CP035691	GCF_009665295.1	eligible			Grimontia hollisae	Bacteria	4130266	2		
+Haemophilus_aegyptius~GCF_019930905.1	Haemophilus_aegyptius	197575	197575	CP082857	GCF_019930905.1	eligible			Haemophilus aegyptius	Bacteria	1993271	1		
+Haemophilus_haemolyticus~GCF_900477945.1	Haemophilus_haemolyticus	726	726	LS483458	GCF_900477945.1	eligible			Haemophilus haemolyticus	Bacteria	1934644	1		
+Haemophilus_influenzae~GCF_000027305.1	Haemophilus_influenzae	727	727	L42023	GCF_000027305.1	eligible			Haemophilus influenzae	Bacteria	1830138	1		
+Haemophilus_parahaemolyticus~GCF_016889385.1	Haemophilus_parahaemolyticus	735	735	CP069510	GCF_016889385.1	eligible			Haemophilus parahaemolyticus	Bacteria	2092164	1		
+Haemophilus_parainfluenzae~GCF_016127215.1	Haemophilus_parainfluenzae	729	729	CP065991	GCF_016127215.1	eligible			Haemophilus parainfluenzae	Bacteria	2141704	1		
+Haemophilus_somnus~GCF_000019405.1	Haemophilus_somnus	228400	731	CP000947	GCF_000019405.1	eligible			Histophilus somni	Bacteria	2263857	1		
+Halobacterium_salinarum~GCF_000069025.1	Halobacterium_salinarum	478009	2242	AM774415	GCF_000069025.1	eligible			Halobacterium salinarum	Archaea	2000962	1		
+Helianthus_annuus~strain-4232	Helianthus_annuus	4232	4232	MG770607	strain:4232	exclude:organelle			Helianthus annuus	Eukaryota	316582	1		molecule=mitochondrion
+Helicobacter_pylori~GCF_000008525.1	Helicobacter_pylori	210	210	AE000511	GCF_000008525.1	eligible			Helicobacter pylori	Bacteria	1667867	1		
+Heliobacterium_modesticaldum~GCF_000019165.1	Heliobacterium_modesticaldum	35701	35701	CP000930	GCF_000019165.1	eligible			Heliomicrobium modesticaldum	Bacteria	3075407	1		
+Homo_sapiens~GCF_000001405.14	Homo_sapiens	9606	9606	J01415	GCF_000001405.14	exclude:organelle			Homo sapiens	Eukaryota	16569	1		molecule=mitochondrion
+Humulus_lupulus~strain-3486	Humulus_lupulus	3486	3486	NC_086845	strain:3486	exclude:organelle			Humulus lupulus	Eukaryota	400022	1		molecule=mitochondrion
+Ketogulonicigenium_vulgare~GCF_000223375.1	Ketogulonicigenium_vulgare	92945	92945	CP002018	GCF_000223375.1	eligible			Ketogulonicigenium vulgare	Bacteria	2766400	1		
+Kingella_denitrificans~GCF_016127355.1	Kingella_denitrificans	502	502	CP065999	GCF_016127355.1	eligible			Kingella denitrificans	Bacteria	2220058	1		
+Klebsiella_aerogenes~GCF_000215745.1	Klebsiella_aerogenes	548	548	CP002824	GCF_000215745.1	eligible			Klebsiella aerogenes	Bacteria	5280350	1		
+Klebsiella_pneumoniae~GCF_000240185.1	Klebsiella_pneumoniae	573	573	CP003200	GCF_000240185.1	eligible			Klebsiella pneumoniae	Bacteria	5333942	1		
+Lactobacillus_acidophilus~GCF_000011985.1	Lactobacillus_acidophilus	1579	1579	CP000033	GCF_000011985.1	eligible			Lactobacillus acidophilus	Bacteria	1993560	1		
+Lactococcus_lactis~GCF_000006865.1	Lactococcus_lactis	1358	1358	AE005176	GCF_000006865.1	eligible			Lactococcus lactis	Bacteria	2365589	1		
+Lactuca_sativa~strain-75943	Lactuca_sativa	75943	75943	MK820672	strain:75943	exclude:organelle			Lactuca serriola	Eukaryota	363328	1		molecule=mitochondrion
+Legionella_pneumophila~GCF_000008485.1	Legionella_pneumophila	446	446	AE017354	GCF_000008485.1	eligible			Legionella pneumophila	Bacteria	3397754	1		
+Leptospira_biflexa~GCF_000017605.1	Leptospira_biflexa	355278	172	CP000777	GCF_000017605.1	eligible			Leptospira biflexa	Bacteria	3603977	1		
+Leptospira_interrogans~GCF_002073495.2	Leptospira_interrogans	173	173	CP020414	GCF_002073495.2	eligible			Leptospira interrogans	Bacteria	4280582	1		
+Leptothrix_cholodnii~GCF_000019785.1	Leptothrix_cholodnii	34029	34029	CP001013	GCF_000019785.1	eligible			Leptothrix cholodnii	Bacteria	4909403	1		
+Leuconostoc_citreum~GCF_000026405.1	Leuconostoc_citreum	349519	33964	DQ489736	GCF_000026405.1	eligible			Leuconostoc citreum	Bacteria	1796284	1		
+Listeria_grayi~GCF_900638015.1	Listeria_grayi	1641	1641	LR134483	GCF_900638015.1	eligible			Listeria grayi	Bacteria	2751104	1		
+Listeria_innocua~GCF_009648575.1	Listeria_innocua	1642	1642	CP045743	GCF_009648575.1	eligible			Listeria innocua	Bacteria	2864595	1		
+Listeria_ivanovii~GCF_000252975.1	Listeria_ivanovii	1638	1638	FR687253	GCF_000252975.1	eligible			Listeria ivanovii	Bacteria	2928879	1		
+Listeria_marthii~GCF_000183865.1	Listeria_marthii	529731	529731	CM001047	GCF_000183865.1	eligible			Listeria marthii	Bacteria	2884551	1		
+Listeria_monocytogenes_I~GCF_013282705.1	Listeria_monocytogenes_I	9000000	1639	CP054040	GCF_013282705.1	eligible	B	ANI	Listeria monocytogenes	Bacteria	2906751	1	confounded	confounded:Listeria monocytogenes lineages
+Listeria_monocytogenes_II~GCF_013282685.1	Listeria_monocytogenes_II	9000001	1639	CP054042	GCF_013282685.1	eligible	B	ANI	Listeria monocytogenes	Bacteria	3017127	1	confounded	confounded:Listeria monocytogenes lineages
+Listeria_monocytogenes_III~GCF_013282645.1	Listeria_monocytogenes_III	9000002	1639	CP054039	GCF_013282645.1	eligible	B	ANI	Listeria monocytogenes	Bacteria	2851005	1	confounded	confounded:Listeria monocytogenes lineages
+Listeria_monocytogenes_IV~GCF_013282665.1	Listeria_monocytogenes_IV	9000003	1639	CP054041	GCF_013282665.1	eligible	B	ANI	Listeria monocytogenes	Bacteria	2788056	1	confounded	confounded:Listeria monocytogenes lineages
+Listeria_seeligeri~GCF_000027145.1	Listeria_seeligeri	1640	1640	FN557490	GCF_000027145.1	eligible			Listeria seeligeri	Bacteria	2797636	1		
+Listeria_welshimeri~GCF_900187315.1	Listeria_welshimeri	1643	1643	LT906444	GCF_900187315.1	eligible			Listeria welshimeri	Bacteria	2814137	1		
+Lysinibacillus_sphaericus~GCF_000017965.1	Lysinibacillus_sphaericus	444177	1421	CP000817	GCF_000017965.1	eligible			Lysinibacillus sphaericus	Bacteria	4639821	1		
+Measles_morbillivirus_D8~strain-170528	Measles_morbillivirus_D8	170528	3052345	PV870339	strain:170528	exclude:virus			Morbillivirus hominis	Viruses	15813	1		
+Mesoplasma_florum~GCF_000008305.1	Mesoplasma_florum	2151	2151	AE017263	GCF_000008305.1	eligible			Mesoplasma florum	Bacteria	793224	1		
+Mesorhizobium_ciceri~GCF_000185905.1	Mesorhizobium_ciceri	39645	39645	CP002447	GCF_000185905.1	eligible			Mesorhizobium ciceri	Bacteria	6264489	1		
+Methylobacterium~GCF_000019365.1	Methylobacterium	426117	426117	CP000943	GCF_000019365.1	eligible			Methylobacterium sp. 4-46	Bacteria	7659055	1		
+Methylobacterium_radiotolerans~GCF_000019725.1	Methylobacterium_radiotolerans	31998	31998	CP001001	GCF_000019725.1	eligible			Methylobacterium radiotolerans	Bacteria	6077833	1		
+Micrococcus_luteus~GCF_000023205.1	Micrococcus_luteus	1270	1270	CP001628	GCF_000023205.1	eligible			Micrococcus luteus	Bacteria	2501097	1		
+Moorella_thermoacetica~GCF_001267435.1	Moorella_thermoacetica	1525	1525	CP012370	GCF_001267435.1	eligible			Moorella thermoacetica	Bacteria	2623349	1		
+Moraxella_catarrhalis~GCF_900476075.1	Moraxella_catarrhalis	480	480	LS483445	GCF_900476075.1	eligible			Moraxella catarrhalis	Bacteria	1907984	1		
+Morganella_morganii_morganii~GCF_000286435.2	Morganella_morganii_morganii	180434	582	CP004345	GCF_000286435.2	eligible			Morganella morganii	Bacteria	3799539	1		
+Mycobacterium_abscessus~GCF_000069185.1	Mycobacterium_abscessus	36809	36809	CU458896	GCF_000069185.1	eligible			Mycobacteroides abscessus	Bacteria	5067172	1		
+Mycobacterium_leprae~GCF_000195855.1	Mycobacterium_leprae	1769	1769	AL450380	GCF_000195855.1	eligible			Mycobacterium leprae	Bacteria	3268203	1		
+Mycobacterium_tuberculosis~GCF_000195955.2	Mycobacterium_tuberculosis	1773	1773	AL123456	GCF_000195955.2	eligible			Mycobacterium tuberculosis	Bacteria	4411532	1		
+Mycolicibacterium_fortuitum~GCF_022179545.1	Mycolicibacterium_fortuitum	144549	1766	AP025518	GCF_022179545.1	eligible			Mycolicibacterium fortuitum	Bacteria	6406072	1		
+Mycoplasma_mycoides~GCF_000011445.1	Mycoplasma_mycoides	2102	2102	BX293980	GCF_000011445.1	eligible			Mycoplasma mycoides	Bacteria	1211703	1		
+Neisseria_cinerea~GCF_016028715.1	Neisseria_cinerea	483	483	CP065726	GCF_016028715.1	eligible			Neisseria cinerea	Bacteria	1832901	1		
+Neisseria_elongata~GCF_003351685.1	Neisseria_elongata	495	495	CP031255	GCF_003351685.1	eligible			Neisseria elongata	Bacteria	2534634	1		
+Neisseria_flavescens~GCF_005221285.1	Neisseria_flavescens	484	484	CP039886	GCF_005221285.1	eligible			Neisseria flavescens	Bacteria	2231882	1		
+Neisseria_gonorrhoeae~GCF_000006845.1	Neisseria_gonorrhoeae	485	485	AE004969	GCF_000006845.1	eligible			Neisseria gonorrhoeae	Bacteria	2153922	1		
+Neisseria_lactamica~GCF_003351565.1	Neisseria_lactamica	486	486	CP031253	GCF_003351565.1	eligible			Neisseria lactamica	Bacteria	2200224	1		
+Neisseria_meningitidis~GCF_000008805.1	Neisseria_meningitidis	487	487	AE002098	GCF_000008805.1	eligible			Neisseria meningitidis	Bacteria	2272360	1		
+Neisseria_polysaccharea~GCF_003355195.1	Neisseria_polysaccharea	489	489	CP031325	GCF_003355195.1	eligible			Neisseria polysaccharea	Bacteria	2024930	1		
+Neisseria_sicca~GCF_014054945.1	Neisseria_sicca	490	490	CP059566	GCF_014054945.1	eligible			Neisseria sicca	Bacteria	2864419	1		
+Neisseria_subflava~GCF_005221305.1	Neisseria_subflava	28449	28449	CP039887	GCF_005221305.1	eligible			Neisseria subflava	Bacteria	2195659	1		
+Neisseria_weaveri~GCF_900638685.1	Neisseria_weaveri	28091	28091	LR134533	GCF_900638685.1	eligible			Neisseria weaveri	Bacteria	2238481	1		
+Neomysis_japonica~strain-1676841	Neomysis_japonica	1676841	1676841	KR006340	strain:1676841	exclude:organelle			Neomysis japonica	Eukaryota	17652	1		molecule=mitochondrion
+Nocardia_asteroides~GCF_021183585.1	Nocardia_asteroides	1824	1824	CP089227	GCF_021183585.1	eligible			Nocardia asteroides	Bacteria	6983420	1		
+Nocardia_farcinica~GCF_003367415.1	Nocardia_farcinica	37329	37329	CP031418	GCF_003367415.1	eligible			Nocardia farcinica	Bacteria	6291633	1		
+Ochrobactrum_anthropi~GCF_000017405.1	Ochrobactrum_anthropi	529	529	CP000758,CP000759	GCF_000017405.1	eligible			Brucella anthropi	Bacteria	4783208	2		
+Orthohantavirus_andesense~GCF_000850405.1	Orthohantavirus_andesense	1980456	1980456	NC_003466,NC_003467,NC_003468	GCF_000850405.1	exclude:virus			Orthohantavirus andesense	Viruses	12104	3		
+Pantoea_ananatis~GCF_000025405.2	Pantoea_ananatis	553	553	CP001875	GCF_000025405.2	eligible			Pantoea ananatis	Bacteria	4703373	1		
+Parabacteroides_distasonis~GCF_000012845.1	Parabacteroides_distasonis	823	823	CP000140	GCF_000012845.1	eligible			Parabacteroides distasonis	Bacteria	4811379	1		
+Pasteurella_multocida~GCF_002073255.2	Pasteurella_multocida	747	747	CP020405	GCF_002073255.2	eligible			Pasteurella multocida	Bacteria	2331774	1		
+Photobacterium_damselae~GCF_009763125.1	Photobacterium_damselae	38293	38293	CP046751,CP046752	GCF_009763125.1	eligible			Photobacterium damselae	Bacteria	4452463	2		
+Pollachius_virens~strain-8060	Pollachius_virens	8060	8060	FR751399	strain:8060	exclude:organelle			Pollachius virens	Eukaryota	16556	1		molecule=mitochondrion
+Polynucleobacter_necessarius~GCF_900096765.1	Polynucleobacter_necessarius	576610	576610	LT615228	GCF_900096765.1	eligible			Polynucleobacter necessarius	Bacteria	1825583	1		
+Prochlorococcus_marinus~GCF_000007925.1	Prochlorococcus_marinus	1219	1219	AE017126	GCF_000007925.1	eligible			Prochlorococcus marinus	Bacteria	1751080	1		
+Proteus_mirabilis~GCF_000444425.1	Proteus_mirabilis	584	584	CP004022	GCF_000444425.1	eligible			Proteus mirabilis	Bacteria	3846754	1		
+Pseudomonas_aeruginosa~GCF_000006765.1	Pseudomonas_aeruginosa	287	287	AE004091	GCF_000006765.1	eligible			Pseudomonas aeruginosa	Bacteria	6264404	1		
+Pseudomonas_putida~GCF_000412675.1	Pseudomonas_putida	390235	303	AP013070	GCF_000412675.1	eligible			Pseudomonas putida	Bacteria	6156701	1		
+Pseudomonas_syringae_group_genomosp._3~GCF_000007805.1	Pseudomonas_syringae_group_genomosp._3	251701	251701	AE016853	GCF_000007805.1	eligible			Pseudomonas syringae group genomosp. 3	Bacteria	6397126	1		
+Pyrobaculum_neutrophilum~GCF_000019805.1	Pyrobaculum_neutrophilum	70771	70771	CP001014	GCF_000019805.1	eligible			Pyrobaculum neutrophilum	Archaea	1769823	1		
+Rhodopirellula_baltica~GCF_000196115.1	Rhodopirellula_baltica	265606	265606	BX119912	GCF_000196115.1	eligible			Rhodopirellula baltica	Bacteria	7145576	1		
+Rhodospirillum_rubrum~GCF_000013085.1	Rhodospirillum_rubrum	1085	1085	CP000230	GCF_000013085.1	eligible			Rhodospirillum rubrum	Bacteria	4352825	1		
+Rickettsia_prowazekii~GCF_000195735.1	Rickettsia_prowazekii	782	782	AJ235269	GCF_000195735.1	eligible			Rickettsia prowazekii	Bacteria	1111523	1		
+Ruminococcus_sp.~GCF_005601135.1	Ruminococcus_sp.	1263	2564099	CP039381	GCF_005601135.1	eligible			Ruminococcus bovis	Bacteria	2440231	1	species_from_organism	declared taxid 1263 is genus; species taken from genome organism 2564099
+Salinibacter_ruber~GCF_000013045.1	Salinibacter_ruber	146919	146919	CP000159	GCF_000013045.1	eligible			Salinibacter ruber	Bacteria	3551823	1		
+Salmonella_bongori~GCF_000252995.1	Salmonella_bongori	54736	54736	FR877557	GCF_000252995.1	eligible			Salmonella bongori	Bacteria	4460105	1		
+Salmonella_enterica_I~GCF_000006945.2	Salmonella_enterica_I	59201	28901	AE006468	GCF_000006945.2	eligible	B	ANI	Salmonella enterica	Bacteria	4857450	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IIa~GCF_006051055.1	Salmonella_enterica_IIa	9000010	28901	CP053411	GCF_006051055.1	eligible	B	ANI	Salmonella enterica	Bacteria	4925620	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IIb~GCF_900635535.1	Salmonella_enterica_IIb	9000011	28901	LR134141	GCF_900635535.1	eligible	B	ANI	Salmonella enterica	Bacteria	4724014	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IIIa~GCF_000018625.1	Salmonella_enterica_IIIa	9000014	28901	CP000880	GCF_000018625.1	eligible	B	ANI	Salmonella enterica	Bacteria	4600800	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IIIb~GCA_013162305.1	Salmonella_enterica_IIIb	9000015	28901	CP053583	GCA_013162305.1	eligible	B	ANI	Salmonella enterica	Bacteria	4852711	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IV~GCF_013161805.1	Salmonella_enterica_IV	59205	28901	CP053579	GCF_013161805.1	eligible	B	ANI	Salmonella enterica	Bacteria	4776313	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_IX~GCF_013348865.1	Salmonella_enterica_IX	9000016	28901	CP054715	GCF_013348865.1	eligible	B	ANI	Salmonella enterica	Bacteria	4794154	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_VI~GCF_006051135.1	Salmonella_enterica_VI	59207	28901	CP053406	GCF_006051135.1	eligible	B	ANI	Salmonella enterica	Bacteria	4612001	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_VII~GCF_013162165.1	Salmonella_enterica_VII	59208	28901	CP053582	GCF_013162165.1	eligible	B	ANI	Salmonella enterica	Bacteria	4517871	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_VIII~GCA_013138165.1	Salmonella_enterica_VIII	9000009	28901	CP053318	GCA_013138165.1	eligible	B	ANI	Salmonella enterica	Bacteria	4605416	1	confounded	confounded:Salmonella enterica subspecies
+Salmonella_enterica_X~GCF_013162025.1	Salmonella_enterica_X	9000017	28901	CP053581	GCF_013162025.1	eligible	B	ANI	Salmonella enterica	Bacteria	4672196	1	confounded	confounded:Salmonella enterica subspecies
+Serratia_liquefaciens~GCF_000422085.1	Serratia_liquefaciens	614	614	CP006252	GCF_000422085.1	eligible			Serratia liquefaciens	Bacteria	5238612	1		
+Shewanella_halifaxensis~GCF_000019185.1	Shewanella_halifaxensis	271098	271098	CP000931	GCF_000019185.1	eligible			Shewanella halifaxensis	Bacteria	5226917	1		
+Shewanella_oneidensis~GCF_000146165.2	Shewanella_oneidensis	70863	70863	AE014299	GCF_000146165.2	eligible			Shewanella oneidensis	Bacteria	4969811	1		
+Shewanella_woodyi~GCF_000019525.1	Shewanella_woodyi	60961	60961	CP000961	GCF_000019525.1	eligible			Shewanella woodyi	Bacteria	5935403	1		
+Shimwellia_blattae~GCF_000262305.1	Shimwellia_blattae	563	563	CP001560	GCF_000262305.1	eligible			Shimwellia blattae	Bacteria	4158725	1		
+Sinorhizobium_fredii~GCF_000018545.1	Sinorhizobium_fredii	380	380	CP001389	GCF_000018545.1	eligible			Sinorhizobium fredii	Bacteria	3925702	1		
+Sinorhizobium_medicae~GCF_000017145.1	Sinorhizobium_medicae	110321	110321	CP000738	GCF_000017145.1	eligible			Sinorhizobium medicae	Bacteria	3781904	1		
+Sinorhizobium_meliloti~GCF_000006965.1	Sinorhizobium_meliloti	382	382	AL591688	GCF_000006965.1	eligible			Sinorhizobium meliloti	Bacteria	3654135	1		
+Solanum_lycopersicum~strain-4081	Solanum_lycopersicum	4081	4081	MF034192	strain:4081	exclude:organelle			Solanum lycopersicum	Eukaryota	446257	1		molecule=mitochondrion
+Staphylococcus_aureus~GCF_000772025.1	Staphylococcus_aureus	46170	1280	CP009554	GCF_000772025.1	eligible			Staphylococcus aureus	Bacteria	2886017	1		
+Staphylococcus_epidermidis~GCF_000007645.1	Staphylococcus_epidermidis	1282	1282	AE015929	GCF_000007645.1	eligible			Staphylococcus epidermidis	Bacteria	2499279	1		
+Staphylococcus_warneri~GCF_003571725.1	Staphylococcus_warneri	1292	1292	CP032159	GCF_003571725.1	eligible			Staphylococcus warneri	Bacteria	2515743	1		
+Streptococcus_agalactiae~GCF_000007265.1	Streptococcus_agalactiae	1311	1311	AE009948	GCF_000007265.1	eligible			Streptococcus agalactiae	Bacteria	2160267	1		
+Streptococcus_mitis~GCF_000027165.1	Streptococcus_mitis	28037	28037	FN568063	GCF_000027165.1	eligible			Streptococcus mitis	Bacteria	2146611	1		
+Streptococcus_mutans~GCF_000007465.2	Streptococcus_mutans	1309	1309	AE014133	GCF_000007465.2	eligible			Streptococcus mutans	Bacteria	2032925	1		
+Streptococcus_oralis~GCF_016127555.1	Streptococcus_oralis	1303	1303	CP066021	GCF_016127555.1	eligible			Streptococcus oralis	Bacteria	1931547	1		
+Streptococcus_pneumoniae~GCF_000019265.1	Streptococcus_pneumoniae	487214	1313	CP000936	GCF_000019265.1	eligible			Streptococcus pneumoniae	Bacteria	2245615	1		
+Streptococcus_pseudopneumoniae~GCF_000221985.1	Streptococcus_pseudopneumoniae	257758	257758	CP002925	GCF_000221985.1	eligible			Streptococcus pseudopneumoniae	Bacteria	2190731	1		
+Streptococcus_pyogenes~GCF_000006785.2	Streptococcus_pyogenes	1314	1314	AE004092	GCF_000006785.2	eligible			Streptococcus pyogenes	Bacteria	1852433	1		
+Streptococcus_sanguinis~GCF_000014205.1	Streptococcus_sanguinis	1305	1305	CP000387	GCF_000014205.1	eligible			Streptococcus sanguinis	Bacteria	2388435	1		
+Streptococcus_suis~GCF_000026745.1	Streptococcus_suis	1307	1307	FM252032	GCF_000026745.1	eligible			Streptococcus suis	Bacteria	2146229	1		
+Sus_scrofa~strain-9823	Sus_scrofa	9823	9823	FJ236999	strain:9823	exclude:organelle			Sus scrofa	Eukaryota	16941	1		molecule=mitochondrion
+Thermanaerovibrio_acidaminovorans~GCF_000024905.1	Thermanaerovibrio_acidaminovorans	81462	81462	CP001818	GCF_000024905.1	eligible			Thermanaerovibrio acidaminovorans	Bacteria	1848474	1		
+Thermoanaerobacter_pseudethanolicus~GCF_000019085.1	Thermoanaerobacter_pseudethanolicus	496866	496866	CP000924	GCF_000019085.1	eligible			Thermoanaerobacter pseudethanolicus	Bacteria	2362816	1		
+Thermodesulfovibrio_yellowstonii~GCF_000020985.1	Thermodesulfovibrio_yellowstonii	28262	28262	CP001147	GCF_000020985.1	eligible			Thermodesulfovibrio yellowstonii	Bacteria	2003803	1		
+Thermosynechococcus_elongatus~GCF_000011345.1	Thermosynechococcus_elongatus	146786	146786	BA000039	GCF_000011345.1	eligible			Thermosynechococcus vestitus	Bacteria	2593857	1		
+Thermotoga_maritima~GCF_000008545.1	Thermotoga_maritima	2336	2336	AE000512	GCF_000008545.1	eligible			Thermotoga maritima	Bacteria	1860725	1		
+Thermus_thermophilus~GCF_000091545.1	Thermus_thermophilus	274	274	AP008226	GCF_000091545.1	eligible			Thermus thermophilus	Bacteria	1849742	1		
+Thunnus_alalunga~strain-8235	Thunnus_alalunga	8235	8235	AB101291	strain:8235	exclude:organelle			Thunnus alalunga	Eukaryota	16527	1		molecule=mitochondrion
+Treponema_denticola~GCF_000008185.1	Treponema_denticola	158	158	AE017226	GCF_000008185.1	eligible			Treponema denticola	Bacteria	2843201	1		
+Ureaplasma_parvum~GCF_000019345.1	Ureaplasma_parvum	134821	134821	CP000942	GCF_000019345.1	eligible			Ureaplasma parvum	Bacteria	751679	1		
+Vibrio_alginolyticus~GCF_009665435.1	Vibrio_alginolyticus	663	663	CP035699,CP035700	GCF_009665435.1	eligible			Vibrio alginolyticus	Bacteria	5137878	2		
+Vibrio_cholerae_O1~GCA_009665515.2	Vibrio_cholerae_O1	127906	666	CP038178,CP038179	GCA_009665515.2	eligible			Vibrio cholerae	Bacteria	4098803	2		
+Vibrio_cidicii~GCF_009763805.1	Vibrio_cidicii	1763883	1763883	CP046803,CP046804	GCF_009763805.1	eligible			Vibrio cidicii	Bacteria	4750222	2		
+Vibrio_cincinnatiensis~GCF_009665395.1	Vibrio_cincinnatiensis	675	675	CP035697,CP035698	GCF_009665395.1	eligible			Vibrio cincinnatiensis	Bacteria	3799536	2		
+Vibrio_fluvialis~GCF_012275125.1	Vibrio_fluvialis	676	676	CP051126,CP051127	GCF_012275125.1	eligible			Vibrio fluvialis	Bacteria	4660731	2		
+Vibrio_furnissii~GCF_009763225.1	Vibrio_furnissii	29494	29494	CP046797,CP046798	GCF_009763225.1	eligible			Vibrio furnissii	Bacteria	5086666	2		
+Vibrio_harveyi~GCF_009665315.1	Vibrio_harveyi	669	669	CP035692,CP035693	GCF_009665315.1	eligible			Vibrio harveyi	Bacteria	5751647	2		
+Vibrio_metoecus~GCF_009763865.1	Vibrio_metoecus	1481663	1481663	CP046817,CP046818	GCF_009763865.1	eligible			Vibrio metoecus	Bacteria	4031227	2		
+Vibrio_metschnikovii~GCF_009665235.1	Vibrio_metschnikovii	28172	28172	CP035684,CP035685	GCF_009665235.1	eligible			Vibrio metschnikovii	Bacteria	3875681	2		
+Vibrio_mimicus~GCF_009665195.1	Vibrio_mimicus	674	674	CP035682,CP035683	GCF_009665195.1	eligible			Vibrio mimicus	Bacteria	4476214	2		
+Vibrio_navarrensis~GCF_009763725.1	Vibrio_navarrensis	29495	29495	CP046791,CP046792	GCF_009763725.1	eligible			Vibrio navarrensis	Bacteria	4781721	2		
+Vibrio_parahaemolyticus~GCF_009764075.1	Vibrio_parahaemolyticus	670	670	CP046827,CP046828	GCF_009764075.1	eligible			Vibrio parahaemolyticus	Bacteria	5144797	2		
+Vibrio_vulnificus~GCF_009764095.1	Vibrio_vulnificus	672	672	CP046832,CP046833	GCF_009764095.1	eligible			Vibrio vulnificus	Bacteria	4996741	2		
+Vicia_faba~strain-3906	Vicia_faba	3906	3906	KC189947	strain:3906	exclude:organelle			Vicia faba	Eukaryota	588000	1		molecule=mitochondrion
+Xanthomonas_campestris~GCF_000007145.1	Xanthomonas_campestris	339	339	AE008922	GCF_000007145.1	eligible			Xanthomonas campestris	Bacteria	5076188	1		
+Xylella_fastidiosa~GCF_000019325.1	Xylella_fastidiosa	405440	2371	CP000941	GCF_000019325.1	eligible			Xylella fastidiosa	Bacteria	2475130	1		
+Yersinia_aldovae~GCF_000834395.1	Yersinia_aldovae	29483	29483	CP009781	GCF_000834395.1	eligible			Yersinia aldovae	Bacteria	4471090	1		
+Yersinia_bercovieri~GCF_013282745.1	Yersinia_bercovieri	634	634	CP054044	GCF_013282745.1	eligible			Yersinia bercovieri	Bacteria	4327340	1		
+Yersinia_canariae~GCF_009831415.1	Yersinia_canariae	2607663	2607663	CP043727	GCF_009831415.1	eligible			Yersinia canariae	Bacteria	4710154	1		
+Yersinia_enterocolitica~GCF_000009345.1	Yersinia_enterocolitica	630	630	AM286415	GCF_000009345.1	eligible			Yersinia enterocolitica	Bacteria	4615899	1		
+Yersinia_enterocolitica~GCF_000192105.1	Yersinia_enterocolitica	630	630	CP002246	GCF_000192105.1	eligible			Yersinia enterocolitica	Bacteria	4552107	1		
+Yersinia_frederiksenii~GCF_002591095.1	Yersinia_frederiksenii	29484	29484	CP023962	GCF_002591095.1	eligible			Yersinia frederiksenii	Bacteria	5000678	1		
+Yersinia_hibernica~GCF_004124235.1	Yersinia_hibernica	2339259	2339259	CP032487	GCF_004124235.1	eligible			Yersinia hibernica	Bacteria	4742939	1		
+Yersinia_intermedia~GCF_000834515.1	Yersinia_intermedia	631	631	CP009801	GCF_000834515.1	eligible			Yersinia intermedia	Bacteria	4859749	1		
+Yersinia_kristensenii~GCF_013282785.1	Yersinia_kristensenii	28152	28152	CP054049	GCF_013282785.1	eligible			Yersinia kristensenii	Bacteria	4846082	1		
+Yersinia_massiliensis~GCF_013282765.1	Yersinia_massiliensis	419257	419257	CP054048	GCF_013282765.1	eligible			Yersinia massiliensis	Bacteria	4909193	1		
+Yersinia_mollaretii~GCF_013282725.1	Yersinia_mollaretii	33060	33060	CP054043	GCF_013282725.1	eligible			Yersinia mollaretii	Bacteria	4603534	1		
+Yersinia_pseudotuberculosis~GCF_000834295.1	Yersinia_pseudotuberculosis	502800	633	CP009712	GCF_000834295.1	eligible	A	marker	Yersinia pseudotuberculosis	Bacteria	4743972	1	confounded	confounded:Yersinia pseudotuberculosis vs Y. pestis
+Yersinia_rochesterensis~GCF_003600645.1	Yersinia_rochesterensis	1604335	1604335	CP032482	GCF_003600645.1	eligible			Yersinia rochesterensis	Bacteria	4438053	1		
+Yersinia_rohdei~GCF_000834455.1	Yersinia_rohdei	29485	29485	CP009787	GCF_000834455.1	eligible			Yersinia rohdei	Bacteria	4372253	1		
