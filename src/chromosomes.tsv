@@ -2,7 +2,7 @@ scientificName	nuccoreAcc	taxid	parent	source
 Acholeplasma_laidlawii	CP000896	2148	2147	NCBI-REF
 Acinetobacter_baumannii	CP045110	509170	470	NCBI-REF
 Acinetobacter_pittii	CP002177	48296	909768	NCBI-REF
-Actinobacillus_pleuropneumoniae	CP030753	715	713	NBCI-REF
+Actinobacillus_pleuropneumoniae	CP030753	715	713	NCBI-REF
 Aggregatibacter_aphrophilus	LR134327	732	416916	NCBI-REF
 Agrobacterium_fabrum	AE007869	1176649	1183400	NCBI-REF
 Agrobacterium_fabrum	AE007870	1176649	1183400	NCBI-REF
@@ -58,7 +58,7 @@ Campylobacter_jejuni_jejuni	AL111168	32022	197	CDC SME
 Campylobacter_lanienae	CP015578	75658	194	CDC SME
 Campylobacter_lari	CP000932	201	194	CDC SME
 Campylobacter_peloridis	CP007766	488546	194	CDC SME
-Campylobacter_sputorum	CP019683	202	194	CDC SME
+Campylobacter_sputorum	CP019683	206	194	CDC SME
 Campylobacter_subantarcticus	CP007772	497724	194	CDC SME
 Campylobacter_ureolyticus	CP012195	827	194	CDC SME
 Campylobacter_volucris	CP007774	1031542	194	CDC SME
@@ -316,8 +316,8 @@ Yersinia_enterocolitica	CP002246	630	629	CDC SME
 Yersinia_frederiksenii	CP023962	29484	629	FDA-ARGOS
 Yersinia_hibernica	CP032487	2339259	629	NCBI-REF
 Yersinia_intermedia	CP009801	631	629	CDC SME
-Yersinia_kristensenii	CP054049	631	629	CDC SME
-Yersinia_massiliensis	CP054048	33060	629	CDC SME
+Yersinia_kristensenii	CP054049	28152	629	CDC SME
+Yersinia_massiliensis	CP054048	419257	629	CDC SME
 Yersinia_mollaretii	CP054043	33060	629	NCBI-REF
 Yersinia_pseudotuberculosis	CP009712	502800	633	CDC SME
 Yersinia_rochesterensis	CP032482	1604335	629	NCBI-REF
