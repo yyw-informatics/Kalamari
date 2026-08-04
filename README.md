@@ -179,6 +179,119 @@ The taxonomy directory will be located at: `<Kalamari_cloned_repo>/share/kalamar
 
 [How to format and query databases](docs/DATABASES.md)
 
+## Curation triage
+
+An add-on that gives curators a monthly, ranked worklist of newly deposited public
+genomes worth reviewing. It answers two questions: has one of our current picks gone bad
+(mislabelled, withdrawn, reclassified), and is there a species we should track but don't.
+
+It is **informational, never a pass/fail gate** — it flags and ranks for human review
+rather than grading. It optimises for precision, because curator time is the scarce
+resource. The monthly run needs no genome downloads and works offline from a committed
+cache.
+
+### How it works, in one paragraph
+
+Kalamari's genomes were chosen for trusted provenance, not for being statistically average,
+so the triage tracks provenance and correctness. NCBI already publishes a near-nightly
+verdict comparing every prokaryotic assembly against its species' type strain; reading
+*that verdict on Kalamari's own picks* is nearly free, and it catches the case a
+similarity computation cannot see — that a pick was reclassified or withdrawn. So the
+design is a cheap metadata check that finds a few candidates, with expensive confirmation
+reserved for those few.
+
+### Vocabulary
+
+| Term | Meaning |
+| --- | --- |
+| **genome-unit** | One curated Kalamari entry. Replicons are grouped by their parent assembly, never by the taxid column. 270 units, 249 of them checkable. |
+| **Tier 0** | The committed policy table. Decides which units are checked and which are deliberately excluded (viruses, organelles, eukaryotes). |
+| **Tier 1** | The monthly metadata check. Needs no genome downloads. |
+| **Tier 2** | Confirmation on the few survivors, plus marker genes for the taxa that genome-wide similarity cannot split. 41 units are in scope. |
+| **J1a** | Signal: has one of our picks gone bad? Reads NCBI's verdict. This is the anchor and it runs offline. |
+| **J1b** | Signal: has a better trusted genome appeared? Off by default. |
+| **J2** | Signal: is there a species we should track but don't? Off by default. |
+| **lead** | One flagged item on the worklist. |
+| **epoch** | The tooling/schema version of a signal. Bumping it re-opens previously dismissed leads. |
+
+### Reading order
+
+| Doc | What it covers |
+| --- | --- |
+| [Design](docs/CURATION_TRIAGE_DESIGN.md) | **Start here.** Why it works this way, the tier architecture, and what is built versus not |
+| [Tier 0](docs/CURATION_TRIAGE_TIER0.md) | The committed policy table: what is checked, and what is deliberately excluded |
+| [Tier 1 coverage](docs/CURATION_TRIAGE_TIER1_COVERAGE.md) | The measurement the whole approach rests on: 249/249 picks have an NCBI verdict |
+| [Tier 1](docs/CURATION_TRIAGE_TIER1.md) | The monthly net, the worklist, and how curators record decisions |
+| [Tier 2](docs/CURATION_TRIAGE_TIER2.md) | Sequence-level confirmation: the ANI gate, the marker resolvers, and the sub-species panels |
+| [Reproducibility and CI](docs/CURATION_TRIAGE_REPRODUCIBILITY.md) | How the tools are pinned, how CI runs both tiers, and the gate a pin change must pass |
+
+### The code
+
+Eleven entry points live in `bin/curation-triage/`; the rest of the files there are libraries
+they import.
+
+| Script | What it does |
+| --- | --- |
+| `build_policy.py` | Builds the Tier 0 policy table from `src/chromosomes.tsv` |
+| `coverage_probe.py` | One-shot: measures how many picks NCBI has a verdict for |
+| `tier1_metadata.py` | **The monthly run.** Produces the worklist |
+| `collate.py` | Merges the shards when the monthly run is split across CI runners |
+| `tier2_confirm.py` | Sequence-level confirmation of the flagged and confounded units |
+| `refresh_tier2.py` | Refreshes the Tier 2 caches in shards, one tool at a time, then merges them |
+| `build_panels.py` | Regenerates the sub-species ANI panels from the policy table |
+| `build_type_strains.py` | Resolves each pick's type strain from NCBI's ANI report |
+| `setup_envs.sh` | Recreates each pinned tool environment from its lockfile, then verifies it |
+| `update_gate.py` | The check a tool, database, threshold or rule change must pass |
+| `worklist_from_ledger.py` | Renders the worklist from the committed ledger (the release asset) |
+
+```bash
+# The monthly run, fully offline from the committed cache:
+python3 bin/curation-triage/tier1_metadata.py --offline --run-id "$(date -u +%Y-%m)"
+
+# Tier 2, offline from the committed caches:
+python3 bin/curation-triage/tier2_confirm.py --offline --run-id "$(date -u +%Y-%m)"
+
+# Did any pinned tool, database, threshold or rule move without being recorded?
+python3 bin/curation-triage/update_gate.py --check
+
+# Tests (531 checks, no network needed):
+python3 -m pytest
+```
+
+### Status
+
+Tiers 0, 1 and 2 are built and tested. Tier 2 runs for real with skani and all nine typers
+installed: 41 of 41 triggered units evaluated, with the results committed, so an offline run
+reproduces them with no network and no tools. Every tool environment is pinned by a committed
+conda lockfile. Both tiers run in the monthly workflow and end in one ledger commit.
+Refreshing the caches is a separate on-demand workflow, sharded by tool. A change to any
+pinned tool, database, threshold or rule has to pass the update gate. See
+[Reproducibility and CI](docs/CURATION_TRIAGE_REPRODUCIBILITY.md).
+
+Two data pins carry a stated limit:
+
+- The LPSN species list is committed, but LPSN publishes no valid-publication date, so that
+  date is derived from the authority string.
+- The AMRFinderPlus database `2026-05-15.1` is frozen by a per-file digest manifest. The
+  manifest proves that a copy is the same database; it cannot make NCBI serve that version
+  again.
+
+The monthly workflow (`.github/workflows/curation-triage.yml`) is informational and **must
+be kept out of the branch's required status checks** — a broken shard should go red loudly
+without blocking a merge. The separate test workflow is an ordinary blocking gate.
+
+Some files under `src/curation-triage/` look like caches but are deliberately committed:
+the monthly run and the tests read them, so the whole loop works with no network. See the
+comment block in `.gitignore`.
+
+### Open items
+
+- **Two `gap` marker rows.** The BIGSdb *Yersinia* and *Listeria* cgMLST allele callers, and a
+  genome-wide *C. botulinum* group I–IV classifier. Each needs a new pinned tool, so each is a
+  marker-manifest change that moves calls and must pass the update gate on its way in.
+- **An unattended LPSN refresh.** The REST API path needs credentials as a CI secret, a token
+  exchange, and paging. Today the cache is refreshed by hand.
+- **The embedding novelty radar** (design §7) is a research track and never blocks this.
 
 ## Contributing
 
