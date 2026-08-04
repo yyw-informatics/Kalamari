@@ -1,0 +1,1115 @@
+{
+ "meta": {
+  "min_af": 5.0,
+  "n_results": 157,
+  "n_screened_out": 4,
+  "screen": 70.0,
+  "skani_version": "skani@0.3.2"
+ },
+ "results": {
+  "GCA_013138165.1|GCA_013162305.1": {
+   "af_query": 0.757,
+   "af_reference": 0.7506,
+   "ani": 95.24,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCA_900635535.1": {
+   "af_query": 0.7924,
+   "af_reference": 0.8070999999999999,
+   "ani": 95.64,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_000006945.2": {
+   "af_query": 0.7387,
+   "af_reference": 0.7179000000000001,
+   "ani": 94.98,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_000018625.1": {
+   "af_query": 0.6993,
+   "af_reference": 0.7314,
+   "ani": 93.35,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_006051055.1": {
+   "af_query": 0.7548,
+   "af_reference": 0.7373000000000001,
+   "ani": 94.83,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_006051135.1": {
+   "af_query": 0.7636,
+   "af_reference": 0.7966,
+   "ani": 95.04,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_013161805.1": {
+   "af_query": 0.7271,
+   "af_reference": 0.6893,
+   "ani": 94.49,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_013162025.1": {
+   "af_query": 0.7054,
+   "af_reference": 0.7077,
+   "ani": 94.76,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_013162165.1": {
+   "af_query": 0.7042,
+   "af_reference": 0.75,
+   "ani": 93.98,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_013348865.1": {
+   "af_query": 0.7195,
+   "af_reference": 0.6753,
+   "ani": 94.41,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCA_013138165.1|GCF_900635535.1": {
+   "af_query": 0.7924,
+   "af_reference": 0.8070999999999999,
+   "ani": 95.64,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCA_008692785.1": {
+   "af_query": 0.9349,
+   "af_reference": 0.9203,
+   "ani": 99.5,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCA_013138165.1": {
+   "af_query": 0.7506,
+   "af_reference": 0.757,
+   "ani": 95.24,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_000006945.2": {
+   "af_query": 0.7573000000000001,
+   "af_reference": 0.7422,
+   "ani": 94.95,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_000018625.1": {
+   "af_query": 0.7635,
+   "af_reference": 0.8053,
+   "ani": 93.81,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_006051055.1": {
+   "af_query": 0.7652,
+   "af_reference": 0.7539,
+   "ani": 94.63,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_006051135.1": {
+   "af_query": 0.7676999999999999,
+   "af_reference": 0.8078,
+   "ani": 94.9,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_013161805.1": {
+   "af_query": 0.7602,
+   "af_reference": 0.7268000000000001,
+   "ani": 94.78,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_013162025.1": {
+   "af_query": 0.7459,
+   "af_reference": 0.7547,
+   "ani": 94.81,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_013162165.1": {
+   "af_query": 0.735,
+   "af_reference": 0.7895,
+   "ani": 93.94,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_013348865.1": {
+   "af_query": 0.7622,
+   "af_reference": 0.7215,
+   "ani": 94.72,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCA_013162305.1|GCF_900635535.1": {
+   "af_query": 0.7801,
+   "af_reference": 0.8014,
+   "ani": 95.37,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCA_001558355.2": {
+   "af_query": 1.0,
+   "af_reference": 1.0,
+   "ani": 100.0,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCA_013138165.1": {
+   "af_query": 0.7179000000000001,
+   "af_reference": 0.7387,
+   "ani": 94.98,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCA_013162305.1": {
+   "af_query": 0.7422,
+   "af_reference": 0.7573000000000001,
+   "ani": 94.95,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_000018625.1": {
+   "af_query": 0.6831999999999999,
+   "af_reference": 0.7353000000000001,
+   "ani": 93.21,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_006051055.1": {
+   "af_query": 0.7694,
+   "af_reference": 0.7734000000000001,
+   "ani": 94.49,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_006051135.1": {
+   "af_query": 0.7772,
+   "af_reference": 0.8344,
+   "ani": 95.38,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_013161805.1": {
+   "af_query": 0.7312000000000001,
+   "af_reference": 0.7132,
+   "ani": 94.65,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_013162025.1": {
+   "af_query": 0.7239,
+   "af_reference": 0.7473000000000001,
+   "ani": 95.62,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_013162165.1": {
+   "af_query": 0.6884999999999999,
+   "af_reference": 0.7545000000000001,
+   "ani": 93.46,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_013348865.1": {
+   "af_query": 0.7371,
+   "af_reference": 0.7119,
+   "ani": 95.86,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_000006945.2|GCF_900635535.1": {
+   "af_query": 0.799,
+   "af_reference": 0.8373999999999999,
+   "ani": 95.77,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_000007925.1|GCA_000011465.1": {
+   "af_query": null,
+   "af_reference": null,
+   "ani": null,
+   "reference_label": "type strain of Prochlorococcus marinus",
+   "screen_note": "skani returned no row at -s 70.0 --min-af 5.0",
+   "screened_out": true
+  },
+  "GCF_000007985.2|GCA_030297095.1": {
+   "af_query": 0.8615999999999999,
+   "af_reference": 0.8176000000000001,
+   "ani": 95.31,
+   "reference_label": "type strain of Geobacter sulfurreducens",
+   "screened_out": false
+  },
+  "GCF_000008505.1|GCA_053538335.1": {
+   "af_query": 0.6831999999999999,
+   "af_reference": 0.5772999999999999,
+   "ani": 91.12,
+   "reference_label": "type strain of Bacillus thuringiensis",
+   "screened_out": false
+  },
+  "GCF_000009605.1|GCA_000007365.1": {
+   "af_query": null,
+   "af_reference": null,
+   "ani": null,
+   "reference_label": "type strain of Buchnera aphidicola",
+   "screen_note": "skani returned no row at -s 70.0 --min-af 5.0",
+   "screened_out": true
+  },
+  "GCF_000010185.1|GCA_039534875.1": {
+   "af_query": 0.6444,
+   "af_reference": 0.6286,
+   "ani": 91.51,
+   "reference_label": "type strain of Finegoldia magna",
+   "screened_out": false
+  },
+  "GCF_000011445.1|GCA_018389705.1": {
+   "af_query": 0.6478,
+   "af_reference": 0.758,
+   "ani": 95.81,
+   "reference_label": "type strain of Mycoplasma mycoides",
+   "screened_out": false
+  },
+  "GCF_000017965.1|GCA_900445465.1": {
+   "af_query": 0.0666,
+   "af_reference": 0.0687,
+   "ani": 83.35,
+   "reference_label": "type strain of Lysinibacillus sphaericus",
+   "screened_out": false
+  },
+  "GCF_000018545.1|GCA_009601405.1": {
+   "af_query": 0.6351,
+   "af_reference": 0.612,
+   "ani": 91.9,
+   "reference_label": "type strain of Sinorhizobium fredii",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCA_013138165.1": {
+   "af_query": 0.7314,
+   "af_reference": 0.6993,
+   "ani": 93.35,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCA_013162305.1": {
+   "af_query": 0.8053,
+   "af_reference": 0.7635,
+   "ani": 93.81,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCA_900456225.1": {
+   "af_query": 0.9541,
+   "af_reference": 0.9656999999999999,
+   "ani": 99.13,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_000006945.2": {
+   "af_query": 0.7353000000000001,
+   "af_reference": 0.6831999999999999,
+   "ani": 93.21,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_006051055.1": {
+   "af_query": 0.7444,
+   "af_reference": 0.6954,
+   "ani": 92.78,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_006051135.1": {
+   "af_query": 0.7598999999999999,
+   "af_reference": 0.758,
+   "ani": 93.12,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_013161805.1": {
+   "af_query": 0.7617,
+   "af_reference": 0.6904,
+   "ani": 93.03,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_013162025.1": {
+   "af_query": 0.7301000000000001,
+   "af_reference": 0.7003,
+   "ani": 93.06,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_013162165.1": {
+   "af_query": 0.7454999999999999,
+   "af_reference": 0.7592,
+   "ani": 92.75,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_013348865.1": {
+   "af_query": 0.7487999999999999,
+   "af_reference": 0.672,
+   "ani": 93.01,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_000018625.1|GCF_900635535.1": {
+   "af_query": 0.7714,
+   "af_reference": 0.7513,
+   "ani": 93.46,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_000019305.1|GCA_001276985.1": {
+   "af_query": 0.8194,
+   "af_reference": 0.8656,
+   "ani": 97.64,
+   "reference_label": "type strain of Clostridium botulinum",
+   "screened_out": false
+  },
+  "GCF_000019305.1|GCF_000020285.1": {
+   "af_query": null,
+   "af_reference": null,
+   "ani": null,
+   "reference_label": "Clostridium_botulinum_groupI",
+   "screen_note": "skani returned no row at -s 70.0 --min-af 5.0",
+   "screened_out": true
+  },
+  "GCF_000020285.1|GCA_011017965.1": {
+   "af_query": null,
+   "af_reference": null,
+   "ani": null,
+   "reference_label": "type strain of Clostridium botulinum",
+   "screen_note": "skani returned no row at -s 70.0 --min-af 5.0",
+   "screened_out": true
+  },
+  "GCF_000027165.1|GCA_019047825.1": {
+   "af_query": 0.6397999999999999,
+   "af_reference": 0.7349,
+   "ani": 93.45,
+   "reference_label": "type strain of Streptococcus mitis",
+   "screened_out": false
+  },
+  "GCF_000069225.1|GCA_051068515.1": {
+   "af_query": 0.9688,
+   "af_reference": 0.9971,
+   "ani": 99.99,
+   "reference_label": "type strain of Clavibacter michiganensis",
+   "screened_out": false
+  },
+  "GCF_000283675.1|GCA_006094295.1": {
+   "af_query": 0.6745,
+   "af_reference": 0.6895,
+   "ani": 91.77,
+   "reference_label": "type strain of Bacillus cereus",
+   "screened_out": false
+  },
+  "GCF_000495505.1|GCA_008271385.1": {
+   "af_query": 0.828,
+   "af_reference": 0.7681999999999999,
+   "ani": 91.99,
+   "reference_label": "type strain of Campylobacter fetus",
+   "screened_out": false
+  },
+  "GCF_000648515.1|GCA_984519275.1": {
+   "af_query": 0.664,
+   "af_reference": 0.6531,
+   "ani": 90.86,
+   "reference_label": "type strain of Citrobacter freundii",
+   "screened_out": false
+  },
+  "GCF_000834295.1|GCA_900637475.1": {
+   "af_query": 0.9345,
+   "af_reference": 0.981,
+   "ani": 99.7,
+   "reference_label": "type strain of Yersinia pseudotuberculosis",
+   "screened_out": false
+  },
+  "GCF_002591095.1|GCA_900460425.1": {
+   "af_query": 0.1604,
+   "af_reference": 0.1602,
+   "ani": 84.17,
+   "reference_label": "type strain of Yersinia frederiksenii",
+   "screened_out": false
+  },
+  "GCF_003018575.1|GCA_000010385.1": {
+   "af_query": 0.7791,
+   "af_reference": 0.8717,
+   "ani": 98.97,
+   "reference_label": "type strain of Escherichia coli",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCA_013138165.1": {
+   "af_query": 0.7373000000000001,
+   "af_reference": 0.7548,
+   "ani": 94.83,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCA_013162305.1": {
+   "af_query": 0.7539,
+   "af_reference": 0.7652,
+   "ani": 94.63,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCA_900635535.1": {
+   "af_query": 0.8220999999999999,
+   "af_reference": 0.8572,
+   "ani": 94.97,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_000006945.2": {
+   "af_query": 0.7734000000000001,
+   "af_reference": 0.7694,
+   "ani": 94.49,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_000018625.1": {
+   "af_query": 0.6954,
+   "af_reference": 0.7444,
+   "ani": 92.78,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_006051135.1": {
+   "af_query": 0.7691,
+   "af_reference": 0.8214,
+   "ani": 94.59,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_013161805.1": {
+   "af_query": 0.7206999999999999,
+   "af_reference": 0.6994,
+   "ani": 93.98,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_013162025.1": {
+   "af_query": 0.6947,
+   "af_reference": 0.7134,
+   "ani": 94.15,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_013162165.1": {
+   "af_query": 0.687,
+   "af_reference": 0.7490000000000001,
+   "ani": 93.24,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_013348865.1": {
+   "af_query": 0.7084,
+   "af_reference": 0.6806,
+   "ani": 94.28,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_006051055.1|GCF_900635535.1": {
+   "af_query": 0.8220999999999999,
+   "af_reference": 0.8572,
+   "ani": 94.97,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCA_013138165.1": {
+   "af_query": 0.7966,
+   "af_reference": 0.7636,
+   "ani": 95.04,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCA_013162305.1": {
+   "af_query": 0.8078,
+   "af_reference": 0.7676999999999999,
+   "ani": 94.9,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCA_900456865.1": {
+   "af_query": 0.9425,
+   "af_reference": 0.8826,
+   "ani": 99.28,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_000006945.2": {
+   "af_query": 0.8344,
+   "af_reference": 0.7772,
+   "ani": 95.38,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_000018625.1": {
+   "af_query": 0.758,
+   "af_reference": 0.7598999999999999,
+   "ani": 93.12,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_006051055.1": {
+   "af_query": 0.8214,
+   "af_reference": 0.7691,
+   "ani": 94.59,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_013161805.1": {
+   "af_query": 0.7818,
+   "af_reference": 0.7103,
+   "ani": 94.64,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_013162025.1": {
+   "af_query": 0.7623000000000001,
+   "af_reference": 0.733,
+   "ani": 94.53,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_013162165.1": {
+   "af_query": 0.7439,
+   "af_reference": 0.7594,
+   "ani": 93.35,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_013348865.1": {
+   "af_query": 0.7691,
+   "af_reference": 0.6919,
+   "ani": 94.53,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_006051135.1|GCF_900635535.1": {
+   "af_query": 0.8503000000000001,
+   "af_reference": 0.8301000000000001,
+   "ani": 95.75,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCA_013138165.1": {
+   "af_query": 0.6893,
+   "af_reference": 0.7271,
+   "ani": 94.49,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCA_013162305.1": {
+   "af_query": 0.7268000000000001,
+   "af_reference": 0.7602,
+   "ani": 94.78,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCA_900706745.1": {
+   "af_query": 0.8691,
+   "af_reference": 0.9318000000000001,
+   "ani": 99.23,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_000006945.2": {
+   "af_query": 0.7132,
+   "af_reference": 0.7312000000000001,
+   "ani": 94.65,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_000018625.1": {
+   "af_query": 0.6904,
+   "af_reference": 0.7617,
+   "ani": 93.03,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_006051055.1": {
+   "af_query": 0.6994,
+   "af_reference": 0.7206999999999999,
+   "ani": 93.98,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_006051135.1": {
+   "af_query": 0.7103,
+   "af_reference": 0.7818,
+   "ani": 94.64,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_013162025.1": {
+   "af_query": 0.7928000000000001,
+   "af_reference": 0.8390000000000001,
+   "ani": 97.44,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_013162165.1": {
+   "af_query": 0.8162999999999999,
+   "af_reference": 0.9172,
+   "ani": 96.8,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_013348865.1": {
+   "af_query": 0.7961,
+   "af_reference": 0.7883,
+   "ani": 97.19,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_013161805.1|GCF_900635535.1": {
+   "af_query": 0.7262000000000001,
+   "af_reference": 0.7803,
+   "ani": 95.26,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCA_013138165.1": {
+   "af_query": 0.7077,
+   "af_reference": 0.7054,
+   "ani": 94.76,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCA_013162305.1": {
+   "af_query": 0.7547,
+   "af_reference": 0.7459,
+   "ani": 94.81,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCA_900706745.1": {
+   "af_query": 0.841,
+   "af_reference": 0.852,
+   "ani": 97.42,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_000006945.2": {
+   "af_query": 0.7473000000000001,
+   "af_reference": 0.7239,
+   "ani": 95.62,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_000018625.1": {
+   "af_query": 0.7003,
+   "af_reference": 0.7301000000000001,
+   "ani": 93.06,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_006051055.1": {
+   "af_query": 0.7134,
+   "af_reference": 0.6947,
+   "ani": 94.15,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_006051135.1": {
+   "af_query": 0.733,
+   "af_reference": 0.7623000000000001,
+   "ani": 94.53,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_013161805.1": {
+   "af_query": 0.8390000000000001,
+   "af_reference": 0.7928000000000001,
+   "ani": 97.44,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_013162165.1": {
+   "af_query": 0.8271,
+   "af_reference": 0.8781,
+   "ani": 96.8,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_013348865.1": {
+   "af_query": 0.8701000000000001,
+   "af_reference": 0.8140999999999999,
+   "ani": 97.61,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_013162025.1|GCF_900635535.1": {
+   "af_query": 0.7434999999999999,
+   "af_reference": 0.7548999999999999,
+   "ani": 95.31,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCA_013138165.1": {
+   "af_query": 0.75,
+   "af_reference": 0.7042,
+   "ani": 93.98,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCA_013162305.1": {
+   "af_query": 0.7895,
+   "af_reference": 0.735,
+   "ani": 93.94,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCA_900706745.1": {
+   "af_query": 0.9231999999999999,
+   "af_reference": 0.8809999999999999,
+   "ani": 96.86,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_000006945.2": {
+   "af_query": 0.7545000000000001,
+   "af_reference": 0.6884999999999999,
+   "ani": 93.46,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_000018625.1": {
+   "af_query": 0.7592,
+   "af_reference": 0.7454999999999999,
+   "ani": 92.75,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_006051055.1": {
+   "af_query": 0.7490000000000001,
+   "af_reference": 0.687,
+   "ani": 93.24,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_006051135.1": {
+   "af_query": 0.7594,
+   "af_reference": 0.7439,
+   "ani": 93.35,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_013161805.1": {
+   "af_query": 0.9172,
+   "af_reference": 0.8162999999999999,
+   "ani": 96.8,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_013162025.1": {
+   "af_query": 0.8781,
+   "af_reference": 0.8271,
+   "ani": 96.8,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_013348865.1": {
+   "af_query": 0.8968,
+   "af_reference": 0.7903,
+   "ani": 96.53,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  },
+  "GCF_013162165.1|GCF_900635535.1": {
+   "af_query": 0.78,
+   "af_reference": 0.7459,
+   "ani": 93.99,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_013282645.1|GCA_013625995.1": {
+   "af_query": 0.929,
+   "af_reference": 0.9381999999999999,
+   "ani": 98.42,
+   "reference_label": "type strain of Listeria monocytogenes",
+   "screened_out": false
+  },
+  "GCF_013282645.1|GCF_013282665.1": {
+   "af_query": 0.8809999999999999,
+   "af_reference": 0.9009,
+   "ani": 95.21,
+   "reference_label": "Listeria_monocytogenes_IV",
+   "screened_out": false
+  },
+  "GCF_013282645.1|GCF_013282685.1": {
+   "af_query": 0.8565,
+   "af_reference": 0.8093,
+   "ani": 94.06,
+   "reference_label": "Listeria_monocytogenes_II",
+   "screened_out": false
+  },
+  "GCF_013282645.1|GCF_013282705.1": {
+   "af_query": 0.8848999999999999,
+   "af_reference": 0.8679000000000001,
+   "ani": 95.36,
+   "reference_label": "Listeria_monocytogenes_I",
+   "screened_out": false
+  },
+  "GCF_013282665.1|GCA_013625895.1": {
+   "af_query": 0.9551000000000001,
+   "af_reference": 0.98,
+   "ani": 99.22,
+   "reference_label": "type strain of Listeria monocytogenes",
+   "screened_out": false
+  },
+  "GCF_013282665.1|GCF_013282645.1": {
+   "af_query": 0.9009,
+   "af_reference": 0.8809999999999999,
+   "ani": 95.21,
+   "reference_label": "Listeria_monocytogenes_III",
+   "screened_out": false
+  },
+  "GCF_013282665.1|GCF_013282685.1": {
+   "af_query": 0.8309000000000001,
+   "af_reference": 0.7678,
+   "ani": 93.29,
+   "reference_label": "Listeria_monocytogenes_II",
+   "screened_out": false
+  },
+  "GCF_013282665.1|GCF_013282705.1": {
+   "af_query": 0.8548,
+   "af_reference": 0.8199,
+   "ani": 93.92,
+   "reference_label": "Listeria_monocytogenes_I",
+   "screened_out": false
+  },
+  "GCF_013282685.1|GCA_900187225.1": {
+   "af_query": 0.9205,
+   "af_reference": 0.9695,
+   "ani": 98.92,
+   "reference_label": "type strain of Listeria monocytogenes",
+   "screened_out": false
+  },
+  "GCF_013282685.1|GCF_013282645.1": {
+   "af_query": 0.8093,
+   "af_reference": 0.8565,
+   "ani": 94.06,
+   "reference_label": "Listeria_monocytogenes_III",
+   "screened_out": false
+  },
+  "GCF_013282685.1|GCF_013282665.1": {
+   "af_query": 0.7678,
+   "af_reference": 0.8309000000000001,
+   "ani": 93.29,
+   "reference_label": "Listeria_monocytogenes_IV",
+   "screened_out": false
+  },
+  "GCF_013282685.1|GCF_013282705.1": {
+   "af_query": 0.8693000000000001,
+   "af_reference": 0.9024,
+   "ani": 94.83,
+   "reference_label": "Listeria_monocytogenes_I",
+   "screened_out": false
+  },
+  "GCF_013282705.1|GCA_001466295.1": {
+   "af_query": 0.9448000000000001,
+   "af_reference": 0.9247,
+   "ani": 99.28,
+   "reference_label": "type strain of Listeria monocytogenes",
+   "screened_out": false
+  },
+  "GCF_013282705.1|GCF_013282645.1": {
+   "af_query": 0.8679000000000001,
+   "af_reference": 0.8848999999999999,
+   "ani": 95.36,
+   "reference_label": "Listeria_monocytogenes_III",
+   "screened_out": false
+  },
+  "GCF_013282705.1|GCF_013282665.1": {
+   "af_query": 0.8199,
+   "af_reference": 0.8548,
+   "ani": 93.92,
+   "reference_label": "Listeria_monocytogenes_IV",
+   "screened_out": false
+  },
+  "GCF_013282705.1|GCF_013282685.1": {
+   "af_query": 0.9024,
+   "af_reference": 0.8693000000000001,
+   "ani": 94.83,
+   "reference_label": "Listeria_monocytogenes_II",
+   "screened_out": false
+  },
+  "GCF_013282765.1|GCA_902170765.1": {
+   "af_query": 0.82,
+   "af_reference": 0.8626,
+   "ani": 95.67,
+   "reference_label": "type strain of Yersinia massiliensis",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCA_013138165.1": {
+   "af_query": 0.6753,
+   "af_reference": 0.7195,
+   "ani": 94.41,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCA_013162305.1": {
+   "af_query": 0.7215,
+   "af_reference": 0.7622,
+   "ani": 94.72,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCA_900706745.1": {
+   "af_query": 0.7859,
+   "af_reference": 0.851,
+   "ani": 97.17,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_000006945.2": {
+   "af_query": 0.7119,
+   "af_reference": 0.7371,
+   "ani": 95.86,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_000018625.1": {
+   "af_query": 0.672,
+   "af_reference": 0.7487999999999999,
+   "ani": 93.01,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_006051055.1": {
+   "af_query": 0.6806,
+   "af_reference": 0.7084,
+   "ani": 94.28,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_006051135.1": {
+   "af_query": 0.6919,
+   "af_reference": 0.7691,
+   "ani": 94.53,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_013161805.1": {
+   "af_query": 0.7883,
+   "af_reference": 0.7961,
+   "ani": 97.19,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_013162025.1": {
+   "af_query": 0.8140999999999999,
+   "af_reference": 0.8701000000000001,
+   "ani": 97.61,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_013162165.1": {
+   "af_query": 0.7903,
+   "af_reference": 0.8968,
+   "ani": 96.53,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_013348865.1|GCF_900635535.1": {
+   "af_query": 0.7147,
+   "af_reference": 0.7756000000000001,
+   "ani": 94.83,
+   "reference_label": "Salmonella_enterica_IIb",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCA_008692775.1": {
+   "af_query": 0.9894,
+   "af_reference": 0.9998,
+   "ani": 99.97,
+   "reference_label": "type strain of Salmonella enterica",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCA_013138165.1": {
+   "af_query": 0.8070999999999999,
+   "af_reference": 0.7924,
+   "ani": 95.64,
+   "reference_label": "Salmonella_enterica_VIII",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCA_013162305.1": {
+   "af_query": 0.8014,
+   "af_reference": 0.7801,
+   "ani": 95.37,
+   "reference_label": "Salmonella_enterica_IIIb",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_000006945.2": {
+   "af_query": 0.8373999999999999,
+   "af_reference": 0.799,
+   "ani": 95.77,
+   "reference_label": "Salmonella_enterica_I",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_000018625.1": {
+   "af_query": 0.7513,
+   "af_reference": 0.7714,
+   "ani": 93.46,
+   "reference_label": "Salmonella_enterica_IIIa",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_006051055.1": {
+   "af_query": 0.8572,
+   "af_reference": 0.8220999999999999,
+   "ani": 94.97,
+   "reference_label": "Salmonella_enterica_IIa",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_006051135.1": {
+   "af_query": 0.8301000000000001,
+   "af_reference": 0.8503000000000001,
+   "ani": 95.75,
+   "reference_label": "Salmonella_enterica_VI",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_013161805.1": {
+   "af_query": 0.7803,
+   "af_reference": 0.7262000000000001,
+   "ani": 95.26,
+   "reference_label": "Salmonella_enterica_IV",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_013162025.1": {
+   "af_query": 0.7548999999999999,
+   "af_reference": 0.7434999999999999,
+   "ani": 95.31,
+   "reference_label": "Salmonella_enterica_X",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_013162165.1": {
+   "af_query": 0.7459,
+   "af_reference": 0.78,
+   "ani": 93.99,
+   "reference_label": "Salmonella_enterica_VII",
+   "screened_out": false
+  },
+  "GCF_900635535.1|GCF_013348865.1": {
+   "af_query": 0.7756000000000001,
+   "af_reference": 0.7147,
+   "ani": 94.83,
+   "reference_label": "Salmonella_enterica_IX",
+   "screened_out": false
+  }
+ },
+ "schema": 1
+}

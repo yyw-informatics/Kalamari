@@ -1,0 +1,2 @@
+antigenic_formula	cgmlst_ST	cgmlst_distance	cgmlst_found_loci	cgmlst_genome_match	cgmlst_matching_alleles	cgmlst_subspecies	fasta_filepath	genome	h1	h2	o_antigen	qc_messages	qc_status	serogroup	serovar	serovar_antigen	serovar_cgmlst
+41:z4,z23:-	2721163117	0.0060606060606061	330	SRR1060618	328	arizonae	.cache/curation-triage/genomes/GCF_000018625.1.fna	GCF_000018625.1	z4,z23	-	41	INFO: Number of cgMLST330 loci found (n=330)	PASS	S	IIIa 41:z4,z23:-	IIIa 41:z4,z23:-	IIIa 41:z4,z23:-

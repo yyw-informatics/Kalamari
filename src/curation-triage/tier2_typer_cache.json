@@ -1,0 +1,301 @@
+{
+ "meta": {
+  "amrfinder_database_version": "2026-05-15.1",
+  "n_results": 38,
+  "tool_versions": {
+   "abricate": "abricate@1.4.0",
+   "amrfinderplus": "amrfinderplus@4.2.7",
+   "btyper3": "btyper3@3.4.0",
+   "ectyper": "ectyper@2.0.0",
+   "lissero": "lissero@0.4.10",
+   "mlst_listeria": "mlst_listeria@2.23.0",
+   "mlst_yersinia": "mlst_yersinia@2.23.0",
+   "seqsero2": "seqsero2@1.3.2",
+   "shigeifinder": "shigeifinder@unknown",
+   "sistr": "sistr@1.1.3"
+  }
+ },
+ "results": {
+  "abricate|GCF_000834295.1": {
+   "abricate_hit_count": "106",
+   "chromosome_markers": [],
+   "plasmid_markers": [],
+   "virulence_context_markers": [
+    "lcrG",
+    "lcrV"
+   ]
+  },
+  "amrfinderplus|GCF_000019305.1": {
+   "bont_element_names": "botulinum neurotoxin subtype B1",
+   "bont_subtype": "B1",
+   "bont_types": [
+    "B"
+   ],
+   "detection_method": "AMRFinderPlus --plus"
+  },
+  "amrfinderplus|GCF_000020285.1": {
+   "bont_element_names": "botulinum neurotoxin subtype E3",
+   "bont_subtype": "E3",
+   "bont_types": [
+    "E"
+   ],
+   "detection_method": "AMRFinderPlus --plus"
+  },
+  "btyper3|GCF_000008505.1": {
+   "anthracis_chromosome": "no",
+   "btyper3_species": "mosaicus",
+   "btyper3_species_ani": "97.99",
+   "btyper3_subspecies": "No subspecies",
+   "btyper3_subspecies_ani": "",
+   "closest_type_strain": "anthracis",
+   "closest_type_strain_ani": "97.84",
+   "genomespecies_taxa": "B. mosaicus",
+   "genomospecies": "B. mosaicus",
+   "panc_group": "Group_III(mosaicus)",
+   "pubmlst_st": "113[No clonal complex](7/7)",
+   "pxo1_genes": [],
+   "pxo2_genes": []
+  },
+  "btyper3|GCF_000283675.1": {
+   "anthracis_chromosome": "no",
+   "btyper3_species": "mosaicus",
+   "btyper3_species_ani": "95.20",
+   "btyper3_subspecies": "cereus",
+   "btyper3_subspecies_ani": "99.96",
+   "closest_type_strain": "paranthracis",
+   "closest_type_strain_ani": "97.58",
+   "genomespecies_taxa": "B. mosaicus subsp. cereus biovar Emeticus; B. cereus biovar Emeticus; B. Emeticus",
+   "genomospecies": "B. mosaicus subsp. cereus biovar Emeticus; B. cereus biovar Emeticus; B. Emeticus",
+   "panc_group": "Group_III(mosaicus)",
+   "pubmlst_st": "26[No clonal complex](7/7)",
+   "pxo1_genes": [],
+   "pxo2_genes": []
+  },
+  "ectyper|GCF_003018575.1": {
+   "ectyper_db_version": "v1.0 (11-03-2020)",
+   "ectyper_qc": "WARNING MIXED O-TYPE",
+   "ectyper_species": "Escherichia coli",
+   "h_type": "H16",
+   "o_type": "O118/O151",
+   "pathotype": "-",
+   "serotype": "O118/O151:H16",
+   "stx_subtypes": "-"
+  },
+  "lissero|GCF_013282645.1": {
+   "doumith_pattern": "PRS",
+   "lissero_comment": "No combination of fully matched genes resulted in a known serotype",
+   "serogroup": "Nontypeable"
+  },
+  "lissero|GCF_013282665.1": {
+   "doumith_pattern": "PRS,ORF2819",
+   "lissero_comment": "",
+   "serogroup": "1/2b, 3b, 7"
+  },
+  "lissero|GCF_013282685.1": {
+   "doumith_pattern": "PRS,LMO0737",
+   "lissero_comment": "",
+   "serogroup": "1/2a, 3a"
+  },
+  "lissero|GCF_013282705.1": {
+   "doumith_pattern": "PRS,ORF2110,ORF2819",
+   "lissero_comment": "",
+   "serogroup": "4b, 4d, 4e"
+  },
+  "mlst_listeria|GCF_013282645.1": {
+   "broad_lineage": "",
+   "mlst_cc": "",
+   "mlst_loci": "abcZ(44);bglA(71);cat(294);dapE(48);dat(41);ldh(285);lhkA(194)",
+   "mlst_scheme": "listeria_2",
+   "mlst_st": "1779"
+  },
+  "mlst_listeria|GCF_013282665.1": {
+   "broad_lineage": "",
+   "mlst_cc": "",
+   "mlst_loci": "abcZ(83);bglA(19);cat(91);dapE(100);dat(58);ldh(178);lhkA(72)",
+   "mlst_scheme": "listeria_2",
+   "mlst_st": "562"
+  },
+  "mlst_listeria|GCF_013282685.1": {
+   "broad_lineage": "",
+   "mlst_cc": "",
+   "mlst_loci": "abcZ(7);bglA(15);cat(15);dapE(8);dat(6);ldh(14);lhkA(9)",
+   "mlst_scheme": "listeria_2",
+   "mlst_st": "101"
+  },
+  "mlst_listeria|GCF_013282705.1": {
+   "broad_lineage": "",
+   "mlst_cc": "",
+   "mlst_loci": "abcZ(3);bglA(9);cat(9);dapE(3);dat(3);ldh(1);lhkA(5)",
+   "mlst_scheme": "listeria_2",
+   "mlst_st": "6"
+  },
+  "mlst_yersinia|GCF_000834295.1": {
+   "classical_mlst_only": "yes",
+   "mlst_scheme": "ypseudotuberculosis_achtman_3",
+   "mlst_st": "42"
+  },
+  "seqsero2|GCA_013138165.1": {
+   "seqsero2_antigenic_profile": "8:z6:k",
+   "seqsero2_identification": "Salmonella enterica subspecies salamae (subspecies II)",
+   "seqsero2_note": "This predicted serotype is not in the Kauffman-White scheme.",
+   "seqsero2_serovar": "II 8:z6:k"
+  },
+  "seqsero2|GCA_013162305.1": {
+   "seqsero2_antigenic_profile": "47:k:z35",
+   "seqsero2_identification": "Salmonella enterica subspecies diarizonae (subspecies IIIb)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "IIIb 47:k:z35"
+  },
+  "seqsero2|GCF_000006945.2": {
+   "seqsero2_antigenic_profile": "4:i:1,2",
+   "seqsero2_identification": "Salmonella enterica subspecies enterica (subspecies I)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "Typhimurium"
+  },
+  "seqsero2|GCF_000018625.1": {
+   "seqsero2_antigenic_profile": "41:z4,z23:-",
+   "seqsero2_identification": "Salmonella enterica subspecies arizonae (subspecies IIIa)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "IIIa 41:z4,z23:-"
+  },
+  "seqsero2|GCF_006051055.1": {
+   "seqsero2_antigenic_profile": "48:z81:1,5,7",
+   "seqsero2_identification": "Salmonella enterica subspecies salamae (subspecies II)",
+   "seqsero2_note": "This predicted serotype is not in the Kauffman-White scheme.",
+   "seqsero2_serovar": "II 48:z81:1,5,7"
+  },
+  "seqsero2|GCF_006051135.1": {
+   "seqsero2_antigenic_profile": "11:b:1,7",
+   "seqsero2_identification": "Salmonella enterica subspecies indica (subspecies VI)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "VI 11:b:1,7"
+  },
+  "seqsero2|GCF_013161805.1": {
+   "seqsero2_antigenic_profile": "50:z4,z23:-",
+   "seqsero2_identification": "Salmonella enterica subspecies houtenae (subspecies IV)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "IV 50:z4,z23:-"
+  },
+  "seqsero2|GCF_013162025.1": {
+   "seqsero2_antigenic_profile": "47:z36,z38:-",
+   "seqsero2_identification": "Salmonella enterica subspecies houtenae (subspecies IV)",
+   "seqsero2_note": "This predicted serotype is not in the Kauffman-White scheme.",
+   "seqsero2_serovar": "IV 47:z36,z38:-"
+  },
+  "seqsero2|GCF_013162165.1": {
+   "seqsero2_antigenic_profile": "40:g,z51:-",
+   "seqsero2_identification": "Salmonella enterica subspecies houtenae (subspecies IV)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "IV [1],40:g,z51:-"
+  },
+  "seqsero2|GCF_013348865.1": {
+   "seqsero2_antigenic_profile": "41:z52:-",
+   "seqsero2_identification": "Salmonella enterica subspecies houtenae (subspecies IV)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "IV 41:z52:-"
+  },
+  "seqsero2|GCF_900635535.1": {
+   "seqsero2_antigenic_profile": "9:l,w:e,n,x",
+   "seqsero2_identification": "Salmonella enterica subspecies salamae (subspecies II)",
+   "seqsero2_note": "",
+   "seqsero2_serovar": "II [1],9,12:l,w:e,n,x"
+  },
+  "shigeifinder|GCF_003018575.1": {
+   "cluster": "",
+   "ipaH": "absent",
+   "organism": "Escherichia coli",
+   "serotype": "",
+   "shigeifinder_notes": "ipaH negative, cluster-specific genes negative and less than 26 plasmid genes",
+   "virulence_plasmid_gene_count": "0"
+  },
+  "sistr|GCA_013138165.1": {
+   "cgmlst_found_loci": "326",
+   "cgmlst_matching_alleles": "98",
+   "sistr_qc_status": "WARNING",
+   "sistr_serogroup": "C2-C3",
+   "sistr_serovar": "II C2-C3:None:z10",
+   "subspecies": "salamae"
+  },
+  "sistr|GCA_013162305.1": {
+   "cgmlst_found_loci": "329",
+   "cgmlst_matching_alleles": "318",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "X",
+   "sistr_serovar": "IIIb 47:k:z35",
+   "subspecies": "diarizonae"
+  },
+  "sistr|GCF_000006945.2": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "322",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "B",
+   "sistr_serovar": "Typhimurium",
+   "subspecies": "enterica"
+  },
+  "sistr|GCF_000018625.1": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "328",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "S",
+   "sistr_serovar": "IIIa 41:z4,z23:-",
+   "subspecies": "arizonae"
+  },
+  "sistr|GCF_006051055.1": {
+   "cgmlst_found_loci": "327",
+   "cgmlst_matching_alleles": "318",
+   "sistr_qc_status": "WARNING",
+   "sistr_serogroup": "Y",
+   "sistr_serovar": "II Y:None:1,5,7",
+   "subspecies": "salamae"
+  },
+  "sistr|GCF_006051135.1": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "327",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "F",
+   "sistr_serovar": "VI 11:b:1,7",
+   "subspecies": "indica"
+  },
+  "sistr|GCF_013161805.1": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "327",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "Z",
+   "sistr_serovar": "IV 50:z4,z23:-",
+   "subspecies": "houtenae"
+  },
+  "sistr|GCF_013162025.1": {
+   "cgmlst_found_loci": "327",
+   "cgmlst_matching_alleles": "36",
+   "sistr_qc_status": "WARNING",
+   "sistr_serogroup": "X",
+   "sistr_serovar": "IV X:z36,z38:-",
+   "subspecies": "houtenae"
+  },
+  "sistr|GCF_013162165.1": {
+   "cgmlst_found_loci": "325",
+   "cgmlst_matching_alleles": "322",
+   "sistr_qc_status": "PASS",
+   "sistr_serogroup": "R",
+   "sistr_serovar": "IV 1,40:g,z51:-",
+   "subspecies": "houtenae"
+  },
+  "sistr|GCF_013348865.1": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "43",
+   "sistr_qc_status": "WARNING",
+   "sistr_serogroup": "S",
+   "sistr_serovar": "IV 41:z52:-",
+   "subspecies": "houtenae"
+  },
+  "sistr|GCF_900635535.1": {
+   "cgmlst_found_loci": "330",
+   "cgmlst_matching_alleles": "287",
+   "sistr_qc_status": "WARNING",
+   "sistr_serogroup": "D3",
+   "sistr_serovar": "II D3:l,w:e,n,x",
+   "subspecies": "salamae"
+  }
+ },
+ "schema": 1
+}

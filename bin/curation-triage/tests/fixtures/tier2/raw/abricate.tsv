@@ -1,0 +1,7 @@
+#FILE	SEQUENCE	START	END	STRAND	GENE	COVERAGE	COVERAGE_MAP	GAPS	%COVERAGE	%IDENTITY	DATABASE	ACCESSION	PRODUCT	RESISTANCE
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009711.1	65212	65499	+	lcrG	1-288/288	===============	0/0	100.00	99.65	vfdb	WP_002212973	(lcrG) chaperone for tip protein LcrV [TTSS (VF0140) - Effector delivery system (VFC0086)] [Yersinia pestis CO92]	
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009711.1	65501	66481	+	lcrV	1-981/981	===============	0/0	100.00	98.57	vfdb	WP_002212981	(lcrV) type III secretion system hydrophilic translocator needle tip protein LcrV [TTSS (VF0140) - Effector delivery system (VFC0086)] [Yersinia pestis CO92]	
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009711.1	16006	16665	-	yopE	1-660/660	===============	0/0	100.00	100.00	vfdb	WP_002229754	(yopE) type III secretion system effector YopE GTPase activating protein (GAP) [TTSS secreted effectors (VF1021) - Effector delivery system (VFC0086)] [Yersinia pestis CO92]	
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009710.1	7206	8132	+	pIP32953_1	1-927/927	===============	0/0	100.00	100.00	plasmidfinder	BX936400	pIP32953_1__BX936400	
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009711.1	31241	31467	+	IncFII(Y)_1_ps	1-227/227	===============	0/0	100.00	100.00	plasmidfinder	CP001049	IncFII(Y)_1_ps_CP001049	
+.cache/curation-triage/genomes/GCF_000834295.1.fna	NZ_CP009711.1	31496	31932	+	IncFII(pAR0022)_1	6-442/442	===============	0/0	98.87	81.01	plasmidfinder	CP024882	IncFII(pAR0022)_1__CP024882	

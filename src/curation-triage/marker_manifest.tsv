@@ -1,0 +1,69 @@
+# Marker manifest for the Kalamari curation-triage tool (Tier 2).
+#
+# One row per (identification task, component). A task is the question a
+# confounded taxon poses ("is this Bacillus anthracis or another member of the
+# B. cereus group?"); a component is one tool's contribution to answering it.
+# Several rows share a task_id on purpose: the design (CURATION_TRIAGE_DESIGN.md
+# section 5) requires Listeria serogroup / MLST-CC / cgMLST-LIN to stay SEPARATE
+# un-merged fields, and requires the Yersinia plasmid screen to be a pre-screen
+# rather than the classifier.
+#
+# A marker call depends on THREE things that move independently, so all three are
+# pinned here and stamped into every ledger record:
+#   1. the software        -> tool, conda_package, conda_build
+#   2. the database        -> database, database_version, db_pin_class
+#   3. our reading of it   -> interpretation_rule_version (implemented in markers.py)
+# Recording only the first two makes a changed call unattributable. A changed
+# call must be classifiable as a software, database, threshold or rule effect.
+#
+# EVERY conda_build AND database_version BELOW WAS READ FROM AN INSTALLED TOOL
+# on 2026-08-04, not from documentation. Two rows that the 2026-08-02 research
+# pass listed as pinned are recorded as `gap` here, because the tool they name
+# has no packaged CLI and is not installed: the Yersinia cgMLST classifier and
+# the Listeria cgMLST/LIN component. Calling them pinned when nothing can run
+# them would misrepresent what the tool actually checks.
+#
+# Columns
+#   task_id                   stable task key, also used as the ledger lead key
+#   component                 which part of the task this row supplies
+#   trigger_taxids            NCBI taxids that route a unit to this task (lineage
+#                             containment, same rule as confounded_manifest.tsv)
+#   regime                    A = ANI cannot split, marker call OVERRIDES ANI
+#                             B = ANI resolves; the typer supplies the LABEL only
+#                             -  = context only, never a species verdict
+#   role                      classifier | pre-screen | label | context | gap
+#   tool                      resolver tool
+#   conda_package             bioconda package name ('' if not packaged)
+#   conda_build               INSTALLED version-build ('' if not installed)
+#   database                  the reference data the tool reads
+#   database_version          the version the installed tool reports
+#   db_pin_class              a bundled-in-package | b Zenodo DOI | c dated DB
+#                             | d freeze-and-checksum | e no version of its own
+#   reproducibility_anchor    what must be recorded to make the call reproducible
+#   markers                   defining markers as gene:context, ';'-separated
+#   corroborating             markers that may support but NEVER decide alone
+#   thresholds                tool thresholds we pin
+#   interpretation_rule_version   our own versioned reading of the tool output
+#   status                    pinned | gap (gap = no runnable tool for this row)
+#   note
+#
+# Update gate: a new tool or DB pin enters production only after (1) the artifact
+# has an immutable digest, (2) the fixed validation panel is re-run, (3) every
+# call difference is classified as software / database / threshold / rule, and
+# (4) this file and the changelog are updated.
+task_id	component	trigger_taxids	regime	role	tool	conda_package	conda_build	database	database_version	db_pin_class	reproducibility_anchor	markers	corroborating	thresholds	interpretation_rule_version	status	note
+shigella_eiec_vs_escherichia_coli	shigella_eiec_call	562	A	classifier	ShigEiFinder	shigeifinder	1.3.4-pyhdfd78af_0	bundled ShigEiFinder database	bundled-with-1.3.4-pyhdfd78af_0	a	conda build + bundled DB SHA-256	ipaH:virulence_plasmid_and_chromosome;wzx:O-antigen;wzy:O-antigen;fliC:H-antigen	cluster_specific_loci:chromosome	min_identity=90;min_coverage=80	shigella_eiec_vs_e_coli@1	pinned	Kalamari holds no Shigella unit; the task guards the E. coli pick. Two install caveats verified 2026-08-04: the env needs setuptools added (the tool dies on import pkg_resources without it) and --tmpdir must be passed or the run dies after writing a header-only output file. conda-meta says 1.3.4 but the installed dist-info says 1.3.2; the tool prints no version, so neither can be confirmed from the tool itself.
+bacillus_anthracis_vs_b_cereus_group	group_taxonomy_and_marker_profile	86661	A	classifier	BTyper3	btyper3	3.4.0-pyhdfd78af_0	bundled seq_*_db resources + local PubMLST copy	bundled-with-3.4.0-pyhdfd78af_0; PubMLST downloaded 2023-07-07	a	exact build or container digest + bundled DB SHA-256	pagA:pXO1;lef:pXO1;cya:pXO1;capA:pXO2;capB:pXO2;capC:pXO2	genomospecies:chromosome;closest_type_strain:chromosome	min_identity=75;min_coverage=70	bacillus_anthracis_vs_b_cereus_group@1	pinned	BTyper3 supplies group taxonomy plus a marker profile, NOT a standalone anthracis call; turning that into "is this anthracis" is our rule. 3.4 reports the REVISED nomenclature: species(ANI) is the genomospecies (e.g. mosaicus) and the familiar name is subspecies(ANI) (e.g. cereus). It writes to a file, not stdout. rpoB is dropped from the marker list: BTyper3 does not report it.
+yersinia_pestis_vs_y_pseudotuberculosis	cgmlst_species_assignment	632,633	A	gap	BIGSdb-Pasteur Yersinia cgMLST scheme 1			pubmlst_yersinia_seqdef	scheme 1; 500 loci	e->d	complete frozen scheme snapshot SHA-256 + pinned allele caller	ypo2088:chromosome;yihN:chromosome;opgG:chromosome	caf1:pMT1;pst:pPCP1;pla:pPCP1;lcrV:pCD1_pYV_context	min_identity=90;min_coverage=90;min_loci_called=450	yersinia_pestis_vs_pseudotuberculosis@1	gap	The research pass named this the classifier, but there is no packaged CLI and no allele caller is pinned, so NOTHING can run it today. Recorded as a gap rather than as a pin: with no classifier the Yersinia task returns "undecided", which is correct, instead of falling back to plasmid presence -- the very mistake that removed abricate from this role.
+yersinia_pestis_vs_y_pseudotuberculosis	classical_mlst_context	632,633	A	context	mlst (tseemann)	mlst	2.23.0-hdfd78af_1	PubMLST classical scheme ypseudotuberculosis_achtman_3	bundled with 2.23.0-hdfd78af_1	a	conda build + bundled scheme snapshot SHA-256	adk:mlst;argA:mlst;aroA:mlst;glnA:mlst;thrA:mlst;tmk:mlst;trpE:mlst		min_identity=100;min_coverage=100	yersinia_pestis_vs_pseudotuberculosis@1	pinned	Runs, but is CONTEXT only and is never fed in as a species call. Verified 2026-08-04: the classical 7-locus ST cannot separate Y. pestis from Y. pseudotuberculosis, because pestis is a clone nested inside pseudotuberculosis. It emits no header line; columns are positional.
+yersinia_pestis_vs_y_pseudotuberculosis	plasmid_pre_screen	632,633	A	pre-screen	abricate	abricate	1.4.0-h05cac1d_0	VFDB + PlasmidFinder	vfdb 4592 seqs, plasmidfinder 488 seqs, both dated 2026-Apr-3	d	freeze whole $ABRICATE_DB dir + SHA-256 + record abricate --list	caf1:pMT1;pst:pPCP1	pla:pPCP1;lcrV:pCD1_pYV_context	min_identity=90;min_coverage=80	yersinia_pestis_vs_pseudotuberculosis@1	pinned	Cheap triage only; a plasmid hit never makes the species call. Verified 2026-08-04 on the Kalamari Y. pseudotuberculosis pick: these two databases contain NONE of pst, ypo2088, yihN or opgG, and the run returned only lcrV/lcrG, which the design already excludes as context rather than discriminators. So the pre-screen currently adds no discriminating power at all.
+listeria_monocytogenes_serogroup_lineage_cc	serogroup	1639	B	label	LisSero	lissero	0.4.10-pyhdfd78af_0	bundled LisSero database	bundled 2020-06-04	a	exact build + bundled DB SHA-256 + thresholds	prs:control;lmo0737:doumith;ORF2110:doumith;ORF2819:doumith;lmo1118:doumith		min_identity=95;min_coverage=95	listeria_serogroup_lineage_cc@1	pinned	Doumith multiplex pattern. Serogroup is NOT a lineage; keep it a separate field. Gene presence is reported as FULL/PARTIAL/NONE, and only FULL counts as present.
+listeria_monocytogenes_serogroup_lineage_cc	mlst_st_cc	1639	B	label	mlst (tseemann)	mlst	2.23.0-hdfd78af_1	PubMLST classical scheme listeria_2	bundled with 2.23.0-hdfd78af_1	a	conda build + bundled scheme snapshot SHA-256	abcZ:mlst;bglA:mlst;cat:mlst;dapE:mlst;dat:mlst;ldh:mlst;lhkA:mlst		min_identity=100;min_coverage=100	listeria_serogroup_lineage_cc@1	pinned	Supplies the sequence type only. It reports NO clonal complex and NO lineage, and no ST->CC->lineage table is pinned, so the lineage field stays empty rather than being inferred from the ST.
+listeria_monocytogenes_serogroup_lineage_cc	cgmlst_lin	1639	B	gap	BIGSdb-Lm cgMLST1748_v2 / LIN			pubmlst_listeria_seqdef	scheme 15; 1748 loci	e->d	independent full snapshot SHA-256 + pinned allele caller + local regression panel	cgmlst1748_v2:scheme_15		min_identity=90;min_coverage=90;min_loci_called=1573	listeria_serogroup_lineage_cc@1	gap	No packaged CLI and no pinned allele caller, so the broad lineage I-IV cannot be called today. This is why the four Kalamari lineage units get no lineage verdict from markers; their check comes from the ANI panel instead.
+salmonella_subspecies_and_serovar	serovar_cgmlst	28901	B	label	SISTR	sistr_cmd	1.1.3-pyhdc42f0e_2	SISTR database (Zenodo)	SISTR_V_1.1.3_db, downloaded 2025-04-24	b	Zenodo DOI/filename + bundled dbstatus.txt date	wzx:O-antigen;wzy:O-antigen;fliC:H1-antigen;fljB:H2-antigen;cgmlst330:cgmlst		min_identity=90;min_coverage=90	salmonella_subspecies_serovar@1	pinned	Supplies subspecies and serovar labels for the 11 Salmonella units; ANI/panel decides membership. The env needs setuptools added, like shigeifinder. No CLI flag reports the DB version; it is read from the bundled dbstatus.txt.
+salmonella_subspecies_and_serovar	serovar_antigen	28901	B	label	SeqSero2	seqsero2	1.3.2-pyhdfd78af_0	bundled SeqSero2 database	bundled-with-1.3.2-pyhdfd78af_0	a	conda build + bundled DB SHA-256	wzx:O-antigen;wzy:O-antigen;fliC:H1-antigen;fljB:H2-antigen		min_identity=90;min_coverage=90	salmonella_subspecies_serovar@1	pinned	Second, independent antigen call; a disagreement with SISTR is itself worth surfacing. Its "Predicted identification" also names the subspecies in prose, giving a free cross-check on SISTR's cgmlst_subspecies.
+clostridium_botulinum_group_and_bont_type	bont_type	1491	B	label	NCBI AMRFinderPlus --plus	ncbi-amrfinderplus	4.2.7-hf69ffd2_0	AMRFinderPlus dated database	2026-05-15.1	c+d	amrfinder -V + amrfinder --database_version + dated DB dir SHA-256	bont_A:neurotoxin;bont_B:neurotoxin;bont_C:neurotoxin;bont_D:neurotoxin;bont_E:neurotoxin;bont_F:neurotoxin;bont_G:neurotoxin		min_identity=90;min_coverage=90	botulinum_group_and_bont@1	pinned	The one tool with a first-class dated DB version, so a changed call is attributable to a DB update rather than to biology. The installed DB is exactly the 2026-05-15.1 the research pass named. Symbols use an underscore (bont_E3) and the column is "Element symbol", not "Gene symbol".
+clostridium_botulinum_group_and_bont_type	genome_group	1491	B	gap						gap	none -- no pinned tool	group_I:genome_wide;group_II:genome_wide;group_III:genome_wide;group_IV:genome_wide			botulinum_group_and_bont@1	gap	Genomic group I-IV still needs a separate genome-wide classifier. Until one is pinned, the group verdict for the two Kalamari group units comes from the ANI panel, never from the toxin type: group I and group II strains can carry overlapping bont types.
+escherichia_coli_serotype_pathotype	serotype_pathotype	562	-	context	ECTyper	ectyper	2.0.0-pyhdfd78af_4	bundled O/H allele set + pathotype DB + MASH species sketch	alleles v1.0 (11-03-2020); pathotype v2024-10-03	a+b	conda build + DatabaseVer column + Zenodo sketch version	wzx:O-antigen;wzy:O-antigen;wzt:O-antigen;wzm:O-antigen;fliC:H-antigen;stx1:toxin;stx2:toxin		min_identity=90;min_coverage=90	e_coli_serotype_pathotype@1	pinned	Context for the E. coli pick and for STEC deposits; never a species verdict. Reports its own DatabaseVer per row, which is the cleanest DB pin of the bundled-database tools.
+generic_marker_fallback	virulence_plasmid_screen	0	-	context	abricate	abricate	1.4.0-h05cac1d_0	VFDB + PlasmidFinder	vfdb 4592 seqs, plasmidfinder 488 seqs, both dated 2026-Apr-3	d	freeze whole $ABRICATE_DB dir + SHA-256 + record abricate --list	any_curated_vf_or_plasmid_gene:varies		min_identity=90;min_coverage=80	generic_marker_fallback@1	pinned	Generic wrapper for a one-off custom marker question. Never a classifier. abricate --list also carries argannot, bacmet2, card, ecoh, ecoli_vf, megares, ncbi, resfinder, upec_expec_vf and victors, all dated 2026-Apr-3.
+generic_marker_fallback	amr_and_plus_screen	0	-	context	NCBI AMRFinderPlus --plus	ncbi-amrfinderplus	4.2.7-hf69ffd2_0	AMRFinderPlus dated database	2026-05-15.1	c+d	amrfinder -V + dated DB dir SHA-256	any_reference_gene_catalog_entry:varies		min_identity=90;min_coverage=90	generic_marker_fallback@1	pinned	Preferred generic screen where a dated DB matters more than breadth.
