@@ -1,0 +1,94 @@
+# Tool pins for the Kalamari curation-triage tool.
+#
+# One row per pinned conda ENVIRONMENT, not per tool key.  The environment is the
+# thing that is actually pinned: a lockfile recreates a whole prefix, and the two
+# Yersinia/Listeria MLST tool keys in typers.py (mlst_yersinia, mlst_listeria) run
+# the same binary out of the same prefix, so giving them two rows would claim two
+# pins where there is one artifact.  That is why 11 rows cover 12 tool keys: the 9
+# typer environments plus skani and the NCBI datasets CLI.
+#
+# marker_manifest.tsv answers "what does a marker call depend on"; this file answers
+# "what exactly is installed, and how do I get it back".  They overlap on the nine
+# typers and a test asserts they agree, so a bumped build cannot be recorded in one
+# file and forgotten in the other.
+#
+# Every value below was READ FROM THE INSTALLED ENVIRONMENT on 2026-08-04 -- the
+# builds come from the lockfiles, the versions from running each binary, and the
+# AMRFinderPlus database version from `amrfinder --database_version` run INSIDE the
+# pinned prefix.  Nothing here is copied from documentation.
+#
+# Columns
+#   tool               environment / tool name, as typers.py and setup_envs.sh spell it
+#   env                conda environment directory name under --env-dir
+#   conda_package      package that gives the environment its purpose
+#   conda_build        that package's exact version-build, as recorded in the lockfile
+#   binary             executable under <env-dir>/<env>/bin
+#   version_command    how to ask the tool its version; `none` = the tool cannot say
+#   expected_version   version the tool must report; always the lockfile's build version
+#   lockfile           repo-relative path to the explicit lockfile
+#   lockfile_sha256    sha256 of that lockfile -- the immutable digest for the update gate
+#   database_kind      bundled | post-install | runtime-download | none
+#   database_version   the database identity that must be recorded with a call
+#   database_digest    the evidence behind that identity -- see below
+#   notes              why this pin looks the way it does
+#
+# database_kind is the operational question "is this environment self-sufficient?"
+#   bundled          the database ships inside the conda package, so the lockfile pins it
+#   post-install     the database is fetched after install and pinned by its own version
+#   runtime-download the tool fetches data at run time; the lockfile does NOT pin it
+#   none             the tool has no reference database
+#
+# database_digest answers the next question: what PROVES that identity?  A version
+# string is only a label -- anybody can make a directory and name it 2026-05-15.1 --
+# so every row carries the strongest evidence its situation allows:
+#   in-lockfile      bundled: the database travels inside the conda package, so
+#                    lockfile_sha256 is already its digest
+#   sha256:<64 hex>  post-install: one roll-up digest over every file of the dated
+#                    database, each file listed with its own sha256 in
+#                    src/curation-triage/amrfinderplus_db_manifest.tsv
+#   unpinned         runtime-download: the data is fetched when the tool runs, and
+#                    nothing pins it (ECTyper's Zenodo sketch)
+#   n/a              the tool has no database
+# setup_envs.sh checks the amrfinderplus database file by file against that manifest,
+# not just against the version string, and names the files that differ.
+#
+# Two honest gaps this table records rather than hides:
+#   1. AMRFinderPlus keeps its dated database outside the conda package, so no conda
+#      lockfile can capture it, and `amrfinder -u` only ever fetches the LATEST one.
+#      2026-05-15.1 is therefore FROZEN rather than re-downloadable: setup_envs.sh
+#      provisions it into the pinned prefix and verifies all 162 files against the
+#      committed manifest.  That proves SAMENESS, not availability -- if the local
+#      copy is lost and NCBI has moved on, this exact database cannot be fetched
+#      again, and the manifest can then only say that whatever turns up is not it.
+#   2. ECTyper downloads a 943 MiB MASH sketch from Zenodo on first use.  It is
+#      deliberately NOT provisioned: ECTyper is context-only, decisive planning never
+#      selects it, so the pinned pipeline never reaches the code path that needs it.
+#
+# Update gate: changing any conda_build, expected_version, lockfile_sha256 or
+# database_version is a pin change.  It enters production only after (1) the artifact
+# has an immutable digest, (2) the fixed validation panel is re-run, (3) every call
+# difference is classified as software / database / threshold / rule, and (4) this
+# file and the changelog are updated.
+#
+# database_digest is EVIDENCE, and today it is not yet part of a component identity.
+# update_gate.py builds db:<env> from database_version alone, and the two other places
+# that record the AMRFinderPlus database -- marker_manifest.tsv and the Tier-2 caches'
+# own amrfinder_database_version -- carry the plain dated string, so putting the digest
+# into database_version would fail points 1 and 2 rather than tighten them.  A database
+# swapped underneath an unchanged version string is therefore caught by setup_envs.sh,
+# not by the gate.  Folding the digest into the identity is a small, separate change:
+# make pin_state build db:<env> as `<database_version>+db:<first 12 hex of
+# database_digest>`, keep the marker-manifest and cache comparisons on the version part
+# only, and add the db:amrfinderplus changelog row that accepts the new identity.
+tool	env	conda_package	conda_build	binary	version_command	expected_version	lockfile	lockfile_sha256	database_kind	database_version	database_digest	notes
+shigeifinder	shigeifinder	shigeifinder	1.3.4-pyhdfd78af_0	shigeifinder	none	1.3.4	src/curation-triage/envs/shigeifinder.linux-64.lock	e97e894aa83deae3720ae32abd4b36425c2ae240f0ef5628fc9933780edf3204	bundled	bundled-with-1.3.4-pyhdfd78af_0	in-lockfile	`shigeifinder --version` exits 2 and prints a usage message, so the tool can never confirm its own version and the recorded version stays shigeifinder@unknown; 1.3.4 here is the conda build, which is the only checkable identity. The installed dist-info disagrees and says 1.3.2. The environment also needs setuptools, which the lockfile carries, or the tool dies on `import pkg_resources`.
+btyper3	btyper3	btyper3	3.4.0-pyhdfd78af_0	btyper3	btyper3 --version	3.4.0	src/curation-triage/envs/btyper3.linux-64.lock	34684468ba36c5477456a8bd06f94f9bfb5866c4f7b494470e31a1b58c150a28	bundled	bundled-with-3.4.0-pyhdfd78af_0; PubMLST downloaded 2023-07-07	in-lockfile	The bundled PubMLST copy is dated inside the package and cannot be refreshed without changing the build, which is exactly what makes the lockfile a database pin as well as a software pin.
+lissero	lissero	lissero	0.4.10-pyhdfd78af_0	lissero	lissero --version	0.4.10	src/curation-triage/envs/lissero.linux-64.lock	3bfed0076979e49169e27f851db999272f86e4cc2a706ea7caf95016b7371391	bundled	bundled 2020-06-04	in-lockfile	Prints `LisSero 0.4.10`. It shells out to makeblastdb from the same prefix, so the prefix bin must be first on PATH, not just the binary called by absolute path.
+sistr	sistr	sistr_cmd	1.1.3-pyhdc42f0e_2	sistr	sistr --version	1.1.3	src/curation-triage/envs/sistr.linux-64.lock	6a1a53a28066954eafa4e567c847a137eb38e72cd2139b8a5a7f279b9879fd69	bundled	SISTR_V_1.1.3_db, downloaded 2025-04-24	in-lockfile	Prints `sistr_cmd 1.1.3`; no flag reports the database version, so it is read from the bundled dbstatus.txt. setuptools is pinned at 80.10.2 because sistr imports pkg_resources, which setuptools 81 deprecates and a later release drops.
+seqsero2	seqsero2	seqsero2	1.3.2-pyhdfd78af_0	SeqSero2_package.py	SeqSero2_package.py --version	1.3.2	src/curation-triage/envs/seqsero2.linux-64.lock	c912d923e823b0debc6b70023d8a33c223d87ec85d14226cf1d81f781f349d7b	bundled	bundled-with-1.3.2-pyhdfd78af_0	in-lockfile	The executable keeps its .py suffix, so the binary name is not the tool name.
+ectyper	ectyper	ectyper	2.0.0-pyhdfd78af_4	ectyper	ectyper --version	2.0.0	src/curation-triage/envs/ectyper.linux-64.lock	5eea3cb52d251851f0f4268391de57aebbab643c59f318786dd130cb155af986	runtime-download	alleles v1.0 (11-03-2020); pathotype v2024-10-03	unpinned	Prints `ectyper 2.0.0 running database version 1.0`, so the FIRST version token is the software and the last is the database. The O/H alleles and pathotype table are bundled, but the MASH species sketch is a 943 MiB Zenodo download at run time, which is why the kind is runtime-download. It is deliberately not provisioned: ECTyper is context-only and is never planned as a decisive task.
+amrfinderplus	amrfinderplus	ncbi-amrfinderplus	4.2.7-hf69ffd2_0	amrfinder	amrfinder --version	4.2.7	src/curation-triage/envs/amrfinderplus.linux-64.lock	15d6432c9c6ce6b848143ade7edb1661e557b773ae69b02c571478a8ba4dbb80	post-install	2026-05-15.1	sha256:2fb16b7f3c574c9fc3bc531de922925ebeff5c7722b6d4267d4f523369fd5398	The only tool here with a first-class dated database, so a changed call is attributable to a database update rather than to biology. The database lives outside the conda package and no lockfile can capture it; setup_envs.sh provisions it into <env-dir>/amrfinderplus/share/amrfinderplus/data/latest and then checks `amrfinder --database_version`. `amrfinder -u` fetches the LATEST database, which may not be this one, so 2026-05-15.1 is FROZEN: the digest column is the roll-up over all 162 files (239.4 MB), each one listed in src/curation-triage/amrfinderplus_db_manifest.tsv, and setup_envs.sh compares the installed database against it file by file and names any that differ. The digest proves the database is the same one; it cannot make NCBI serve this version again.
+abricate	abricate	abricate	1.4.0-h05cac1d_0	abricate	abricate --version	1.4.0	src/curation-triage/envs/abricate.linux-64.lock	72e0fd21763dffd9a12c6b491c7c081679ab19c95c5f2570a84fdd19de8e7c1c	bundled	vfdb 4592 seqs, plasmidfinder 488 seqs, both dated 2026-Apr-3	in-lockfile	A Perl script: without the prefix bin first on PATH it dies with `Can't locate Path/Tiny.pm`, which looks like a broken install and is really a missing PATH entry.
+mlst	mlst	mlst	2.23.0-hdfd78af_1	mlst	mlst --version	2.23.0	src/curation-triage/envs/mlst.linux-64.lock	d27c6f5754a79ba38fe38712e03bdb5377bdf4d80fb1dcb8c344a49c4a0b7b56	bundled	bundled with 2.23.0-hdfd78af_1	in-lockfile	One prefix serves both typers.py tool keys, mlst_listeria and mlst_yersinia; they differ only by --scheme. Also a Perl script, so the same PATH rule as abricate applies.
+skani	skani	skani	0.3.2-h79ce301_0	skani	skani --version	0.3.2	src/curation-triage/envs/skani.linux-64.lock	6c4b7cb53f8a54b17db421b9a1be6276d79e61443bdb072b693dad2dbe5673a7	none	n/a	n/a	Supplies ANI and aligned fraction for every Tier-2 panel comparison. marker_manifest.tsv does not list it because it answers no marker question, but its version moves calls, so it is pinned here.
+datasets	datasets	ncbi-datasets-cli	18.34.0-ha770c72_0	datasets	datasets --version	18.34.0	src/curation-triage/envs/datasets.linux-64.lock	1a83323c2bbf4e920ef333e93454ada4edc1aa4acc7126fe5e71c63bc6922bc1	none	n/a	n/a	Prints `datasets version: 18.34.0`. It comes from conda-forge, not bioconda, unlike every other pin here. It has no database; it queries the NCBI API, so it needs network at cache-build time and nothing at replay time.

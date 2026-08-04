@@ -1,0 +1,228 @@
+# SHA-256 manifest of the FROZEN AMRFinderPlus dated database 2026-05-15.1.
+#
+# WHY THIS FILE EXISTS
+# A conda lockfile pins software packages.  This database is not in the package:
+# AMRFinderPlus downloads it separately, and `amrfinder -u` only ever fetches the
+# LATEST database.  There is no command anywhere that asks NCBI for a specific
+# dated version.  So the version string `amrfinder --database_version` prints is a
+# LABEL -- anyone can create a directory and call it 2026-05-15.1 -- while the
+# digests below are the EVIDENCE.  This file is what lets any machine, offline,
+# answer "is this the same database that produced the recorded calls?".
+#
+# WHAT THIS FILE DOES NOT DO
+# It proves SAMENESS, not availability.  It cannot make NCBI serve 2026-05-15.1
+# again.  If the local archive is lost and NCBI has moved on, the pinned database
+# is UNRECOVERABLE: this manifest will then only be able to tell a future
+# maintainer that whatever they have is not it.  Keeping a copy of the 239.4 MB
+# directory somewhere durable is therefore part of the pin, not an optional extra.
+#
+# HOW THE ROLL-UP DIGEST IS COMPUTED (deterministic, and reproducible with
+# coreutils alone)
+#   1. list every REGULAR file in the dated directory, as a path relative to that
+#      directory (the directory is flat: 162 files, no sub-directories, no
+#      symlinks, so every path is a bare file name);
+#   2. sort those paths ascending by raw bytes (LC_ALL=C, not a locale collation);
+#   3. for each one, emit the line `<sha256><two spaces><path>` followed by \n --
+#      byte for byte what `sha256sum <path>` prints;
+#   4. sha256 the concatenation of those lines.
+# Sizes are recorded for people reading this file, not for the check: they are NOT
+# part of the roll-up, which is over the sorted (name, hash) pairs only.  Folding
+# them in later would move the roll-up without any file having changed.
+#
+# REPRODUCE IT
+#   cd <env-dir>/amrfinderplus/share/amrfinderplus/data/2026-05-15.1
+#   find . -type f -printf '%P\n' | LC_ALL=C sort | xargs -d '\n' sha256sum
+#   find . -type f -printf '%P\n' | LC_ALL=C sort | xargs -d '\n' sha256sum | sha256sum
+# The first command prints the per-file lines (same digests as column 3 below);
+# the second prints rollup_sha256.  Both need GNU find/xargs, which is what the
+# pinned linux-64 environments carry.
+#
+# WHERE THE DATABASE LIVES
+# Inside the pinned prefix, at share/amrfinderplus/data/2026-05-15.1, with a RELATIVE
+# `latest` symlink beside it.  Inside, because a database found through an ambient
+# CONDA_PREFIX belongs to some other install and would stamp the wrong version into
+# the ledger.  The prefix itself is machine-local working state and is never
+# committed -- 239.4 MB does not belong in a repository, but 162 lines do.
+#
+# HEADER FIELDS (read by bin/curation-triage/setup_envs.sh and by
+# bin/curation-triage/tests/test_tool_pins.py; `# name: value`, one per line)
+#   database_version  what `amrfinder --database_version` prints for this database
+#   files             number of regular files digested below
+#   total_bytes       their total size
+#   rollup_sha256     the digest defined above; also recorded in
+#                     src/curation-triage/tool_pins.tsv as database_digest
+#   frozen_on         the day this manifest was taken from the installed database
+#
+# database_version: 2026-05-15.1
+# files: 162
+# total_bytes: 251050664
+# rollup_sha256: 2fb16b7f3c574c9fc3bc531de922925ebeff5c7722b6d4267d4f523369fd5398
+# frozen_on: 2026-08-04
+#
+# Columns
+#   path         file name, relative to the dated database directory
+#   size_bytes   its size
+#   sha256       its SHA-256
+path	size_bytes	sha256
+AMR.LIB	107344708	280ac0c591d8985d094438412cef0f2f40047519f5ede71db56d2459c206877f
+AMR.LIB.h3f	19915700	6dabd2830467e42595af3cd35787bff1352e23f582b67179e44edb6daef77db4
+AMR.LIB.h3i	76713	d754acc4df473f70b5a1e6f916b4eb7336466e5cdcf75039b6ef6f3e70dbd552
+AMR.LIB.h3m	44498566	775a5e72018239816890b2424df4b7d399cce0c8802316f6169de7c91895c09b
+AMR.LIB.h3p	52295470	d595cfae5ec9f781e5d9e90646ef5719aa95d1d710658d6c7de3974cfc315f58
+AMRProt-mutation.tsv	201327	35d60284de66da9087116179b9b33156f9591bc7243f642ae88bef466cbb4393
+AMRProt-suppress.tsv	494	2b713905b359b464260526bde24ab53218a1f7c59f1c020d49fc3338d7293697
+AMRProt-susceptible.fa	31111	14a9900f90f870dbfa6e72e08464be4a2db1dec2b7439bc3c1cdc7a34c2157a1
+AMRProt-susceptible.tsv	8080	5e98b47833a4770e2262a91ef23474c40b53b8acd0aea196f26f287a98978bb0
+AMRProt.fa	4658980	dc21f47094024efb9bd46a7e239933323fe0eb24190185847e1f426f1696fe56
+AMRProt.fa.pdb	20480	4d31aff8a951fa6df5b5b123f5cdb06ff4f82c1bbca8848f3c3a88a0754a13a7
+AMRProt.fa.phr	1822163	a7bd47c3f356c67a5c9ccef14112e1315689e987bbe37abacd6176162859113d
+AMRProt.fa.pin	80112	70595f0827efea07346ea8b2657c52480660f4814aab578451ae2e29b126add6
+AMRProt.fa.pjs	509	843f9a58b47f0013f1f88f51e862ad49cd348872da23412e21d218f491626be5
+AMRProt.fa.pot	119984	82d2eff0f30989361d3a3565b1eb517488070251d68b1ba35731cd7e6f03ed23
+AMRProt.fa.psq	3422876	9510d46e25c3adc4d3edd8e7cb50c8b6ee702ac30472a20b65db525ef8af4ff0
+AMRProt.fa.ptf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMRProt.fa.pto	39996	3930d2d9aee7291b10dcc6bebb04d701c95d73315f622014adace37b33e895cb
+AMR_CDS.fa	11066214	ddf349431ba155c268fbd70f0acf78390734f4b026a70ed7c3a340c841b4bb8b
+AMR_CDS.fa.ndb	20480	cfdc8992b10d1472cd800ae3d3f1dca3f61f431e98a0e9de8ee96c506b9250da
+AMR_CDS.fa.nhr	1733173	0d10325e930708b3b6f554e0c447e34c76167a51ccbeeda687ac5696b839ec58
+AMR_CDS.fa.nin	116676	b8fe311cb5492adf0b13d6663f99d4275beeb4f744557d0e8dbbb14d0ee43027
+AMR_CDS.fa.njs	512	452b7864ba4e3b53f1cc287bcdd2b05e44f1ecc8c5c7a44671df25696da3d289
+AMR_CDS.fa.not	116552	9502d8fd88d3d318958d5f9dec4f59b8bdbcc41008a00489a0171468e4af5708
+AMR_CDS.fa.nsq	2459334	e83721a1f647481eff0d3ebbd02071680a05293d97ea0dbd988eb94b13bf3595
+AMR_CDS.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_CDS.fa.nto	38852	163119563bbab823fc7221271e3c6c5409cebf568f629887bf64fe3b58adea6b
+AMR_DNA-Acinetobacter_baumannii.fa	303	472054eff1fb825a82f59c1b7ec5648eba113553cfc80d0e82547ec1ca07d8c2
+AMR_DNA-Acinetobacter_baumannii.fa.ndb	20480	1d7658a4de99c276b6fe811d037adc6e7dad3d4bd0873f3111dc0460de5959b6
+AMR_DNA-Acinetobacter_baumannii.fa.nhr	130	a856a54a8d7cc06967ebcd539a951d8400cdf63b3d85a178bf5a7926d3dd9e90
+AMR_DNA-Acinetobacter_baumannii.fa.nin	192	905c23c4f700d797175e4ddfbdae7e89d2c3642023b4a6ccce24eea14878ea35
+AMR_DNA-Acinetobacter_baumannii.fa.njs	715	8858987d1e11b514f895fff6eab5a0910e76e39a84e438bbfc2a31f9ea18b36c
+AMR_DNA-Acinetobacter_baumannii.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Acinetobacter_baumannii.fa.nsq	59	3e28512f8d84670185259eb35ab89ed3b625007ef0ea8ca46b8b697df574edca
+AMR_DNA-Acinetobacter_baumannii.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Acinetobacter_baumannii.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Acinetobacter_baumannii.tsv	538	99da88bc4e031f61dab5c5bcb17152b93f42c905f9c4f23a6072161276ddd00b
+AMR_DNA-Bordetella_pertussis.fa	2961	57a1fc5c7734c33901daad4040a13825913149acaefaf82fb7ddf1139383598b
+AMR_DNA-Bordetella_pertussis.fa.ndb	20480	a7d2439b977c5a5bf0dc0987506dc1bfc764bfe0b56225b517df29c1f5513a2c
+AMR_DNA-Bordetella_pertussis.fa.nhr	103	a56272686cc366a9c920e75730946671c2f0b9a97d065d28763e7dc26a2fc302
+AMR_DNA-Bordetella_pertussis.fa.nin	184	7c7d072b733de2e21cf4ce1a4b1deac7614558516644a1d34839c139c9dfc3a4
+AMR_DNA-Bordetella_pertussis.fa.njs	689	a635a538f8f14310b9d4b9b23b3ca93b2c8f59d8362bdc896c665dc7f5f5b04c
+AMR_DNA-Bordetella_pertussis.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Bordetella_pertussis.fa.nsq	722	f984668b1eab6cdecf57c89777f881ad47a8faece9cc8265a6512b3efa69e5ad
+AMR_DNA-Bordetella_pertussis.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Bordetella_pertussis.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Bordetella_pertussis.tsv	347	597ab237cd2ff52f79400f54d5506ee789353c9767fc0aaeb09447e9f076a4f2
+AMR_DNA-Campylobacter.fa	6971	8fd355ba1ddc39184066d70fbf8419a2582da924c84e89d03144b0e815177134
+AMR_DNA-Campylobacter.fa.ndb	20480	23f3a596a43936a72e82098d9f00abc093a9034890fc33fab6c97404e74b08c5
+AMR_DNA-Campylobacter.fa.nhr	348	f25930a7e1291d8595728e3ff655d68c0e1fd9484573433968a3bb806ed01d6e
+AMR_DNA-Campylobacter.fa.nin	192	33d11470358b2b742ef8338a3da8f24ffe0f32026c2260e7640d8fe0d42cb570
+AMR_DNA-Campylobacter.fa.njs	627	84ca482eb0a6c59923a21efb32a7cd8a2a4924e4e7a79d775820d17b8bdce93b
+AMR_DNA-Campylobacter.fa.not	44	2fe74ed407f31bcf46d19d27aa6910733f0d9d3861980227f1e06cb61132a444
+AMR_DNA-Campylobacter.fa.nsq	1684	795b87c61356c57c4d5d47a5ea5c3824e768f5a672fc049977d66af5cb4f4b7d
+AMR_DNA-Campylobacter.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Campylobacter.fa.nto	16	6256a4b0be4127b6ff9fa076fe7595961bc296521bd01220f64c6f95768c1fdd
+AMR_DNA-Campylobacter.tsv	1670	ce6187e3292489d168b7e235c5c061f01fe22c6f9a8e91e5e744ad434f5a855b
+AMR_DNA-Clostridioides_difficile.fa	3454	ac00fd727c0c32bc001b4c527508142fa7af1a4ac6f5e37bd1ebd87866d474ce
+AMR_DNA-Clostridioides_difficile.fa.ndb	20480	fd90549e959bf61212c50ce7a1d58edc5c67605c1fc666f6d798526c40c5a07a
+AMR_DNA-Clostridioides_difficile.fa.nhr	232	e3b375e719356fe490843cbfb3389d57ea58d56d8d41608278e00b643ca64453
+AMR_DNA-Clostridioides_difficile.fa.nin	204	75ef003e1310b5fc3bbcfa01a3c680a9a4e5c1c6695e208c7890a6b79b388147
+AMR_DNA-Clostridioides_difficile.fa.njs	726	3a83e3530d960a4442b42722c83d078f7ac9e1c86aadb7efa2ac00b1eaac2728
+AMR_DNA-Clostridioides_difficile.fa.not	32	7b0a91667ad8d58a00256b3e213b31e2ba8604b9db04b58e6fe5c8f1e693acfc
+AMR_DNA-Clostridioides_difficile.fa.nsq	828	1366cf4d025b4aa4ad693dfcb546b8a7b86629cd4937524409a1eba0626f60b8
+AMR_DNA-Clostridioides_difficile.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Clostridioides_difficile.fa.nto	12	0db201e8371010e5cd3b719cf6c131cea86e18ef7c5bdd394e23b352b8e54f9e
+AMR_DNA-Clostridioides_difficile.tsv	510	bf53151f2190dc2ea406abeb7e025247cf2cc8c5c787beab478d195a29f80d96
+AMR_DNA-Enterococcus_faecalis.fa	2984	0916658691fdc453fdbe38ed90b0eccdfbfc99905c4fb3dd7843a2eede1d2aa8
+AMR_DNA-Enterococcus_faecalis.fa.ndb	20480	88b2478ce87b54f73d1eea37b3161659790ffd30fc7d389b3713b2bf5dee9302
+AMR_DNA-Enterococcus_faecalis.fa.nhr	112	614e67135f8b262553c39e8d4ef004411410e6b1a1c6622028561f0fae7dffda
+AMR_DNA-Enterococcus_faecalis.fa.nin	184	56ea7a04b57b196774154d10e37e70cf5ba65ec692f8489ad454de53bff13c9a
+AMR_DNA-Enterococcus_faecalis.fa.njs	698	d0660a0fdb392fef3e5de9eacda5610b84e9c1fe88c12cceb4a81c7e1915d2eb
+AMR_DNA-Enterococcus_faecalis.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Enterococcus_faecalis.fa.nsq	726	a2107a037e889ad56f86d28658f0ce0df037fdc9a4514239dd11cc006e34050f
+AMR_DNA-Enterococcus_faecalis.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Enterococcus_faecalis.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Enterococcus_faecalis.tsv	446	d10c34918f451fbca0fbed7dd0994446a21de71fa5cff585292e5dfa71a209a7
+AMR_DNA-Enterococcus_faecium.fa	2989	a0121244330f4f61059357906e56ea3558696d006b0a3283598e7ce7f18f2f4b
+AMR_DNA-Enterococcus_faecium.fa.ndb	20480	a73a6ec23846fc27cbe38f068ab54e2ec7348e24b23ca72df3b7bd983baefd8c
+AMR_DNA-Enterococcus_faecium.fa.nhr	112	d44850161a3b72033897780cf8ab8c734722112b6ab3734f4b1231defde257c2
+AMR_DNA-Enterococcus_faecium.fa.nin	184	544cf25dfe9da489b099fb6ee4024a64ca75634ed1c55ef8ddd3232dae2077b7
+AMR_DNA-Enterococcus_faecium.fa.njs	689	a70ae4c6cef89b2408ccd7eaf9d3182dba2a7d25df3471b4eb2ec4fd861c9276
+AMR_DNA-Enterococcus_faecium.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Enterococcus_faecium.fa.nsq	727	6df805ceb1c5e47e4fce168f3fb0683267ab81d8175109c01db80f5bb2f75d3b
+AMR_DNA-Enterococcus_faecium.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Enterococcus_faecium.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Enterococcus_faecium.tsv	444	5dfab0b2b8e721eb212ee1736021522bbe826170c31c2b573f5d3b1a3d807b91
+AMR_DNA-Escherichia.fa	7791	920f32496f36cd35e5feffd95d878c17cbe3408fe2290528ee4b1d37befc45eb
+AMR_DNA-Escherichia.fa.ndb	20480	f226dbb0699b4554ebd0a28fc51e224185a1bf90435e839b40960f62baf4f69b
+AMR_DNA-Escherichia.fa.nhr	588	dbb07244e79f68a21bb65cc28fb974cd31b3696107728667bc3bc377da9e294f
+AMR_DNA-Escherichia.fa.nin	216	07c23b46c686b5085ed0833a22ffc33f76769c57aeb16264191dcb037f52642b
+AMR_DNA-Escherichia.fa.njs	609	2934ac09afb67455d6830bef16a8ff005a881401f3fb7ae6633aca7d4484d798
+AMR_DNA-Escherichia.fa.not	68	07d6a68779643f11e384fbe5c8aae0d82b72671a69dba2d5e1c30f98abe70f47
+AMR_DNA-Escherichia.fa.nsq	1865	ab2d6520f948e0a36d02000368bb185348680cd9b973ff0594e8f31011c82217
+AMR_DNA-Escherichia.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Escherichia.fa.nto	24	26ae608eb67e13ad72163fc6b95d26e09ec0348aab1f618b4a40feb1d8c4b878
+AMR_DNA-Escherichia.tsv	8332	495c2c35bb396d7538d7562774f5029c69ee1940269435fbc91b8d7fe25f9fae
+AMR_DNA-Klebsiella_oxytoca.fa	166	78d81787e0ee2497d604e274b4f28b411e1e400d77274a055562e8227016d28b
+AMR_DNA-Klebsiella_oxytoca.fa.ndb	20480	45616c122531f077d968d68ca976e3ffc5b6904378d724feb1a10b97cc1e9dda
+AMR_DNA-Klebsiella_oxytoca.fa.nhr	122	370ea6fc90314007930467f703d1e4d5bff8e0cf2052381bfebf0f8688f11888
+AMR_DNA-Klebsiella_oxytoca.fa.nin	184	84bf1575269af9ee73b569ea811955a5faf57b0dc21a9d54c4f750ab57934dd8
+AMR_DNA-Klebsiella_oxytoca.fa.njs	670	917632096f5096524dbfad2b4138487455a33db838c6517e4227522ecb87afba
+AMR_DNA-Klebsiella_oxytoca.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Klebsiella_oxytoca.fa.nsq	27	916462c261da264b9c68c56c1cec10b38176c08b30e49b688a243290ad69c2fb
+AMR_DNA-Klebsiella_oxytoca.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Klebsiella_oxytoca.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Klebsiella_oxytoca.tsv	848	b826f7209f75f6d02b2f46255b1d16ffd69cb1234155717e707241d24873b6fd
+AMR_DNA-Klebsiella_pneumoniae.fa	365	77ca0529b89781827cfb1077695b5dce0bb5da17b5e035c4ae33a014eb4bf340
+AMR_DNA-Klebsiella_pneumoniae.fa.ndb	20480	f602a98c9ba545a7ce2a3f32f77b31cbe88a7c23c62515ffdf26d60f4ad9b545
+AMR_DNA-Klebsiella_pneumoniae.fa.nhr	122	5a843f88ec563f0ba443a7e0b3528205ca7f09ef2bc8778e0afcdd696acfeeb7
+AMR_DNA-Klebsiella_pneumoniae.fa.nin	184	43da6d3210dbe5f7c5bd791c2df2d33d9b2e6516de4f8e80daf07ef75918c08a
+AMR_DNA-Klebsiella_pneumoniae.fa.njs	697	d024d0acc13d33f33e4825e1a340c17681f3af97327716191704fed7cd4762a5
+AMR_DNA-Klebsiella_pneumoniae.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Klebsiella_pneumoniae.fa.nsq	77	ddc5e7aef54337a25613c537c89eb209c80ffa4e9be297b8ac432b98cb25b418
+AMR_DNA-Klebsiella_pneumoniae.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Klebsiella_pneumoniae.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Klebsiella_pneumoniae.tsv	355	58050e41d93dc5879c946f33156153c0c5d6e49af9ae81091d01b6b824ab83a2
+AMR_DNA-Neisseria_gonorrhoeae.fa	6138	dae318bd32754b9f591b44cc2e0f57c2b79cfbecce97862faf15220f950ccd1d
+AMR_DNA-Neisseria_gonorrhoeae.fa.ndb	20480	98aacce5f49071818269b60fa888450da1664834c4d11d0e4ff26e9bddf86a19
+AMR_DNA-Neisseria_gonorrhoeae.fa.nhr	870	4bab3466d884e58b16a28c20c95e3cd64472a1661d1cbdb2bd721264bda8b89b
+AMR_DNA-Neisseria_gonorrhoeae.fa.nin	244	bf87e0d0700f4bb70ff53c2fb7415a8c9214da7a9f0fb26ebfc17ead588c48e7
+AMR_DNA-Neisseria_gonorrhoeae.fa.njs	699	5ea4f753240d1d418aa48bf28992c6e4fc28570f3365907839ad3420f5fb0f6e
+AMR_DNA-Neisseria_gonorrhoeae.fa.not	80	eb90c3f5171d2f6b54240e79df365c1055a317cd096e3c928ffbc71cc2256899
+AMR_DNA-Neisseria_gonorrhoeae.fa.nsq	1395	08b8e670795a84770ad3623554680f029a8c61d47ab303f0a5db638f932b47ff
+AMR_DNA-Neisseria_gonorrhoeae.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Neisseria_gonorrhoeae.fa.nto	28	1ff4dcc0d13d46df32e525f97d772fe4b0502a80e3377f19bd4f6c0fbac40192
+AMR_DNA-Neisseria_gonorrhoeae.tsv	2339	01b9e782881bb74b3c75993912f065c9c314e513aa9627f7729f7bf663012b3d
+AMR_DNA-Salmonella.fa	1612	3bd08a2660c4de9128f1919297f9ebc4ebe156b3a98001ac86ad7e82c0c8ae44
+AMR_DNA-Salmonella.fa.ndb	20480	b821b174e23efff4a2b6aabb59856b172cf57ca4afceefa65a8c3e427d7bdfaa
+AMR_DNA-Salmonella.fa.nhr	117	26f0f68e63f5d8509adfaf069af7130991807f6a3e901b37ba7fa8b01944c0eb
+AMR_DNA-Salmonella.fa.nin	168	fb47ee5be7d136683e65ed8bc7be245af687838f93a037365f9ae8e348042cf5
+AMR_DNA-Salmonella.fa.njs	599	9b312d1704b6a683d5f1d6cf89e88fbaad07e81a02dc0e97e93d4db024cc2f5f
+AMR_DNA-Salmonella.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Salmonella.fa.nsq	386	28cc2c31ca5fb18b622670468219bb20ec012a45ba8841a09b9c14b0b70ad66f
+AMR_DNA-Salmonella.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Salmonella.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Salmonella.tsv	462	1be3f4d162297cdcd393014294e016ecb5e673bfe653b0ca7e40a646da0ea67d
+AMR_DNA-Staphylococcus_aureus.fa	3414	31edbcd4dddfd83e7d713fa9da314054c957954fa1b6485ee537a096ffcbc3b6
+AMR_DNA-Staphylococcus_aureus.fa.ndb	20480	d6837fd1448f4102054e1a7bb7231788eeaf9b1a118b472ced83e1146da8dc8e
+AMR_DNA-Staphylococcus_aureus.fa.nhr	268	249b13f69106f631091fef772f792cb17a9e45b57e27123bfc4e21858f8abf36
+AMR_DNA-Staphylococcus_aureus.fa.nin	196	777c09cd6d2ee797b785e0b5c614f3976b471bcfa7550845098a025c66f8002a
+AMR_DNA-Staphylococcus_aureus.fa.njs	699	252a413fbe5ff649c047f3f2c64846fa6199a8d184d9fb35fc8c031b7fc180d2
+AMR_DNA-Staphylococcus_aureus.fa.not	32	7b0a91667ad8d58a00256b3e213b31e2ba8604b9db04b58e6fe5c8f1e693acfc
+AMR_DNA-Staphylococcus_aureus.fa.nsq	809	d471ad7a9a883670eaf944d11302f001e025b01247de0fcfedfdaa94258f6486
+AMR_DNA-Staphylococcus_aureus.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Staphylococcus_aureus.fa.nto	12	0db201e8371010e5cd3b719cf6c131cea86e18ef7c5bdd394e23b352b8e54f9e
+AMR_DNA-Staphylococcus_aureus.tsv	1976	a4ba2b39aec5ba63fb531a8807fba866840f40f618c40ed5906e10efa38c445a
+AMR_DNA-Streptococcus_pneumoniae.fa	2990	c83c78e212f21fb7867a35a26010cb34f40c0a062a51a411354f76450403f610
+AMR_DNA-Streptococcus_pneumoniae.fa.ndb	20480	32a99958adc122e8274c366abbfb50d767394462a40ccf5e1f9877650ac2b9bb
+AMR_DNA-Streptococcus_pneumoniae.fa.nhr	110	45894fb64b26b749384073284a30d6b8c8f4657db892bd91edce6dad8e053e61
+AMR_DNA-Streptococcus_pneumoniae.fa.nin	192	1d5f65b7ce0d517c2e41e16d0723caddd1d57f3ab7501d19f3c437137a7773c4
+AMR_DNA-Streptococcus_pneumoniae.fa.njs	725	ac6d94709344f1537d636d19acb431feca002e9757603b79f4b0b5f96cfde72b
+AMR_DNA-Streptococcus_pneumoniae.fa.not	20	e2099cbf3445ac30a98dcc86f0b899eac91fd0a23cf2825f48bd01daadee347a
+AMR_DNA-Streptococcus_pneumoniae.fa.nsq	728	45218944d1481aba6f1d242bf22ccf9757d1af668cd84a6b92df2564954260c7
+AMR_DNA-Streptococcus_pneumoniae.fa.ntf	16384	67982e4d7b1490b09cce06e7c29175c6bd011cd542cfacb1a1c310084a50821a
+AMR_DNA-Streptococcus_pneumoniae.fa.nto	8	7c9fa136d4413fa6173637e883b6998d32e1d675f88cddff9dcbcf331820f4b8
+AMR_DNA-Streptococcus_pneumoniae.tsv	914	0be2f4f2dbb661a1bdc95a62133af2445fd270ab790c92a5196378eb69277cdf
+changes.txt	21489	093b03621f611d3837e6b869e334c123a62931338979427e2ac4dcda92b7ac01
+database_format_version.txt	6	8fb33dadbe981cf5847df269c10c2a3fe107f2b269d5ccb6db37d1f61ffc3bba
+fam.tsv	340080	6e1c933c614a5a4edde136702ebb96d1c0396260b15e85e643dbed386d8a40bf
+taxgroup.tsv	1490	e44282d5b30a3fb2adf618a27a0ffda163b1b5b2041b406eb35363249cb1c172
+version.txt	13	ec6ecdad6b51df28a88b443ddc98c80d928d8e28129e7662c994d311a5a4615c

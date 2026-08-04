@@ -1,0 +1,132 @@
+# Pin changelog for the Kalamari curation-triage tool -- the record behind point 4
+# of the update gate (bin/curation-triage/update_gate.py).
+#
+# WHY THIS FILE EXISTS
+# A Tier-2 verdict is only worth reading if a reader can tell why it says what it
+# says.  Four kinds of thing move a call: the software, the database it reads, a
+# threshold, and our own reading rule.  This file records every identity each of
+# those has ever had, so a changed call can always be attributed to something.  A
+# call that changes while nothing here moved is `unattributable`, and that is a
+# FAILURE, not a fifth category: it means the same pins produced two different
+# answers.  `unattributable` is therefore rejected as a value of the class column.
+#
+# HOW IT IS CHECKED
+# `python3 bin/curation-triage/update_gate.py --check` (what CI runs, fully offline)
+# compares every component's current identity with the LAST `to` recorded here.  A
+# pin that moved without a new row fails the gate, and the failure names the row to
+# add.  Each component's rows also have to form an unbroken chain: the first row
+# starts from `-`, and every later row starts where the previous one ended.
+#
+# COLUMNS
+#   date                 YYYY-MM-DD, append-ordered (rows never go backwards in time)
+#   component            what moved: tool:<env> | db:<env> | threshold:<x> | rule:<x>
+#                        | panel:scope (which units the validation panel replays)
+#   class                software | database | threshold | rule | panel
+#                        (never unattributable)
+#   from                 the identity before this row; `-` means there was no pin
+#   to                   the identity after this row; `-` means the pin was removed
+#   panel_calls_total    calls in the validation panel when this row was accepted
+#   panel_calls_changed  how many of them this change moved
+#   validation           panel-replay:<12 hex>, the digest of the accepted call table
+#   reviewer             who signed for it
+#   note                 why, in a sentence a reader who was not there can use
+#
+# A software identity is `<conda build>+lock:<first 12 hex of the lockfile sha256>`.
+# Both halves are needed: the build alone misses a dependency bump that reinstalls
+# half the prefix, and the digest alone is unreadable here.  The full 64-hex digest
+# lives in tool_pins.tsv, which point 1 of the gate checks against the file on disk.
+#
+# A DATABASE IDENTITY IS WHAT THE DATABASE CALLS ITSELF -- AND FOR THE ONE DATABASE
+# THAT LIVES OUTSIDE ITS PACKAGE, A NAME IS NOT EVIDENCE
+# db:amrfinderplus is recorded as `2026-05-15.1`, the string
+# `amrfinder --database_version` prints.  That is a LABEL: any directory can be given
+# that name, `amrfinder -u` only ever fetches the LATEST database, and no command
+# anywhere asks NCBI for a dated one.  So on 2026-08-04 that database was FROZEN --
+# all 162 of its files (239.4 MB) digested one per line into
+# src/curation-triage/amrfinderplus_db_manifest.tsv, with a single roll-up sha256
+# 2fb16b7f3c57... over the sorted (name, hash) pairs.  The roll-up is recorded as
+# database_digest in tool_pins.tsv, and setup_envs.sh now compares the installed
+# database against that manifest file by file instead of trusting the version string.
+#
+# The digest is PART OF the db:amrfinderplus identity, so the gate itself catches a
+# database swapped underneath an unchanged version string -- not only setup_envs.sh.
+# `update_gate.database_identity` builds db:<env> as
+# `<database_version>+db:<first 12 hex of database_digest>`, which is why the row below
+# reads `2026-05-15.1+db:2fb16b7f3c57` while `amrfinder --database_version` still prints
+# the bare dated string.  The two OTHER places that record this database --
+# marker_manifest.tsv, and the Tier-2 caches' own amrfinder_database_version -- keep the
+# plain dated string on purpose: they record what a tool printed, and asking them to
+# carry our digest would make point 1 and point 2 fail instead of tightening them.  A
+# row with no database_digest (every bundled database) keeps the bare version, because
+# the lockfile already pins its bytes and point 1 checks that.
+#
+# The honest limit of the whole freeze: a digest proves SAMENESS, not availability.  It
+# cannot make NCBI serve 2026-05-15.1 again.  If the archived copy of the dated
+# directory is lost after NCBI has moved on, the pinned database is unrecoverable, and
+# the manifest can then only prove that whatever is on disk is not it.
+#
+# HOW TO ADD A ROW
+#   1. before the change:  update_gate.py --panel --out before.tsv
+#   2. after the change:   update_gate.py --panel --out after.tsv
+#   3.                     update_gate.py --compare before.tsv after.tsv
+#      That prints the class of every moved call and refuses any it cannot attribute.
+#   4. Add one row per moved component with the totals and digest it reports, then
+#      re-run update_gate.py --check.
+#
+# A `panel` row is the one class that records no tool difference.  It records a change
+# to WHICH evidence the gate replays, and its from/to are panel scope identities rather
+# than tool identities.  It exists because the panel's scope has to be able to move
+# legally: curation that shrinks or grows it must have a row to add, or the gate is a
+# dead end that only hand-editing history can clear.
+#
+# THE ROWS BELOW ARE THE FIRST RECORDING of all 38 components, all dated 2026-08-04:
+# every one starts from `-` and moved no calls.  Their reviewer is `initial-pin`
+# because no human decision sits behind a first recording; every LATER row must name
+# the person who reviewed the change.  One extra row belongs to that same first
+# recording and so carries the same reviewer: db:amrfinderplus is written twice on the
+# same date, once as the bare dated label and once with the roll-up digest of its 162
+# files folded in.  Three rows carry a finding rather than a plain first pin --
+# tool:sistr (an environment that had drifted from its own lockfile and was put back),
+# db:amrfinderplus (a dated database that no lockfile can capture) and panel:scope (a
+# scope that must be frozen, because reading it from the ledger lets ordinary curation
+# move it) -- and their notes say so.
+date	component	class	from	to	panel_calls_total	panel_calls_changed	validation	reviewer	note
+2026-08-04	db:abricate	database	-	vfdb 4592 seqs, plasmidfinder 488 seqs, both dated 2026-Apr-3	75	0	panel-replay:4c7b9e0f8066	initial-pin	VFDB and PlasmidFinder exactly as the 1.4.0 package ships them; a refreshed database means a new conda build.
+2026-08-04	db:amrfinderplus	database	-	2026-05-15.1	75	0	panel-replay:4c7b9e0f8066	initial-pin	The one dated, post-install database in the tree: it lives outside the conda package, so no lockfile can capture it. FROZEN on 2026-08-04, because `amrfinder -u` only ever fetches the LATEST database and nothing can ask NCBI for a dated one -- all 162 files (239.4 MB) are digested in src/curation-triage/amrfinderplus_db_manifest.tsv, roll-up sha256 2fb16b7f3c57..., recorded as database_digest in tool_pins.tsv. setup_envs.sh provisions it into the pinned prefix and checks BOTH `amrfinder --database_version` against this value and every file against that manifest, naming any that differ. The identity below folds the roll-up digest into the dated string, so the gate fails on a database swapped under an unchanged version. Sameness is all a digest can prove: if the local archive is lost, this version cannot be downloaded again.
+2026-08-04	db:btyper3	database	-	bundled-with-3.4.0-pyhdfd78af_0; PubMLST downloaded 2023-07-07	75	0	panel-replay:4c7b9e0f8066	initial-pin	A PubMLST copy frozen inside the package on 2023-07-07; it cannot be refreshed without changing the build.
+2026-08-04	db:ectyper	database	-	alleles v1.0 (11-03-2020); pathotype v2024-10-03	75	0	panel-replay:4c7b9e0f8066	initial-pin	The O/H allele set and the pathotype table are bundled, but the MASH species sketch is a run-time Zenodo download that nothing pins. That is why the kind is runtime-download and why ECTyper stays context-only.
+2026-08-04	db:lissero	database	-	bundled 2020-06-04	75	0	panel-replay:4c7b9e0f8066	initial-pin	Bundled with the package; the date is what the shipped database calls itself.
+2026-08-04	db:mlst	database	-	bundled with 2.23.0-hdfd78af_1	75	0	panel-replay:4c7b9e0f8066	initial-pin	The 144 PubMLST schemes bundled in the 2.23.0 build, including listeria_2 and ypseudotuberculosis_achtman_3. 144 is what `mlst --list` reports; db/pubmlst holds 145 entries, but one of them (dbases.sh) is a helper script, not a scheme.
+2026-08-04	db:seqsero2	database	-	bundled-with-1.3.2-pyhdfd78af_0	75	0	panel-replay:4c7b9e0f8066	initial-pin	Bundled with the package, so the lockfile pins the data as well as the code.
+2026-08-04	db:shigeifinder	database	-	bundled-with-1.3.4-pyhdfd78af_0	75	0	panel-replay:4c7b9e0f8066	initial-pin	Bundled with the package. The installed dist-info disagrees with the conda build about the version, so the build string is the identity that can be trusted.
+2026-08-04	db:sistr	database	-	SISTR_V_1.1.3_db, downloaded 2025-04-24	75	0	panel-replay:4c7b9e0f8066	initial-pin	The bundled sistr.msh; no flag reports its version, so it is read from the package's own dbstatus.txt.
+2026-08-04	panel:scope	panel	-	41 units+scope:0c840291deaa	75	0	panel-replay:4c7b9e0f8066	initial-pin	Which units the validation panel replays: the 21 confounded units plus the 20 Tier-1 leads standing at frozen in PANEL_SCOPE in bin/curation-triage/update_gate.py. It is pinned rather than read from ledger.ndjson because a scope taken from curation data moves underneath the gate: an SME resolving a lead shrinks the panel, moves its digest and fails the gate with no row anyone could legally add, since no pin moved and a row may not record from == to. Adding or removing a unit is a reviewed decision recorded here as a `panel` row.
+2026-08-04	rule:bacillus_anthracis_vs_b_cereus_group	rule	-	bacillus_anthracis_vs_b_cereus_group@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reads BTyper3's genomospecies and marker profile into a verdict about the B. cereus group.
+2026-08-04	rule:clostridium_botulinum_group_and_bont_type	rule	-	botulinum_group_and_bont@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reads AMRFinderPlus's bont hits into a botulinum group and toxin type.
+2026-08-04	rule:escherichia_coli_serotype_pathotype	rule	-	e_coli_serotype_pathotype@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reads ECTyper's serotype and pathotype. Context only today: it decides no verdict, so no panel call depends on it yet.
+2026-08-04	rule:generic_marker_fallback	rule	-	generic_marker_fallback@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	The screen applied to a unit whose taxon has no dedicated task. Never auto-triggered, so it decides no panel call today.
+2026-08-04	rule:listeria_monocytogenes_serogroup_lineage_cc	rule	-	listeria_serogroup_lineage_cc@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py combines LisSero's serogroup with the classical MLST ST/CC, keeping them as separate un-merged fields.
+2026-08-04	rule:salmonella_subspecies_and_serovar	rule	-	salmonella_subspecies_serovar@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reconciles SISTR's cgMLST subspecies with SeqSero2's antigenic serovar.
+2026-08-04	rule:shigella_eiec_vs_escherichia_coli	rule	-	shigella_eiec_vs_e_coli@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reads ShigEiFinder's cluster call into a Shigella / EIEC / E. coli verdict.
+2026-08-04	rule:yersinia_pestis_vs_y_pseudotuberculosis	rule	-	yersinia_pestis_vs_pseudotuberculosis@1	75	0	panel-replay:4c7b9e0f8066	initial-pin	How markers.py reads the plasmid pre-screen and the classical MLST context. The cgMLST classifier this task really needs is a recorded gap, so the rule can only return indeterminate.
+2026-08-04	threshold:bacillus_anthracis_vs_b_cereus_group	threshold	-	group_taxonomy_and_marker_profile[min_coverage=70,min_identity=75]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors the BTyper3 reading applies, as declared in marker_manifest.tsv.
+2026-08-04	threshold:clostridium_botulinum_group_and_bont_type	threshold	-	bont_type[min_coverage=90,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors for the bont hits.
+2026-08-04	threshold:escherichia_coli_serotype_pathotype	threshold	-	serotype_pathotype[min_coverage=90,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors for the ECTyper reading.
+2026-08-04	threshold:generic_marker_fallback	threshold	-	amr_and_plus_screen[min_coverage=90,min_identity=90] | virulence_plasmid_screen[min_coverage=80,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors for the two generic screens.
+2026-08-04	threshold:listeria_monocytogenes_serogroup_lineage_cc	threshold	-	cgmlst_lin[min_coverage=90,min_identity=90,min_loci_called=1573] | mlst_st_cc[min_coverage=100,min_identity=100] | serogroup[min_coverage=95,min_identity=95]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Floors for the serogroup, the classical MLST (exact match) and the cgMLST/LIN component that is still a gap.
+2026-08-04	threshold:salmonella_subspecies_and_serovar	threshold	-	serovar_antigen[min_coverage=90,min_identity=90] | serovar_cgmlst[min_coverage=90,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors for the SISTR and SeqSero2 readings.
+2026-08-04	threshold:shigella_eiec_vs_escherichia_coli	threshold	-	shigella_eiec_call[min_coverage=80,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Identity and coverage floors for the ShigEiFinder reading.
+2026-08-04	threshold:tier2_ani	threshold	-	af_gate=0.5;derep=99.5;epsilon=0.2;min_af=5.0;screen=70.0;species_ani=95.0	75	0	panel-replay:4c7b9e0f8066	initial-pin	The species boundary, the aligned-fraction gate, the dereplication line, the borderline band and skani's own screen floors. These live in code (tier2.py, skani_runner.py), so without this row a moved boundary would be an unattributable difference.
+2026-08-04	threshold:yersinia_pestis_vs_y_pseudotuberculosis	threshold	-	cgmlst_species_assignment[min_coverage=90,min_identity=90,min_loci_called=450] | classical_mlst_context[min_coverage=100,min_identity=100] | plasmid_pre_screen[min_coverage=80,min_identity=90]	75	0	panel-replay:4c7b9e0f8066	initial-pin	Floors for the plasmid pre-screen, the exact-match classical MLST and the cgMLST component that is still a gap.
+2026-08-04	tool:abricate	software	-	1.4.0-h05cac1d_0+lock:72e0fd21763d	75	0	panel-replay:4c7b9e0f8066	initial-pin	A Perl script: the prefix bin has to be first on PATH or it dies on a missing Path::Tiny, which reads like a broken install and is not one.
+2026-08-04	tool:amrfinderplus	software	-	4.2.7-hf69ffd2_0+lock:15d6432c9c6c	75	0	panel-replay:4c7b9e0f8066	initial-pin	Software only. Its dated database moves independently and is pinned separately as db:amrfinderplus.
+2026-08-04	tool:btyper3	software	-	3.4.0-pyhdfd78af_0+lock:34684468ba36	75	0	panel-replay:4c7b9e0f8066	initial-pin	The seq_*_db resources and the PubMLST copy travel inside the package, so this build pins that data as well as the code.
+2026-08-04	tool:datasets	software	-	18.34.0-ha770c72_0+lock:1a83323c2bbf	75	0	panel-replay:4c7b9e0f8066	initial-pin	From conda-forge, not bioconda, unlike every other pin. Used only to build the Tier-1 datasets cache; an offline replay never runs it.
+2026-08-04	tool:ectyper	software	-	2.0.0-pyhdfd78af_4+lock:5eea3cb52d25	75	0	panel-replay:4c7b9e0f8066	initial-pin	Context-only: no decisive task routes it, which is why its 943 MiB Zenodo sketch is deliberately not provisioned. A panel call that depended on it would fail point 1.
+2026-08-04	tool:lissero	software	-	0.4.10-pyhdfd78af_0+lock:3bfed0076979	75	0	panel-replay:4c7b9e0f8066	initial-pin	Shells out to makeblastdb from the same prefix, so the pin covers the BLAST+ build too.
+2026-08-04	tool:mlst	software	-	2.23.0-hdfd78af_1+lock:d27c6f5754a7	75	0	panel-replay:4c7b9e0f8066	initial-pin	One prefix serves both typers.py tool keys, mlst_listeria and mlst_yersinia; they differ only by --scheme, so there is one artifact and one pin.
+2026-08-04	tool:seqsero2	software	-	1.3.2-pyhdfd78af_0+lock:c912d923e823	75	0	panel-replay:4c7b9e0f8066	initial-pin	The executable keeps its .py suffix (SeqSero2_package.py), so the binary name is not the tool name.
+2026-08-04	tool:shigeifinder	software	-	1.3.4-pyhdfd78af_0+lock:e97e894aa83d	75	0	panel-replay:4c7b9e0f8066	initial-pin	`shigeifinder --version` exits 2 and prints usage, so the conda build is the only checkable identity and every call records shigeifinder@unknown.
+2026-08-04	tool:sistr	software	-	1.1.3-pyhdc42f0e_2+lock:6a1a53a28066	75	0	panel-replay:4c7b9e0f8066	initial-pin	Recorded as unchanged after a real investigation: the installed prefix carried an unowned setuptools-83.0.0 egg-info while conda-meta and the lockfile both said 80.10.2. The environment was made to match its lockfile, sistr's calls were re-run before and after and came out byte-identical, and the regenerated lockfile is identical to this one. So no pin moved and this is a baseline row, not a change row.
+2026-08-04	tool:skani	software	-	0.3.2-h79ce301_0+lock:6c4b7cb53f8a	75	0	panel-replay:4c7b9e0f8066	initial-pin	Supplies the ANI and aligned fraction behind every Tier-2 comparison. marker_manifest.tsv does not list it because it answers no marker question, but its version moves calls.
+2026-08-04	db:amrfinderplus	database	2026-05-15.1	2026-05-15.1+db:2fb16b7f3c57	75	0	panel-replay:4c7b9e0f8066	initial-pin	The database identity became more precise: the dated label gained the roll-up sha256 of its 162 files, so a database swapped under an unchanged version string is now a gate failure and not only a setup_envs.sh failure. No call moved -- `--compare` reports 1 pinned component moved, 75 calls before, 75 after, 0 changed -- because the bytes are the same database; only what we record about it changed. Restoring it needs the archived tarball; NCBI serves only the latest.

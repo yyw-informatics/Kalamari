@@ -1,0 +1,24 @@
+# Kalamari curation-triage -- pinned conda environment: skani
+#
+# Provides: skani 0.3.2 -- ANI and aligned fraction for the Tier-2 panels.
+#
+# Database: none.  skani compares the genomes it is given.
+#
+# Produced on 2026-08-04 from the working environment with:
+#     conda list --explicit --md5 -p <env-dir>/skani
+# Recreate it with either:
+#     bin/curation-triage/setup_envs.sh --env-dir <env-dir> --only skani
+#     conda create -y -p <env-dir>/skani --file src/curation-triage/envs/skani.linux-64.lock
+#
+# Every line below is a package URL plus its md5 checksum, so recreating the
+# environment repeats an exact set of builds instead of re-running the solver.
+# Package URLs are remote by design; this file must never contain a local path.
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+@EXPLICIT
+https://conda.anaconda.org/conda-forge/linux-64/libgomp-16.1.0-he0feb66_1.conda#88f2d91cb1533194c323534253094d23
+https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda#a9f577daf3de00bca7c3c76c0ecbd1de
+https://conda.anaconda.org/conda-forge/linux-64/libgcc-16.1.0-ha9f2e26_1.conda#5a7d954665c707c93311657cd779c705
+https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-16.1.0-h934c35e_1.conda#aed6cf89adc1e9b846e4367ac538e434
+https://conda.anaconda.org/bioconda/linux-64/skani-0.3.2-h79ce301_0.conda#e6df8f4baeed8d5f4a301be77b5af25c

@@ -1,0 +1,21 @@
+# Kalamari curation-triage -- pinned conda environment: datasets
+#
+# Provides: ncbi-datasets-cli 18.34.0 -- NCBI genome metadata and FASTA download.
+#
+# Database: none.  It queries the NCBI API, so it needs network, not a database.
+#
+# Produced on 2026-08-04 from the working environment with:
+#     conda list --explicit --md5 -p <env-dir>/datasets
+# Recreate it with either:
+#     bin/curation-triage/setup_envs.sh --env-dir <env-dir> --only datasets
+#     conda create -y -p <env-dir>/datasets --file src/curation-triage/envs/datasets.linux-64.lock
+#
+# Every line below is a package URL plus its md5 checksum, so recreating the
+# environment repeats an exact set of builds instead of re-running the solver.
+# Package URLs are remote by design; this file must never contain a local path.
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+@EXPLICIT
+https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda#0f51e2391ade309db462a55611263e9c
+https://conda.anaconda.org/conda-forge/linux-64/ncbi-datasets-cli-18.34.0-ha770c72_0.conda#fadb1ec70458ddd1fcf877451700dea0
