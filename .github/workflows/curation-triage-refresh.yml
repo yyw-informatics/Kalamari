@@ -1,0 +1,578 @@
+# Curation triage — refresh the committed caches (MANUAL ONLY).
+#
+# The monthly job (curation-triage.yml) is a pure offline replay of committed caches.
+# This workflow is the other half: it goes out to NCBI, installs the pinned tool
+# environments, re-runs the tools, and commits the refreshed caches. It is
+# `workflow_dispatch` only — a cache refresh moves calls, and moving a call is a
+# decision a person makes, not something a cron should do at 5 a.m.
+#
+# Why it is sharded by TOOL and not by unit
+#   The eleven pinned conda environments total about 13 GB; no single runner holds
+#   them all. Splitting by unit does not work either: the sub-species panels are
+#   cliques (11 Salmonella units compare against each other, 4 Listeria lineages
+#   against each other), so a unit split hands the same clique to several runners.
+#   Every (tool, accession) job belongs to exactly one tool, so the tool axis splits
+#   cleanly and each runner installs exactly one environment.
+#
+# Shape of a run
+#   plan             → the accession list (genome-cache key) and the tool matrix
+#   warm-genomes     → downloads all 64 FASTAs ONCE and saves the genome cache
+#   tier2-typers ×N  → one runner per tool, offline over the warm cache → a fragment
+#   tier2-ani        → the whole skani slice → a fragment
+#   datasets-refresh → the Tier-1 datasets cache, ONCE, UNSHARDED
+#   merge-and-commit → merge the fragments, verify, run the update gate, commit once
+#
+# Four rules this workflow exists to enforce
+#   1. A refresh FAILS rather than commits a cache with silently missing calls.
+#      TyperCache swallows every tool failure into `misses`, so refresh_tier2.py
+#      refuses to write a fragment when any job produced no result; we never pass
+#      --allow-misses here.
+#   2. The datasets cache is refreshed ONCE, UNSHARDED, and UNWINDOWED.
+#      DatasetsSummaryCache.build REPLACES the file, it does not merge, so two shards
+#      would clobber each other and a --released-after window would leave behind a
+#      cache the unwindowed monthly job cannot use.
+#   3. The merge is conflict-strict: two fragments that disagree about the same key
+#      are an error, never a last-writer-wins overwrite.
+#   4. A merge never SHRINKS the cache it replaces. Covering the plan is not the same
+#      promise as keeping the cache whole -- the plan lists only verdict-deciding
+#      tools, while the committed cache also holds context-only results (ECTyper) that
+#      no shard produces. Both merges pass --base and write straight over the committed
+#      file, so the guard has something to compare against and the drop is refused.
+
+name: curation-triage refresh
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'What to refresh'
+        type: choice
+        default: tier2-typers
+        options:
+          - tier2-typers
+          - tier2-ani
+          - datasets
+          - all
+      tools:
+        description: >-
+          Narrow the typer matrix to these tool keys (comma list, e.g. sistr,seqsero2).
+          Empty = every tool the Tier-2 plan routes. See the merge job before using it.
+        type: string
+        default: ''
+      # There is deliberately NO `released_after` input. `--released-after` is a
+      # fetch-time window that REPLACES the J1b half of the datasets cache with only
+      # what NCBI released inside it — it does not top the cache up. The monthly job
+      # (curation-triage.yml) replays that cache with no window at all, so a windowed
+      # cache cannot answer it, and because the window is recorded per taxid the
+      # offline gate rejects it loudly instead of emitting an empty worklist. No
+      # workflow here passes a matching window at replay time, so the input would have
+      # no correct use. The CLI flag still exists for a local operator who knows they
+      # must rebuild unwindowed afterwards; see docs/CURATION_TRIAGE_TIER1.md.
+      commit:
+        description: 'Commit the refreshed caches. Uncheck for a dry run.'
+        type: boolean
+        default: true
+
+# One refresh at a time: two concurrent refreshes would push conflicting caches.
+concurrency:
+  group: curation-triage-refresh-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write               # to commit the refreshed caches
+
+env:
+  # Both live under the repo's gitignored `/.cache/`, so a refresh can never stage a
+  # 13 GB conda prefix or 281 MB of FASTA into a commit, and no absolute path is
+  # written into a committed file. They are spelled repo-relative and absolutised at
+  # use with "${PWD}/...": a conda prefix bakes its own absolute path into the shebang
+  # of every script it installs, so a cached environment must be restored to exactly
+  # the path it was built at — and the workspace path is fixed for a given repository.
+  ENV_DIR: .cache/curation-triage/envs
+  GENOME_CACHE: .cache/curation-triage/genomes
+
+jobs:
+  # ------------------------------------------------------------------------- #
+  #  What to run, and the cache keys everything downstream shares              #
+  # ------------------------------------------------------------------------- #
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      run_typers: ${{ steps.what.outputs.run_typers }}
+      run_ani: ${{ steps.what.outputs.run_ani }}
+      run_datasets: ${{ steps.what.outputs.run_datasets }}
+      tool_matrix: ${{ steps.what.outputs.tool_matrix }}
+      genome_key: ${{ steps.what.outputs.genome_key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - id: what
+        env:
+          TARGET: ${{ inputs.target }}
+          TOOLS: ${{ inputs.tools }}
+        run: |
+          run_typers=false; run_ani=false; run_datasets=false
+          case "${TARGET}" in
+            tier2-typers) run_typers=true ;;
+            tier2-ani)    run_ani=true ;;
+            datasets)     run_datasets=true ;;
+            all)          run_typers=true; run_ani=true; run_datasets=true ;;
+            *) echo "unknown target ${TARGET}"; exit 1 ;;
+          esac
+          {
+            echo "run_typers=${run_typers}"
+            echo "run_ani=${run_ani}"
+            echo "run_datasets=${run_datasets}"
+          } >> "$GITHUB_OUTPUT"
+
+          # The genome-cache key is the hash of the PLAN's accession list, printed by
+          # the same code path the shards run. When the plan changes the key changes,
+          # and the restore-keys prefix downstream still reuses the unchanged FASTAs.
+          python bin/curation-triage/refresh_tier2.py --print-accessions > accessions.txt
+          echo "planned $(wc -l < accessions.txt) genome(s)"
+          echo "genome_key=$(sha256sum accessions.txt | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+          # The matrix is one entry per typer tool key the Tier-2 plan routes today.
+          # `env` is the conda PREFIX name from src/curation-triage/tool_pins.tsv, which
+          # is not the same thing as the tool key: mlst_listeria and mlst_yersinia are
+          # two tool keys served by ONE mlst environment (they differ only by --scheme).
+          # If the plan ever grows a tool that is missing here the run still fails
+          # loudly rather than committing a hole -- the merge job refuses a merged cache
+          # that does not cover every planned job.
+          python - >> "$GITHUB_OUTPUT" <<'PY'
+          import json, os
+
+          ALL = [
+              {"tool": "sistr",         "env": "sistr"},
+              {"tool": "seqsero2",      "env": "seqsero2"},
+              {"tool": "lissero",       "env": "lissero"},
+              {"tool": "mlst_listeria", "env": "mlst"},
+              {"tool": "mlst_yersinia", "env": "mlst"},
+              {"tool": "btyper3",       "env": "btyper3"},
+              {"tool": "amrfinderplus", "env": "amrfinderplus"},
+              {"tool": "abricate",      "env": "abricate"},
+              {"tool": "shigeifinder",  "env": "shigeifinder"},
+          ]
+          want = {t.strip() for t in os.environ.get("TOOLS", "").split(",") if t.strip()}
+          unknown = sorted(want - {e["tool"] for e in ALL})
+          if unknown:
+              raise SystemExit("unknown tool key(s): %s. Known: %s"
+                               % (", ".join(unknown),
+                                  ", ".join(e["tool"] for e in ALL)))
+          rows = [e for e in ALL if not want or e["tool"] in want]
+          print("tool_matrix=" + json.dumps(rows))
+          PY
+
+  # ------------------------------------------------------------------------- #
+  #  Download every planned genome ONCE                                        #
+  # ------------------------------------------------------------------------- #
+  # Modelled on upstream's warm-edirect-cache job. One writer means one cache key and
+  # no save races: nine tool shards each saving the same key would collide, and nine
+  # per-tool keys would store nine copies of the same 281 MB.
+  # Every downstream shard then runs --offline, so a genome that failed to download is
+  # a loud miss here instead of nine quiet retries out there.
+  warm-genomes:
+    needs: plan
+    if: ${{ !cancelled() && (needs.plan.outputs.run_typers == 'true' || needs.plan.outputs.run_ani == 'true') }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: restore genome cache
+        id: restore_genomes
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.GENOME_CACHE }}
+          key: curation-triage-genomes-${{ runner.os }}-${{ needs.plan.outputs.genome_key }}-v1
+          # A changed plan changes the key; the prefix still reuses every FASTA the old
+          # plan already downloaded, so only the delta is fetched.
+          restore-keys: |
+            curation-triage-genomes-${{ runner.os }}-
+      - name: restore datasets env
+        id: restore_env
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.ENV_DIR }}/datasets
+          key: curation-triage-env-${{ runner.os }}-datasets-${{ hashFiles('src/curation-triage/envs/datasets.linux-64.lock') }}-v1
+      - name: install the pinned ncbi-datasets-cli
+        # $CONDA is the Miniconda the GitHub ubuntu image ships; it is not on PATH.
+        # setup_envs.sh installs from the committed explicit lockfile (no solve) and
+        # then checks the binary reports the version tool_pins.tsv pins.
+        run: |
+          bash bin/curation-triage/setup_envs.sh \
+            --env-dir "${PWD}/${ENV_DIR}" --only datasets --conda "$CONDA/bin/conda"
+      - name: save datasets env
+        if: steps.restore_env.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.ENV_DIR }}/datasets
+          key: curation-triage-env-${{ runner.os }}-datasets-${{ hashFiles('src/curation-triage/envs/datasets.linux-64.lock') }}-v1
+      - name: download every planned genome
+        run: |
+          python bin/curation-triage/refresh_tier2.py --print-accessions > accessions.txt
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, "bin/curation-triage")
+          import genomes
+
+          cache = os.environ["GENOME_CACHE"]
+          datasets_bin = os.path.abspath(
+              os.path.join(os.environ["ENV_DIR"], "datasets", "bin", "datasets"))
+          with open("accessions.txt", encoding="utf-8") as fh:
+              accessions = [line.strip() for line in fh if line.strip()]
+
+          store = genomes.GenomeStore(cache, datasets_bin=datasets_bin)
+          store.prefetch(accessions, log=lambda m: print(m, flush=True))
+          # prefetch is best-effort by design (a bulk failure is retried per accession
+          # by the Tier-2 driver). Here it must be complete: the shards run --offline,
+          # so a genome missing now is a missing CALL later, and a cache committed with
+          # silently absent calls is worse than no refresh at all.
+          still = store.missing(accessions)
+          if still:
+              raise SystemExit("%d of %d genome(s) did not download: %s"
+                               % (len(still), len(accessions), ", ".join(still)))
+          print("all %d planned genome(s) are cached" % len(accessions))
+          PY
+      - name: keep only FASTA in the genome cache
+        # tier2_confirm.py writes its typer scratch tree to <genome-cache>/typer-run/...
+        # by default. Nothing in THIS job runs a typer, but if a scratch tree ever lands
+        # under the cached path it gets archived into the cache entry, and every later
+        # restore then carries it. The shards use --workdir to stay out of here; this
+        # sweep is the second lock on the same door.
+        run: |
+          rm -rf -- "${GENOME_CACHE}/typer-run"
+          echo "cached FASTA files: $(find "${GENOME_CACHE}" -name '*.fna' | wc -l)"
+      - name: save genome cache
+        if: steps.restore_genomes.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.GENOME_CACHE }}
+          key: curation-triage-genomes-${{ runner.os }}-${{ needs.plan.outputs.genome_key }}-v1
+
+  # ------------------------------------------------------------------------- #
+  #  One runner per typer tool                                                 #
+  # ------------------------------------------------------------------------- #
+  tier2-typers:
+    needs: [plan, warm-genomes]
+    if: ${{ !cancelled() && needs.plan.outputs.run_typers == 'true' && needs.warm-genomes.result == 'success' }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false          # one broken environment must not cancel the other eight
+      matrix:
+        include: ${{ fromJson(needs.plan.outputs.tool_matrix) }}
+    name: refresh ${{ matrix.tool }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: restore ${{ matrix.env }} env
+        id: restore_env
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.ENV_DIR }}/${{ matrix.env }}
+          key: curation-triage-env-${{ runner.os }}-${{ matrix.env }}-${{ hashFiles(format('src/curation-triage/envs/{0}.linux-64.lock', matrix.env)) }}-v1
+      - name: install the pinned ${{ matrix.env }} environment
+        # The lockfile hash is in the cache key, so a re-pinned environment can never be
+        # served from the old cache entry. A cache MISS costs install time and nothing
+        # else: correctness comes from the lockfile, never from the cache.
+        # For amrfinderplus this step also provisions the dated database INSIDE the
+        # pinned prefix and fails if it is not the pinned 2026-05-15.1.
+        run: |
+          bash bin/curation-triage/setup_envs.sh \
+            --env-dir "${PWD}/${ENV_DIR}" --only "${{ matrix.env }}" --conda "$CONDA/bin/conda"
+      - name: save ${{ matrix.env }} env
+        # These prefixes are large (mlst 2.1 GB, abricate 1.9 GB, seqsero2 1.6 GB) and a
+        # repository's total Actions cache is 10 GB with LRU eviction, so caching every
+        # environment WILL evict older entries. That is an acceptable trade: an evicted
+        # entry only costs a reinstall. Bump the -vN suffix to invalidate by hand.
+        #
+        # mlst_listeria and mlst_yersinia share the mlst environment, so on a cold cache
+        # both save the same key and one of them logs "unable to reserve cache". That is
+        # a warning, not a failure, and the entry the winner wrote is the right one.
+        if: steps.restore_env.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.ENV_DIR }}/${{ matrix.env }}
+          key: curation-triage-env-${{ runner.os }}-${{ matrix.env }}-${{ hashFiles(format('src/curation-triage/envs/{0}.linux-64.lock', matrix.env)) }}-v1
+      - name: restore genome cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.GENOME_CACHE }}
+          key: curation-triage-genomes-${{ runner.os }}-${{ needs.plan.outputs.genome_key }}-v1
+          # warm-genomes just proved every planned FASTA is in this entry. A miss here
+          # means the cache was evicted between jobs; fail rather than run --offline
+          # against an empty cache and report every job as a miss.
+          fail-on-cache-miss: true
+      - name: run the ${{ matrix.tool }} shard
+        # --workdir keeps the typer scratch tree OUT of the genome cache. tier2_confirm
+        # writes it to <genome-cache>/typer-run/... by default, and anything extra under
+        # the cached path changes what the next `cache save` stores.
+        #
+        # --offline: warm-genomes owns every download, so this shard must not fetch.
+        # No --allow-misses and no --allow-unpinned: a tool that failed, or an
+        # environment that is not the pinned one, has to stop the run here.
+        run: |
+          python bin/curation-triage/refresh_tier2.py \
+            --tools "${{ matrix.tool }}" \
+            --typer-env-dir "${PWD}/${ENV_DIR}" \
+            --genome-cache "${GENOME_CACHE}" \
+            --workdir "${RUNNER_TEMP}/typer-work" \
+            --offline \
+            --out "frag-typer-${{ matrix.tool }}.json"
+      - name: upload cache fragment
+        uses: actions/upload-artifact@v4
+        with:
+          name: tier2-typer-fragment-${{ matrix.tool }}
+          path: frag-typer-${{ matrix.tool }}.json
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------------- #
+  #  The whole skani slice (one runner: the env is 31 MB and the slice ~5 s)   #
+  # ------------------------------------------------------------------------- #
+  tier2-ani:
+    needs: [plan, warm-genomes]
+    if: ${{ !cancelled() && needs.plan.outputs.run_ani == 'true' && needs.warm-genomes.result == 'success' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: restore skani env
+        id: restore_env
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.ENV_DIR }}/skani
+          key: curation-triage-env-${{ runner.os }}-skani-${{ hashFiles('src/curation-triage/envs/skani.linux-64.lock') }}-v1
+      - name: install the pinned skani
+        run: |
+          bash bin/curation-triage/setup_envs.sh \
+            --env-dir "${PWD}/${ENV_DIR}" --only skani --conda "$CONDA/bin/conda"
+      - name: save skani env
+        if: steps.restore_env.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.ENV_DIR }}/skani
+          key: curation-triage-env-${{ runner.os }}-skani-${{ hashFiles('src/curation-triage/envs/skani.linux-64.lock') }}-v1
+      - name: restore genome cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.GENOME_CACHE }}
+          key: curation-triage-genomes-${{ runner.os }}-${{ needs.plan.outputs.genome_key }}-v1
+          fail-on-cache-miss: true
+      - name: run the skani shard
+        run: |
+          python bin/curation-triage/refresh_tier2.py \
+            --skani \
+            --skani-bin "${PWD}/${ENV_DIR}/skani/bin/skani" \
+            --genome-cache "${GENOME_CACHE}" \
+            --offline \
+            --out frag-ani-skani.json
+      - name: upload cache fragment
+        uses: actions/upload-artifact@v4
+        with:
+          name: tier2-ani-fragment
+          path: frag-ani-skani.json
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------------- #
+  #  The Tier-1 datasets cache — ONCE, UNSHARDED                               #
+  # ------------------------------------------------------------------------- #
+  # DatasetsSummaryCache.build REPLACES src/curation-triage/datasets_summary_cache.json,
+  # it does not merge into it, so two shards would each write a cache holding only their
+  # own taxids and the last one would win. There is no fragment/merge path for this
+  # cache and it must not grow one by accident: this job is deliberately not a matrix.
+  # --refresh-datasets-cache touches ONLY that file — never the 2.7 GB assembly-reports
+  # cache, never the ledger, never the worklist.
+  datasets-refresh:
+    needs: plan
+    if: ${{ !cancelled() && needs.plan.outputs.run_datasets == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: restore datasets env
+        id: restore_env
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.ENV_DIR }}/datasets
+          key: curation-triage-env-${{ runner.os }}-datasets-${{ hashFiles('src/curation-triage/envs/datasets.linux-64.lock') }}-v1
+      - name: install the pinned ncbi-datasets-cli
+        run: |
+          bash bin/curation-triage/setup_envs.sh \
+            --env-dir "${PWD}/${ENV_DIR}" --only datasets --conda "$CONDA/bin/conda"
+      - name: save datasets env
+        if: steps.restore_env.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.ENV_DIR }}/datasets
+          key: curation-triage-env-${{ runner.os }}-datasets-${{ hashFiles('src/curation-triage/envs/datasets.linux-64.lock') }}-v1
+      - name: rebuild the datasets summary cache
+        # 170 queries: 151 J1b tracked taxids asked --reference (one record each) and 19
+        # J2 wishlist taxids asked in full. Roughly 2-3 minutes against the NCBI API.
+        #
+        # This is a FULL, DESTRUCTIVE rebuild every time, and it is meant to be:
+        # DatasetsSummaryCache.build replaces the file rather than adding to it. That is
+        # why no --released-after is passed here. A window does not top the cache up, it
+        # narrows what the rebuild asks NCBI for, so the file that lands holds only the
+        # J1b genomes released inside it. The monthly job replays with no window, the
+        # cache now records the window per taxid, and an offline run whose question is
+        # wider than the cached answer fails at the gate — which is the right outcome but
+        # still a broken monthly run. (J2's wishlist taxids are fetched unwindowed
+        # regardless: "does this species have a genome at all?" is a standing fact, not a
+        # delta, so a window would never have made the J2 half cheaper either.)
+        run: |
+          python bin/curation-triage/tier1_metadata.py \
+            --refresh-datasets-cache \
+            --with-j1b --with-j2 \
+            --datasets-bin "${PWD}/${ENV_DIR}/datasets/bin/datasets"
+      - name: upload the refreshed datasets cache
+        uses: actions/upload-artifact@v4
+        with:
+          name: datasets-cache
+          path: src/curation-triage/datasets_summary_cache.json
+          if-no-files-found: error
+
+  # ------------------------------------------------------------------------- #
+  #  Merge, verify, gate, commit — once                                        #
+  # ------------------------------------------------------------------------- #
+  merge-and-commit:
+    needs: [plan, warm-genomes, tier2-typers, tier2-ani, datasets-refresh]
+    # A skipped `needs` (the targets this run did not ask for) must not block this job,
+    # but a FAILED one must: half a refresh is exactly the "silently missing calls"
+    # state the whole design refuses to commit.
+    if: ${{ !cancelled() && !contains(needs.*.result, 'failure') }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: download typer fragments
+        if: ${{ needs.plan.outputs.run_typers == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: tier2-typer-fragment-*
+          merge-multiple: true
+          path: frags/typer
+      - name: download the ANI fragment
+        if: ${{ needs.plan.outputs.run_ani == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: tier2-ani-fragment
+          path: frags/ani
+      - name: download the refreshed datasets cache
+        if: ${{ needs.plan.outputs.run_datasets == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: datasets-cache
+          path: src/curation-triage
+      - name: merge the typer fragments
+        if: ${{ needs.plan.outputs.run_typers == 'true' }}
+        env:
+          NARROWED: ${{ inputs.tools }}
+        run: |
+          # --base is passed ALWAYS, full refresh included. "The fragments cover every
+          # planned job" is a weaker promise than "the merged cache keeps everything the
+          # old one held": the plan lists only the tools that decide a verdict, and the
+          # committed cache also holds context-only results no shard produces (the
+          # ECTyper serotype, whose shard needs a 943 MiB Zenodo sketch and is not in the
+          # matrix). Without a base, a full refresh silently deletes that result and its
+          # tool version, and every check downstream reads only what IS in the cache, so
+          # nothing goes red. A base is a FLOOR, not a peer: it supplies only the keys no
+          # fragment answers, so a shard can still move a call without a conflict.
+          #
+          # A narrowed refresh (the `tools` input) additionally adds the committed cache
+          # as a merge PEER. That is where conflict-strictness lives: if a tool that DID
+          # run produced a different number than the committed cache holds, the merge
+          # REFUSES, because a moved call has to be landed by a full refresh where the
+          # whole panel is recomputed against one set of tool versions. Passing the same
+          # file as a peer and as a base is harmless -- the peer path sees it first.
+          #
+          # --out points straight at the committed cache, deliberately. Staging through
+          # ${RUNNER_TEMP} would leave the shrink guard with no file to compare against,
+          # so it could only warn. Writing over the real file arms it. The merge writes
+          # atomically (temp file + rename) and only after every check passes, so a
+          # refusal leaves the committed cache exactly as it was.
+          base=()
+          if [ -n "${NARROWED}" ]; then
+            echo "narrowed refresh (${NARROWED}); also merging onto the committed cache"
+            base+=(src/curation-triage/tier2_typer_cache.json)
+          fi
+          python bin/curation-triage/refresh_tier2.py \
+            --merge frags/typer/*.json "${base[@]}" \
+            --base src/curation-triage/tier2_typer_cache.json \
+            --out src/curation-triage/tier2_typer_cache.json
+      - name: merge the ANI fragment
+        if: ${{ needs.plan.outputs.run_ani == 'true' }}
+        run: |
+          # The skani slice is never split, so its one fragment always covers the plan.
+          # It still gets --base and still writes over the committed file, for the same
+          # reason the typer merge does: "covers the plan" does not promise "keeps every
+          # key", and the shrink guard can only compare against a file that is there.
+          python bin/curation-triage/refresh_tier2.py \
+            --merge frags/ani/*.json \
+            --base src/curation-triage/tier2_ani_cache.json \
+            --out src/curation-triage/tier2_ani_cache.json
+      # Uploaded BEFORE the verification steps on purpose. A refresh that legitimately
+      # moves a call will fail the update gate below (the gate's panel digest changes
+      # and no pin_changelog.tsv row accepts it yet). The operator then needs the
+      # refreshed files in hand to add that row and land them, so they must survive a
+      # red run.
+      - name: upload the refreshed caches
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: refreshed-caches
+          if-no-files-found: ignore
+          path: |
+            src/curation-triage/tier2_typer_cache.json
+            src/curation-triage/tier2_ani_cache.json
+            src/curation-triage/datasets_summary_cache.json
+      - name: show what moved
+        run: |
+          git --no-pager diff --stat -- src/curation-triage/ || true
+      - name: verify the merged caches still answer the whole plan
+        if: ${{ needs.plan.outputs.run_typers == 'true' || needs.plan.outputs.run_ani == 'true' }}
+        # --offline is the coverage gate: tier2_confirm exits non-zero naming every ANI
+        # pair and typer job the caches cannot answer. --no-write because the ledger
+        # belongs to the monthly job; a refresh only changes the evidence, never the
+        # record of what was reported.
+        run: |
+          python bin/curation-triage/tier2_confirm.py \
+            --offline \
+            --run-id "$(date -u +%Y-%m)" \
+            --no-write \
+            --out "${RUNNER_TEMP}/tier2-worklist.tsv" \
+            --summary-md "${RUNNER_TEMP}/tier2-worklist.md"
+      - name: four-point update gate
+        # Point 2 of the gate replays the Tier-2 panel over exactly these caches and
+        # compares its digest with the one src/curation-triage/pin_changelog.tsv
+        # accepts. So a refresh that moved a verdict, a call label or an actionable flag
+        # stops HERE with the row it wants recorded -- which is the whole reason the
+        # gate exists. Nothing is committed when this fails.
+        run: python bin/curation-triage/update_gate.py --check
+      - name: commit the refreshed caches
+        # `ref_type != 'tag'`: workflow_dispatch can be pointed at a tag, and the push
+        # below would then try to move a tag ref from a detached HEAD.
+        if: ${{ inputs.commit && github.ref_type != 'tag' }}
+        run: |
+          git config user.name  "kalamari-curation-triage[bot]"
+          git config user.email "kalamari-curation-triage@users.noreply.github.com"
+          git add src/curation-triage/tier2_typer_cache.json \
+                  src/curation-triage/tier2_ani_cache.json \
+                  src/curation-triage/datasets_summary_cache.json
+          git diff --cached --quiet && { echo "no cache changed"; exit 0; }
+          git commit -m "curation-triage: refresh ${{ inputs.target }} caches $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "push attempt $attempt failed; retrying"; sleep $((attempt*5))
+          done
+          echo "ERROR: could not push the refreshed caches after retries"; exit 1

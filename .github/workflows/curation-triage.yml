@@ -1,0 +1,350 @@
+# Curation triage — the monthly run (Tier 1 metadata net + Tier 2 replay).
+#
+# INFORMATIONAL, NEVER GATING.  Keep this workflow OUT of the branch's required
+# status checks (repo Settings → Branch protection): that is what makes it
+# non-blocking.  We deliberately do NOT use a blanket `continue-on-error`; a real
+# infra failure must fail its shard LOUDLY, and `collate` prints `shards_failed=N/total`
+# so a red (but non-required) run is visible without blocking merges.
+#
+# The whole run is OFFLINE.  Every network answer it needs is already committed:
+#   * src/curation-triage/assembly_reports_cache.json  (J1a: the ANI-report verdicts)
+#   * src/curation-triage/datasets_summary_cache.json  (J1b + J2: the datasets feed)
+#   * src/curation-triage/tier2_{ani,typer}_cache.json (Tier 2: skani + the 9 typers)
+# so no NCBI access and no bioinformatics tool is installed here.  Refreshing those
+# caches is a separate, manual job: .github/workflows/curation-triage-refresh.yml.
+#
+# What runs when:
+#   monthly cron   → generate-matrix → tier1-shard ×8 → collate → tier2-replay,
+#                    ending in ONE ledger commit that carries both tiers.
+#   weekly cron    → keepalive only (see that job for why it shares this file).
+#   v*.*.* tag     → release-asset only (see that job for why the triage is skipped).
+#   manual dispatch→ the monthly pipeline.
+
+name: curation-triage
+on:
+  schedule:
+    - cron: '17 6 1 * *'        # 06:17 UTC on the 1st of each month (monthly triage)
+    - cron: '43 5 * * 1'        # 05:43 UTC every Monday (keepalive — see that job)
+  push:
+    tags:
+      # EXACTLY upstream's unit-testing.yml pattern.  A looser `v*` would fire on
+      # tags upstream ignores, and this workflow would then attach assets to a
+      # release object that upstream's build-sketch job never creates.
+      - 'v*.*.*'
+  workflow_dispatch: {}         # manual re-run
+  # NB: no push-to-branch / PR trigger — this is a scheduled triage job, not a CI gate.
+
+# Serialises this workflow against ITSELF (a manual re-run started while the monthly
+# cron is still going would otherwise race on the ledger commit).
+#
+# It does NOT serialise against upstream's build-sketch release job: `concurrency`
+# groups are per-workflow-run, and .github/workflows/unit-testing.yml declares no
+# `concurrency` at all.  Making it shared would mean editing a 5th upstream file, which
+# this fork will not do.  The release-asset job below therefore has to tolerate the
+# race on its own, and does — see its comments.
+concurrency:
+  group: curation-triage-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write               # to commit ledger.ndjson (fetch-rebase-push, below)
+
+env:
+  CHUNK_TOTAL: 8
+
+jobs:
+  generate-matrix:
+    # Two events reach this workflow without wanting the triage pipeline, and a
+    # job-level `if:` cannot read the `env` block, so both crons are spelled out:
+    #   * a v*.*.* tag only wants release-asset.  Running the pipeline there would
+    #     burn ~10 runner-jobs to produce a ledger append that cannot be committed
+    #     anyway (a tag checkout is a detached HEAD; see the commit step).
+    #   * the weekly keepalive cron shares this file because the fork owns only three
+    #     workflow files; it must not drag the whole pipeline along with it.
+    # Every downstream job hangs off this one, so skipping here skips the pipeline.
+    if: ${{ github.ref_type != 'tag' && github.event.schedule != '43 5 * * 1' }}
+    runs-on: ubuntu-24.04
+    outputs:
+      runner_ids: ${{ steps.gen.outputs.runner_ids }}
+    steps:
+      - id: gen
+        run: |
+          total=${{ env.CHUNK_TOTAL }}
+          ids=$(seq 0 $((total-1)) | paste -sd, -)
+          echo "runner_ids=[$ids]" >> "$GITHUB_OUTPUT"
+
+  # One shard = a 1-of-N slice of the picks. Each emits ONLY its raw leads; the
+  # delta/ledger/worklist are done ONCE, globally, by the collate job.
+  tier1-shard:
+    needs: generate-matrix
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false          # a crashed shard must not cancel the others
+      matrix:
+        runner_id: ${{ fromJson(needs.generate-matrix.outputs.runner_ids) }}
+    name: tier1 shard ${{ matrix.runner_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      # No tool install: --offline reads the committed caches only.  --with-j1b and
+      # --with-j2 are safe to switch on because src/curation-triage/datasets_summary_cache.json
+      # is committed and covers all 170 taxids the two feeds ask about (151 asked
+      # reference-only for J1b, 19 asked in full for J2) with no --released-after window.
+      # No window is passed here either, and the two have to agree: the cache records the
+      # window each taxid was fetched with, so a cache rebuilt with a window would be
+      # narrower than this question and --offline would refuse it by name rather than
+      # quietly reporting an empty worklist.
+      #
+      # --with-lpsn is ON: src/curation-triage/lpsn_cache.json (28794 names, LPSN
+      # release 2026-08-04) is committed -- an operator with an LPSN account downloads
+      # the complete list -- so it replays offline like the other two feeds.
+      #
+      # No --lpsn-since cutoff is passed, and that is deliberate.  Kalamari does not
+      # carry ~4000 validly-published species in the genera it tracks, so a cutoff is
+      # not what keeps the worklist short -- the --max-lpsn cap is, and the gaps are
+      # sorted NEWEST FIRST before it truncates.  So the feed means "the 25 most
+      # recently named species in a genus we track that we do not have", which is the
+      # question J2 exists to ask.  A curator who wants a wider view raises --max-lpsn
+      # or passes --lpsn-since; note that a dismissed lead still occupies a cap slot,
+      # so dismissing the top 25 does not reveal the next 25.
+      - name: run tier1 shard (offline, from the committed caches)
+        id: shard
+        run: |
+          set +e
+          python bin/curation-triage/tier1_metadata.py \
+            --offline \
+            --with-j1b --with-j2 --with-lpsn \
+            --run-id "$(date -u +%Y-%m)" \
+            --shard ${{ matrix.runner_id }} --shards-total ${{ env.CHUNK_TOTAL }} \
+            --emit-leads "leads.${{ matrix.runner_id }}.ndjson"
+          rc=$?
+          set -e
+          echo "shard_rc=$rc" >> "$GITHUB_OUTPUT"
+          exit $rc               # loud: a broken shard goes red (job is non-required)
+      - name: upload lead fragment
+        if: always()             # upload even a partial/failed fragment for collate
+        uses: actions/upload-artifact@v4
+        with:
+          name: leads-${{ matrix.runner_id }}
+          path: leads.${{ matrix.runner_id }}.ndjson
+          if-no-files-found: ignore
+
+  collate:
+    needs: [generate-matrix, tier1-shard]
+    # Runs even when some shards failed (collate reports shards_failed=N/total and
+    # exits non-zero itself), but NOT when generate-matrix was skipped — a skipped
+    # `needs` would otherwise sail through a bare `always()` and collate zero
+    # fragments on the keepalive cron and on tags.
+    if: ${{ !cancelled() && needs.generate-matrix.result == 'success' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: download all lead fragments
+        uses: actions/download-artifact@v4
+        with:
+          pattern: leads-*
+          merge-multiple: true
+          path: frags
+      - name: collate → worklist + ledger + $GITHUB_STEP_SUMMARY
+        run: |
+          # Fragments arrive as leads.<i>.ndjson; collate expects <prefix>.<i>.ndjson.
+          # nullglob so a zero-fragment run (all shards crashed) does not abort the copy
+          # under `bash -e` -- collate then reports shards_failed=N/N and exits 1 itself.
+          mkdir -p run
+          shopt -s nullglob
+          for f in frags/leads.*.ndjson; do cp "$f" "run/$(basename "$f")"; done
+          # collate appends the worklist markdown to $GITHUB_STEP_SUMMARY itself (via
+          # --summary-md + the GITHUB_STEP_SUMMARY env) and exits non-zero iff a shard
+          # fragment is missing/corrupt (loud but non-blocking -- job is non-required).
+          #
+          # --shards-total is passed EXPLICITLY and is required by collate.py: it is the
+          # only way collate can tell "this pick produced no lead" from "the shard that
+          # owned this pick never reported". Getting it wrong marks unseen picks
+          # `resolved` and corrupts an append-only ledger, so the CLI refuses to guess.
+          python bin/curation-triage/collate.py \
+            --leads-dir run --frag-prefix leads --shards-total ${{ env.CHUNK_TOTAL }} \
+            --run-id "$(date -u +%Y-%m)" \
+            --ledger src/curation-triage/ledger.ndjson \
+            --reviews src/curation-triage/reviews.tsv \
+            --out worklist.tsv \
+            --summary-md worklist.md
+      - name: upload worklist artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worklist
+          if-no-files-found: ignore   # an incomplete run writes no worklist (by design)
+          path: |
+            worklist.tsv
+            worklist.md
+      # The Tier-1 records are appended here but committed by tier2-replay, so the run
+      # produces ONE commit carrying both tiers. Tier 2 must see the Tier-1 appends
+      # when it computes its own delta, and jobs do not share a filesystem — hence the
+      # hand-off through an artifact.
+      - name: upload the Tier-1-appended ledger for tier2-replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: ledger-tier1
+          path: src/curation-triage/ledger.ndjson
+          if-no-files-found: error    # the next job cannot start without it
+
+  tier2-replay:
+    needs: [generate-matrix, collate]
+    if: ${{ !cancelled() && needs.collate.result == 'success' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      # Overwrite the checked-out ledger with collate's appended copy. Tier 2 reads the
+      # ledger to find the Tier-1 survivors it must confirm, so it has to see this
+      # month's Tier-1 records, not last month's committed ones.
+      - name: restore the Tier-1-appended ledger
+        uses: actions/download-artifact@v4
+        with:
+          name: ledger-tier1
+          path: src/curation-triage
+      # --offline is a real gate here, not a hint: tier2_confirm refuses to continue
+      # when the committed ANI/typer caches do not cover the plan, so "no findings" and
+      # "no data" can never look the same. Refreshing those caches is the manual job.
+      - name: tier2 replay (offline, from the committed caches)
+        run: |
+          python bin/curation-triage/tier2_confirm.py \
+            --offline \
+            --run-id "$(date -u +%Y-%m)" \
+            --out tier2-worklist.tsv \
+            --summary-md tier2-worklist.md
+      - name: upload tier2 worklist artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tier2-worklist
+          if-no-files-found: ignore
+          path: |
+            tier2-worklist.tsv
+            tier2-worklist.md
+      # ONE commit for the whole run: Tier-1 records (from collate) + Tier-2 records
+      # (appended just above). fetch-rebase-push with retry, no error-swallowing.
+      #
+      # The `ref_type != 'tag'` guard is defence in depth. generate-matrix already skips
+      # the pipeline on a tag, but if that guard is ever relaxed this step would run on
+      # a DETACHED HEAD with GITHUB_REF_NAME set to the tag name, and would try to
+      # `git pull --rebase origin <tag>` and push a branch onto a tag ref.
+      - name: commit ledger.ndjson (Tier 1 + Tier 2)
+        if: ${{ github.event_name != 'pull_request' && github.ref_type != 'tag' }}
+        run: |
+          git config user.name  "kalamari-curation-triage[bot]"
+          git config user.email "kalamari-curation-triage@users.noreply.github.com"
+          git add src/curation-triage/ledger.ndjson
+          git diff --cached --quiet && { echo "no ledger change"; exit 0; }
+          git commit -m "curation-triage: append Tier 1 + Tier 2 ledger $(date -u +%Y-%m)"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+              git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "push attempt $attempt failed; retrying"; sleep $((attempt*5))
+          done
+          echo "ERROR: could not push ledger after retries"; exit 1
+
+  # Attach the worklist to the GitHub Release for a v*.*.* tag.
+  #
+  # Why a release asset at all: run artifacts expire after 90 days, so the release is
+  # where a curator finds the worklist a year later.
+  #
+  # Why it is RENDERED FROM THE COMMITTED LEDGER rather than read off disk or recomputed:
+  #   * there is no worklist file to read — .gitignore keeps worklist.tsv/.md out of the
+  #     repo, because they are a *view* of the ledger and committing a view next to its
+  #     source lets the two drift;
+  #   * re-running the pipeline here would diff this month's leads against a ledger that
+  #     already contains them, so every lead would come back `recurring` and the release
+  #     would announce "no new leads" for a month that had plenty.
+  # The ledger already stores the delta each run computed, so rendering it reproduces the
+  # labels the curator actually saw. Nothing is recomputed and a tag push stays one job.
+  release-asset:
+    if: ${{ github.ref_type == 'tag' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write           # create/update the release object
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      # Renders the snapshot view: the latest record per lead across BOTH tiers. Tier 1
+      # and Tier 2 are appended by different jobs and can carry different run ids, so
+      # "the last run" is the wrong window for a release — the state as of the tag is
+      # the right one. Stdlib only; no network, no tools.
+      - name: render the worklist from the committed ledger
+        run: |
+          python bin/curation-triage/worklist_from_ledger.py \
+            --tag "${GITHUB_REF_NAME}" \
+            --out worklist.tsv \
+            --summary-md worklist.md
+      # Upstream's build-sketch job (unit-testing.yml) fires on the same tag and creates
+      # the SAME release object, and nothing serialises the two workflows (see the
+      # `concurrency` note at the top of this file). Two concurrent creates would make
+      # one of them 422. Waiting until the release exists turns the race into an update,
+      # which is safe; if it never appears, the upload step creates it.
+      - name: wait for the release object upstream's build-sketch job creates
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for attempt in $(seq 1 10); do
+            if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+              echo "release ${GITHUB_REF_NAME} exists; attaching the worklist to it"
+              exit 0
+            fi
+            echo "release ${GITHUB_REF_NAME} not there yet (attempt ${attempt}/10)"
+            sleep 30
+          done
+          echo "release ${GITHUB_REF_NAME} still absent after 5 min; creating it below"
+      # `generate_release_notes` is deliberately ABSENT. Upstream's build-sketch job
+      # calls the same action WITH it, and a second call that regenerated the notes
+      # would overwrite the body upstream authored. Passing only `files` makes this an
+      # asset-only update: the action leaves every field it is not given alone, so
+      # running against an existing release is safe and re-running is idempotent.
+      - name: attach worklist.tsv + worklist.md to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            worklist.tsv
+            worklist.md
+          fail_on_unmatched_files: true   # a missing worklist is a bug, not a no-op
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Keepalive against GitHub's 60-day auto-disable of scheduled workflows.
+  #
+  # GitHub disables cron triggers in a repository that has seen no activity for 60 days.
+  # A monthly cron alone does not reset that clock, and this add-on is meant to sit
+  # quietly in a fork that may go months without a push — so the monthly triage would
+  # simply stop, silently. This weekly job makes an authenticated write against the
+  # Actions API, which both re-enables the workflow if it was disabled and keeps the
+  # repository from looking idle. It commits no heartbeat file: a bot commit every week
+  # would pollute the history the ledger lives in.
+  #
+  # Honest limitation: if the repository does go fully idle long enough for GitHub to
+  # disable the schedules, this cron stops firing too and only a push or a manual
+  # `workflow_dispatch` brings it back. The job prevents that state; it cannot escape it.
+  keepalive:
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '43 5 * * 1' }}
+    runs-on: ubuntu-24.04
+    # Job-level permissions REPLACE the workflow-level block, so this job runs with
+    # actions:write and nothing else — in particular without the contents:write that
+    # the ledger commit needs.
+    permissions:
+      actions: write
+    steps:
+      - name: re-enable the monthly triage workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${{ github.repository }}/actions/workflows/curation-triage.yml/enable"
+          echo "curation-triage.yml re-enabled at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
