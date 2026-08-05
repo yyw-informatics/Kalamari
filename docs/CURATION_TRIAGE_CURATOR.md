@@ -64,15 +64,20 @@ worklist on purpose. Each one would cost more attention than it returns.
 
 | State | Count | Why it is not a lead |
 | --- | --- | --- |
-| Best ANI match is a different species, but NCBI's check says OK | 41 | A correctly-named but divergent reference. Often its type strain is simply not in NCBI's panel. NCBI's verdict already weighs the best match, so we follow the verdict. |
-| Dropped from RefSeq for **quality** (`refseq_excluded_qc`) | 18 | Frameshifted proteins or a fragmented assembly. That is not a question about identity. |
+| Best ANI match is a different species, but NCBI's check says OK | 41 | A correctly-named but divergent reference. We follow NCBI's verdict, which already weighs the best match. |
+| Dropped from RefSeq for **quality** (`refseq_excluded_qc`) | 18 | Frameshifted proteins or a fragmented assembly. Not a question about identity. |
 | Our recorded accession version is stale (`assembly_superseded`) | 3 | A newer version of the same genome. Not a different organism. |
-| The expected ANI ambiguity in a confounded taxon | 4 | For *Shigella*, anthrax and plague, similarity is the wrong ruler. Markers answer these instead (§4). |
+| The expected ANI ambiguity in a confounded taxon | 4 | Similarity is the wrong ruler here. Markers answer these instead (§4). |
 
-One exception is deliberate and worth knowing: **a RefSeq withdrawal for an identity
+The first row is the largest group, and it is worth understanding: a divergent best match
+with an OK verdict usually means the species' type strain is simply not in NCBI's
+comparison panel. The report still records all four states, so you can filter for them if
+you want to look.
+
+One exception is deliberate and worth knowing. **A RefSeq withdrawal for an identity
 reason stays actionable even for a confounded taxon.** A contaminated *Bacillus cereus*
-is a real problem, and it has nothing to do with the ambiguity that markers resolve, so
-it must not be hidden.
+is a real problem. It has nothing to do with the ambiguity that markers resolve, so it
+must not be hidden.
 
 ## 3. How to read a lead
 
@@ -104,9 +109,10 @@ columns you use are:
 
 ## 4. What a Tier-2 line adds
 
-Rows with signal `T2` come from the sequence itself: our own ANI measurement against the
-type strain of the declared species, a small panel comparison for sub-species lineages,
-and marker genes for the taxa that similarity cannot split.
+Rows with signal `T2` come from the sequence itself. Three kinds of evidence feed them:
+our own ANI measurement against the type strain of the declared species, a small panel
+comparison for sub-species lineages, and marker genes for the taxa that similarity cannot
+split.
 
 Four rules govern how you read them:
 
@@ -114,11 +120,11 @@ Four rules govern how you read them:
   current label is recorded as an annotation under the finding list, cross-linked to the
   Tier-1 row it confirms. It never removes that row — you still decide. On the committed
   run there are 33 findings and 42 confirmations.
-- **For *Shigella* vs *E. coli*, *B. anthracis* vs the *B. cereus* group, and *Y. pestis*
-  vs *Y. pseudotuberculosis*, the marker call is the verdict and the ANI number is only
-  context.** There is no case where an ANI number can contradict a marker call for these
-  taxa, because only one of the two is ever a verdict. The committed run has 4 such
-  overrides.
+- **For three pairs of taxa the marker call is the verdict, and the ANI number is only
+  context.** The pairs are *Shigella* vs *E. coli*, *B. anthracis* vs the *B. cereus*
+  group, and *Y. pestis* vs *Y. pseudotuberculosis*. No ANI number can contradict a
+  marker call for them, because only one of the two is ever a verdict. The committed run
+  has 4 such overrides.
 - **"Undecided" is an answer.** Three marker components have no tool that can run them
   yet, so their tasks say `t2_marker_indeterminate` rather than falling back to weaker
   evidence. Guessing from a plasmid or a toxin gene would give a confident wrong answer.

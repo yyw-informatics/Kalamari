@@ -10,6 +10,21 @@ the next person who reads it.
 - To action a worklist: [for curators](CURATION_TRIAGE_CURATOR.md)
 - To run, refresh or re-pin anything: [running it](CURATION_TRIAGE_RUNNING.md)
 
+**Contents**
+
+1. [What the tool is, and what it refuses to be](#1-what-the-tool-is-and-what-it-refuses-to-be)
+2. [The three ideas that shape everything](#2-the-three-ideas-that-shape-everything)
+3. [The three tiers](#3-the-three-tiers)
+4. [The measurement the design rests on](#4-the-measurement-the-design-rests-on)
+5. [The confounded taxa: markers, not similarity](#5-the-confounded-taxa-markers-not-similarity)
+6. [Facts the data forces on the design](#6-facts-the-data-forces-on-the-design)
+7. [What the tool deliberately does not do](#7-what-the-tool-deliberately-does-not-do)
+8. [Reference: the committed tables](#8-reference-the-committed-tables)
+9. [What the tests protect](#9-what-the-tests-protect)
+10. [Honest limits](#10-honest-limits)
+11. [The code](#11-the-code)
+12. [The upstream data fixes](#12-the-upstream-data-fixes)
+
 ---
 
 ## 1. What the tool is, and what it refuses to be
@@ -42,12 +57,12 @@ measure). Reading *its verdict on our own picks* is nearly free, and it catches 
 a similarity computation is structurally blind to: our pick was reclassified or
 withdrawn.
 
-**3. For the confounded taxa, genome-wide similarity is the wrong ruler.** For the
-bacteria the Kalamari paper highlights — *Shigella*, anthrax, plague, and the
-*Listeria* / *Salmonella* / botulinum splits — the meaningful difference lives in
-specific genes: a virulence plasmid, a toxin gene. So the resolver is **targeted
-marker-gene detection**, which is interpretable and already validated in public-health
-laboratories. Not ANI, and not a learned embedding.
+**3. For the confounded taxa, genome-wide similarity is the wrong ruler.** These are the
+bacteria the Kalamari paper highlights: *Shigella*, anthrax, plague, and the *Listeria*,
+*Salmonella* and botulinum splits. For them the meaningful difference lives in specific
+genes — a virulence plasmid, a toxin gene. So the resolver is **targeted marker-gene
+detection**, which is interpretable and already validated in public-health laboratories.
+Not ANI, and not a learned embedding.
 
 Together they give the shape of the whole thing: **a cheap metadata net finds the few
 candidates → expensive confirmation runs only on those → the confounded taxa are
@@ -64,13 +79,17 @@ plus NCBI taxonomy and writes the committed
 entry really is and how it should be handled. Every later tier keys off it.
 
 **Group replicons into units by their parent assembly — never by the Kalamari `taxid`
-column.** The taxid column mixes ranks and is not trustworthy for grouping. Taxid `630`
-covers **two different *Yersinia enterocolitica* strains**, which grouping by taxid would
-merge into one chimera. In the other direction, the two chromosomes of one *Aliivibrio*
-genome would look like two organisms. The real GCF/GCA assembly, resolved from NCBI, is
-the ground truth: it merges the replicons of one genome and keeps distinct genomes apart
-even when they share a species. The eleven *Salmonella enterica* lineage entries all
-resolve to species taxid `28901`, and they are eleven different assemblies.
+column.** The taxid column mixes ranks and is not trustworthy for grouping. It fails in
+both directions:
+
+- Taxid `630` covers **two different *Yersinia enterocolitica* strains**. Grouping by
+  taxid would merge them into one chimera.
+- The two chromosomes of one *Aliivibrio* genome would look like two organisms.
+
+The real GCF/GCA assembly, resolved from NCBI, is the ground truth. It merges the
+replicons of one genome, and it keeps distinct genomes apart even when they share a
+species: the eleven *Salmonella enterica* lineage entries all resolve to species taxid
+`28901`, and they are eleven different assemblies.
 
 Where no real assembly resolves, the fallback grouping key is scoped to the Kalamari
 identity (`scientificName` plus `taxid`), so the fallback can never merge two distinct
@@ -151,20 +170,24 @@ Two trigger groups, 41 units in total: the 21 Tier-1 survivors on the worklist, 
 
 **The aligned fraction is a veto, not a tiebreaker.** An ANI computed over a sliver of a
 genome is not weak evidence, it is no evidence. So the gate checks aligned fraction
-first, and takes the **smaller** of the two sides: a small genome fully contained in a
-larger one aligns well on its own side while covering little of the other, which is
-exactly the case the gate exists to catch. Below the gate the verdict is "cannot
-decide", never "different species". Within `epsilon` of the species boundary the answer
-is "too close to call" — a precision-first tool has to be allowed to say that.
+first, and takes the **smaller** of the two sides. A small genome fully contained in a
+larger one aligns well on its own side while covering little of the other, and that is
+exactly the case the gate exists to catch.
+
+Below the gate the verdict is "cannot decide", never "different species". Within
+`epsilon` of the species boundary the answer is "too close to call". A precision-first
+tool has to be allowed to say that.
 
 **The sub-species panels compare Kalamari against itself.** The 13 units with synthetic
 taxids are metadata-blind: NCBI knows nothing about a lineage only Kalamari defines, so
-Tier 1's whole signal is unavailable for them. Their panel members are Kalamari's own
-sibling units — real accessions already curated in `chromosomes.tsv`, generated into
-[`panels/*.acclist`](../src/curation-triage/panels/) (17 files) by
-[`build_panels.py`](../bin/curation-triage/build_panels.py), with a test asserting the
-committed files match so a policy edit cannot silently change them. That answers two
-questions offline, without inventing reference accessions nobody has verified:
+Tier 1's whole signal is unavailable for them. So their panel members are Kalamari's own
+sibling units: real accessions already curated in `chromosomes.tsv`.
+[`build_panels.py`](../bin/curation-triage/build_panels.py) generates them into
+[`panels/*.acclist`](../src/curation-triage/panels/), 17 files, and a test asserts the
+committed files match, so a policy edit cannot silently change them.
+
+A sibling panel answers two questions offline, without inventing reference accessions
+nobody has verified:
 
 - **Is the panel still a panel?** A sibling at or above the dereplication line (99.5%)
   means two of Kalamari's own lineage references are effectively the same genome. That
@@ -206,29 +229,38 @@ old. Joining on the INSDC replicon accession a pick records — `AE002098`, from
 resolves finds everything, because NCBI keeps a row for those assemblies regardless of
 age.
 
-Two NCBI conveniences make the join cheap, and both are properties of the files rather
-than of our code: the ANI report carries **both** the GCA and the GCF accession on every
-row, and each `assembly_summary` row carries its twin in `gbrs_paired_asm`, so GCF↔GCA
-equivalence is free. Accessions are matched on their version-stripped base and the held
-version is then compared, so a superseded pick is surfaced rather than missed.
+Two NCBI conveniences make the join cheap. Both are properties of the files, not of our
+code. The ANI report carries **both** the GCA and the GCF accession on every row, and
+each `assembly_summary` row carries its twin in `gbrs_paired_asm`. GCF↔GCA equivalence
+is therefore free.
+
+Accessions are matched on their version-stripped base, and the held version is then
+compared. That is what surfaces a superseded pick rather than missing it.
 
 **What the measurement settles.** Tier 1 metadata carries the drift and mislabel half of
 the curation job on its own. No self-run type-strain ANI is needed *for coverage*. That
 is what frees Tier 2's own ANI for the two things metadata is structurally blind to: the
 sub-species synthetic lineages, and confirmation on the handful of Tier-1 survivors.
 
-Re-run the probe whenever the pick set changes or NCBI changes the shape of its reports.
-Its network layer asserts the column layout at parse time, so a schema change fails
-loudly — an epoch bump — instead of silently reading the wrong column.
+The probe's network layer asserts the column layout at parse time, so a schema change
+fails loudly — an epoch bump — instead of silently reading the wrong column. When to
+re-run it is in [running it](CURATION_TRIAGE_RUNNING.md#2-running-each-stage).
 
 ## 5. The confounded taxa: markers, not similarity
 
 These 21 units split into two regimes, and only regime A is a case of "ANI fails".
 
-| Regime | Taxa | Why ANI is the wrong ruler | Resolver |
-| --- | --- | --- | --- |
-| **A — ANI cannot split them** | *Shigella* ↔ *E. coli*; *B. anthracis* ↔ the *B. cereus* group; *Y. pestis* ↔ *Y. pseudotuberculosis* | Near-identical backbone; the signal is a small mobile or accessory gene set | **Marker genes**, which override ANI |
-| **B — ANI resolves or over-splits** | *L. monocytogenes* lineages; *Salmonella* subspecies and serovars; *C. botulinum* groups | Core-genome divergence is already captured; the residual problem is *labelling* | An ANI panel places the genome; a typer supplies the label |
+| Regime | Taxa | Resolver |
+| --- | --- | --- |
+| **A — ANI cannot split them** | *Shigella* ↔ *E. coli* · *B. anthracis* ↔ the *B. cereus* group · *Y. pestis* ↔ *Y. pseudotuberculosis* | **Marker genes**, which override ANI |
+| **B — ANI resolves or over-splits** | *L. monocytogenes* lineages · *Salmonella* subspecies and serovars · *C. botulinum* groups | An ANI panel places the genome; a typer supplies the label |
+
+**Regime A**: the two organisms share a near-identical backbone. The signal that
+separates them is a small mobile or accessory gene set, which a genome-wide average
+cannot see.
+
+**Regime B**: core-genome divergence is real, and a sketch already captures it. The
+residual problem is *labelling*, not placement.
 
 **The regime-A override is structural, not a preference.** A regime-A unit gets no
 independent ANI verdict at all: the ANI number is folded into the marker lead as context
@@ -243,11 +275,13 @@ label on a correctly-placed genome is still a defect, so a refuting label is rep
 ### How marker information is obtained
 
 Wrap validated tools; do not hand-curate gene lists. Three layers feed the calls:
-curated gene and virulence databases (VFDB, the NCBI reference gene catalog behind
-AMRFinderPlus, CGE VirulenceFinder and PlasmidFinder); validated in-silico typers that
-bundle their own database and interpretation (SISTR, SeqSero2, ShigEiFinder, ECTyper,
-BTyper3, LisSero); and allele or scheme databases for the labelling splits (PubMLST and
-Institut Pasteur BIGSdb).
+
+1. **Curated gene and virulence databases** — VFDB, the NCBI reference gene catalog
+   behind AMRFinderPlus, CGE VirulenceFinder and PlasmidFinder.
+2. **Validated in-silico typers**, which bundle their own database and their own
+   interpretation — SISTR, SeqSero2, ShigEiFinder, ECTyper, BTyper3, LisSero.
+3. **Allele and scheme databases** for the labelling splits — PubMLST and Institut
+   Pasteur BIGSdb.
 
 The committed [`marker_manifest.tsv`](../src/curation-triage/marker_manifest.tsv) maps
 each confounded taxon to its resolver tool, database, database version and defining
@@ -259,7 +293,7 @@ to it. Twelve components are pinned and runnable; three are gaps.
 | --- | --- | --- |
 | `shigella_eiec_vs_escherichia_coli` | ShigEiFinder `1.3.4-pyhdfd78af_0` | ipaH, cluster-specific genes, O/H (wzx/wzy, fliC) |
 | `bacillus_anthracis_vs_b_cereus_group` | BTyper3 `3.4.0-pyhdfd78af_0` **plus our rule** | pXO1: pagA, lef, cya · pXO2: capA, capB, capC |
-| `yersinia_pestis_vs_y_pseudotuberculosis` | **gap** — no runnable cgMLST caller; `mlst 2.23.0` is context only | chromosome: ypo2088, yihN (*pestis*), opgG (*pseudotuberculosis*) · pMT1: caf1 · pPCP1: pst |
+| `yersinia_pestis_vs_y_pseudotuberculosis` | **gap** — no runnable cgMLST caller; `mlst 2.23.0` is context only | ypo2088, yihN (*pestis*), opgG (*pseudotuberculosis*), caf1, pst |
 | `listeria_monocytogenes_serogroup_lineage_cc` | LisSero `0.4.10-pyhdfd78af_0` + `mlst 2.23.0`; cgMLST/LIN is a **gap** | Doumith pattern: prs, lmo0737, ORF2819, ORF2110, lmo1118 |
 | `salmonella_subspecies_and_serovar` | SISTR `1.1.3-pyhdc42f0e_2` + SeqSero2 `1.3.2-pyhdfd78af_0` | O (wzx/wzy), H (fliC/fljB), cgMLST330 |
 | `clostridium_botulinum_group_and_bont_type` | AMRFinderPlus `4.2.7-hf69ffd2_0`, database `2026-05-15.1` | bont/A–G, with subtype where the evidence supports it |
@@ -268,22 +302,37 @@ to it. Twelve components are pinned and runnable; three are gaps.
 
 ### Why these tools, and not the obvious ones
 
-Four rows reject the tool an experienced reader would reach for first. Three of the four
+Four tasks reject the tool an experienced reader would reach for first. Three of the four
 reject `abricate` as a **classifier**. Each rejection is a rule, not a taste.
 
-| Task | The obvious choice | Why it is wrong | What is used instead |
-| --- | --- | --- | --- |
-| *Y. pestis* vs *pseudotuberculosis* | abricate over VFDB / PlasmidFinder | **Plasmid presence alone misclassifies plasmid-cured *pestis* and plasmid-bearing *pseudotuberculosis*.** A plasmid hit must never make the species call. | BIGSdb-Pasteur cgMLST scheme 1 — a gap, so the task returns "undecided"; abricate stays as a cheap pre-screen |
-| *C. botulinum* toxin call | abricate with a bont gene set | abricate's databases carry no version of their own, so a changed call cannot be attributed to anything. | AMRFinderPlus `--plus`, the one tool with a first-class dated database version, so a changed call reads as a database update rather than as biology |
-| *L. monocytogenes* lineage | merge serogroup, MLST and cgMLST into one "lineage" field | Serogroup, classical MLST ST/CC and cgMLST/LIN answer **different questions**; merging them destroys the distinction. | The same tools, with the outputs kept as separate fields |
-| *B. anthracis* vs *B. cereus* | trust BTyper3's species call | BTyper3 gives **group taxonomy and a marker profile**, not an anthracis verdict. Turning that into "is this anthracis" is our judgement. | BTyper3 plus our own interpretation rule, versioned as ours |
+**Yersinia: not abricate over VFDB / PlasmidFinder.** Plasmid presence alone
+misclassifies both directions. Plasmid-cured *Y. pestis* exists, and so does
+plasmid-bearing *Y. pseudotuberculosis*. **A plasmid hit must never make the species
+call.** The proper resolver is BIGSdb-Pasteur cgMLST scheme 1, which is a gap, so the
+task returns "undecided". abricate stays as a cheap pre-screen.
+
+**C. botulinum toxin: not abricate with a bont gene set.** abricate's databases carry no
+version of their own. A changed call could therefore not be attributed to anything.
+AMRFinderPlus `--plus` is used instead: it is the one tool with a first-class dated
+database version, so a changed call reads as a database update rather than as biology.
+
+**Listeria: do not merge serogroup, MLST and cgMLST into one "lineage" field.**
+Serogroup, classical MLST ST/CC, and cgMLST/LIN answer **different questions**. Merging
+them destroys the distinction. The same tools run, and their outputs stay separate
+fields.
+
+**Bacillus: do not trust BTyper3's species call.** BTyper3 gives group taxonomy and a
+marker profile, not an anthracis verdict. Turning that into "is this anthracis" is our
+judgement, so it is versioned as ours.
 
 Two more rules the marker logic follows, each because breaking it produces a confident
-wrong answer. Plasmid-cured *B. anthracis* is still *B. anthracis*, and a *B. cereus*
-carrying anthrax plasmids is never labelled plain *B. cereus*. And "anthracis" is matched
-as a species epithet, never as a substring: *Bacillus paranthracis* contains the string,
-is a different organism, and is what NCBI's best ANI match reports for one of Kalamari's
-own picks.
+wrong answer:
+
+- **Plasmid-cured *B. anthracis* is still *B. anthracis***, and a *B. cereus* carrying
+  anthrax plasmids is never labelled plain *B. cereus*.
+- **"anthracis" is matched as a species epithet, never as a substring.** *Bacillus
+  paranthracis* contains the string and is a different organism. It is also what NCBI's
+  best ANI match reports for one of Kalamari's own picks.
 
 ### The three gap components
 
@@ -292,11 +341,27 @@ Three components have **no runnable, pinnable caller**. They are recorded as
 its task return **"undecided"** — deliberately, because the alternative is falling back
 to weaker evidence.
 
-| Component | Why it cannot run | Consequence |
-| --- | --- | --- |
-| Yersinia → `cgmlst_species_assignment` | BIGSdb-Pasteur cgMLST scheme 1 (500 loci) has no packaged CLI and no pinned allele caller | The Yersinia task returns "undecided". Classical 7-locus MLST does run, but its ST **cannot** separate the two: *pestis* is a clone nested inside *pseudotuberculosis*, so it is context only. VFDB and PlasmidFinder contain none of `pst`, `ypo2088`, `yihN` or `opgG`, so the abricate pre-screen adds no discriminating power either. |
-| Listeria → `cgmlst_lin` | Same: no packaged CLI and no pinned allele caller for scheme 15 (1748 loci) | LisSero's serogroup and classical MLST both run, but the broad lineage does not, so the four *Listeria* lineage units are checked by the ANI panel instead. Classical MLST reports no clonal complex and no lineage, and no ST→CC→lineage table is pinned, so the field stays empty rather than being inferred. |
-| C. botulinum → `genome_group` | No genome-wide group I–IV classifier is pinned | The group verdict for the two *C. botulinum* group units comes from the ANI panel, **never** from the toxin type: group I and group II strains can carry overlapping bont types. |
+| Component | Why it cannot run |
+| --- | --- |
+| Yersinia → `cgmlst_species_assignment` | BIGSdb-Pasteur cgMLST scheme 1 (500 loci): no packaged CLI, no pinned allele caller |
+| Listeria → `cgmlst_lin` | Same, for scheme 15 (1748 loci) |
+| C. botulinum → `genome_group` | No genome-wide group I–IV classifier is pinned |
+
+**What each gap costs.**
+
+*Yersinia* returns "undecided". Classical 7-locus MLST does run, but its ST **cannot**
+separate the two species: *pestis* is a clone nested inside *pseudotuberculosis*. So MLST
+is context only. The abricate pre-screen adds no discriminating power either, because
+VFDB and PlasmidFinder contain none of `pst`, `ypo2088`, `yihN` or `opgG`.
+
+*Listeria* keeps its serogroup and its classical MLST, but gets no broad lineage, so the
+four lineage units are checked by the ANI panel instead. Classical MLST reports no clonal
+complex and no lineage, and no ST→CC→lineage table is pinned. The field therefore stays
+empty rather than being inferred.
+
+*C. botulinum* takes its group verdict from the ANI panel, **never** from the toxin type.
+Group I and group II strains can carry overlapping bont types, so reading the group off
+the toxin would be a confident wrong answer.
 
 ### Version the interpretation rule separately
 
@@ -308,12 +373,17 @@ from a new reading of the same output. So every ledger record carries all three,
 [`markers.py`](../bin/curation-triage/markers.py) as code.
 
 A change to any of the three has to pass the **update gate** before it lands. The gate
-is described in [running it](CURATION_TRIAGE_RUNNING.md); the design requirement it
-implements is: a candidate artifact must have an immutable digest, a fixed validation
-panel must be re-run, every call difference must be classified as a software, database,
-threshold or interpretation-rule effect, and the decision record and changelog must be
-updated. A call that changed while nothing it depends on moved is **unattributable**,
-which is a failure and not a fifth category.
+itself is described in [running it](CURATION_TRIAGE_RUNNING.md). The design requirement
+it implements has four parts:
+
+1. The candidate artifact must have an immutable digest.
+2. A fixed validation panel must be re-run.
+3. Every call difference must be classified as a software, database, threshold or
+   interpretation-rule effect.
+4. The decision record and the changelog must be updated.
+
+A call that changed while nothing it depends on moved is **unattributable**. That is a
+failure, not a fifth category.
 
 ## 6. Facts the data forces on the design
 
@@ -326,19 +396,19 @@ changed a design decision.
   different** type strains. Keying by species would compare most of them against the
   wrong genome.
 - **"No type material" and "this pick is the type strain" are answers, not gaps.** 30
-  picks are their own species' type strain, and 7 species have no type material at all —
-  which is also why NCBI's taxonomy check on several flagged picks reads Inconclusive.
+  picks are their own species' type strain, and 7 species have no type material at all.
+  That second group is also why NCBI's taxonomy check on several flagged picks reads
+  Inconclusive.
 - **skani returns no row for a distant pair, rather than a low score.** Its default
   screen drops pairs below roughly 80% identity or 15% aligned fraction, and silence
   reads as "not measured" when it means the opposite. So the screen is widened and a
   screened-out pair is recorded as a **result in its own right**. On the committed cache
   4 of 157 rows are screened-out pairs.
 - **A gap component returns "undecided"** rather than falling back to weaker evidence.
-- **LPSN publishes no date column at all.** The valid-publication date is therefore
-  **derived from the authority string**: cut at `emend.` or `corrig.`, then take the last
-  four-digit year in what remains. That gives *E. coli* 1980, its Approved-Lists year,
-  rather than the year of a later emendation. The rule and its measured effect are in
-  [running it](CURATION_TRIAGE_RUNNING.md).
+- **LPSN publishes no date column at all.** The valid-publication date the J2 feeder uses
+  is therefore *derived* from the authority string, not read from a field. It is an
+  authority year, not a full date. The derivation rule and its measured effect are in
+  [running it](CURATION_TRIAGE_RUNNING.md#3-the-committed-caches).
 - **A digest proves sameness, not availability.** The AMRFinderPlus database
   `2026-05-15.1` is frozen by a per-file digest manifest, so anyone can prove offline
   that a copy is the same database. But `amrfinder -u` only ever fetches the latest
@@ -361,15 +431,20 @@ target in §1.
 
 ### The research track
 
-A novelty radar is a research idea, and it never blocks anything. Sketch-space novelty
-comes first: embed references and new deposits as Mash sketches, which CI already
-builds, and let the nearest-neighbour distance flag genomes far from everything. UMAP is
-for looking at, not for deciding with — keep the high-dimensional distance as the stable
-metric, because UMAP is unstable on refit. **Bacformer** (gene-content, Apache-2.0) is
-the one learned pilot worth trying, because it is the only candidate on an axis
-orthogonal to the sketch baseline. DNABERT-S and Genos-m are redundant with sketches,
-Evo2 has no native genome vector and is heavy, vPST is viral-only, and NT-v2 and ProkBERT
-carry non-commercial licences. None of them is ever a resolver.
+A novelty radar is a research idea, and it never blocks anything.
+
+**Sketch-space novelty comes first.** Embed references and new deposits as Mash sketches,
+which CI already builds, and let the nearest-neighbour distance flag genomes far from
+everything. UMAP is for looking at, not for deciding with: keep the high-dimensional
+distance as the stable metric, because UMAP is unstable on refit.
+
+**Bacformer** (gene-content, Apache-2.0) is the one learned pilot worth trying, because
+it is the only candidate on an axis orthogonal to the sketch baseline. The others were
+rejected for this use: DNABERT-S and Genos-m are redundant with sketches, Evo2 has no
+native genome vector and is heavy, vPST is viral-only, and NT-v2 and ProkBERT carry
+non-commercial licences.
+
+None of them is ever a resolver.
 
 ## 8. Reference: the committed tables
 
@@ -390,19 +465,22 @@ Useful `flags` values:
 | `grouped_by_proxy` | A multi-replicon unit grouped without a real assembly — confirm by hand |
 | `missing_record` | NCBI returned no record for a replicon |
 | `species_from_organism` | The species came from the deposited genome, because the declared taxid was genus-level |
-| `taxid_organism_mismatch` | The Kalamari taxid climbs to a different species than the genome's own NCBI organism — a mislabel surfaced for review. The declared species is kept and the organism is recorded in `note`. |
+| `taxid_organism_mismatch` | The Kalamari taxid climbs to a different species than the genome's own NCBI organism — a mislabel, surfaced for review |
 | `confounded` | Similarity cannot split this taxon; see §5 |
+
+On a `taxid_organism_mismatch` the declared species is **kept**, and the deposited
+organism is recorded in `note`. The tool surfaces the disagreement; it does not resolve
+it.
 
 ### `coverage_report.tsv` — one row per eligible pick
 
-`unit_id`, `scientificName`, `source_lane`, `species_taxid`, `declared_species`,
-`parent_assembly`, `ani_match`, `summary_match`, `in_refseq`, `taxonomy_check`,
-`best_match_status`, `best_match_species`, `ncbi_current_species`, `version_status`,
-`excluded_from_refseq`, `relation_to_type_material`, `seq_rel_date`, `confounded`,
-`flags`.
+One row per eligible pick, carrying its identity, its lane, everything NCBI says about
+it (taxonomy check, best match, RefSeq status, relation to type material) and the flags
+§4 derives from that. The header names all 19 columns.
 
-`ani_match` and `summary_match` are typed as `exact`, `version-differs`, `taxon-only` or
-`none`.
+The two match columns are the ones to read first. `ani_match` and `summary_match` are
+typed as `exact`, `version-differs`, `taxon-only` or `none`, and they are what the 100%
+coverage figure counts.
 
 ### `ledger.ndjson` — one self-contained JSON record per lead per run
 
@@ -422,15 +500,19 @@ The committed ledger holds **96 records**: the 21 standing J1a records from run
 `2026-07`, plus 75 Tier-2 records from the `2026-08` replay (37 `ani`, 17 `panel`, 21
 `marker`; 21 of them cross-linked to a Tier-1 lead by `confirms_lead`).
 
-Tier 2 is a **new signal on the same ledger**, not a new ledger, so its leads flow
-through the same delta, suppression and rendering as Tier-1 leads. Two rules keep the
-two tiers from interfering. **Tier 2 marks nothing resolved** — its verdicts say nothing
-about whether a Tier-1 lead is still actionable. And **context rides on a lead but can
-never move it**: ECTyper's cached serotype sits on the *E. coli* marker lead under
-`ectyper_*` keys, written *before* the verdict fields so context cannot overwrite a
-call, and absent from the fingerprint so a changed serotype cannot re-open a dismissed
-lead. The distinct key prefix carries weight: ShigEiFinder and ECTyper both emit a plain
-`serotype`, and a merge that kept the bare key would drop ECTyper's value into
+Tier 2 is a **new signal on the same ledger**, not a new ledger. Its leads flow through
+the same delta, suppression and rendering as Tier-1 leads. Two rules keep the two tiers
+from interfering:
+
+- **Tier 2 marks nothing resolved.** Its verdicts say nothing about whether a Tier-1
+  lead is still actionable.
+- **Context rides on a lead but can never move it.** ECTyper's cached serotype sits on
+  the *E. coli* marker lead under `ectyper_*` keys. It is written *before* the verdict
+  fields, so context cannot overwrite a call, and it is absent from the fingerprint, so
+  a changed serotype cannot re-open a dismissed lead.
+
+That `ectyper_*` prefix carries weight. ShigEiFinder and ECTyper both emit a plain
+`serotype`, so a merge that kept the bare key would drop ECTyper's value into
 ShigEiFinder's slot.
 
 ## 9. What the tests protect
@@ -445,31 +527,34 @@ exercise; each one pins a decision that would otherwise rot. The named regressio
 - The `CP015575` shared accession is flagged, not double-counted.
 - Preflight fails on a deliberately unresolvable taxon.
 - The committed panels match what `build_panels.py` regenerates.
-- `tool_pins.tsv` and `marker_manifest.tsv` agree about every typer, so a bumped build
-  cannot be recorded in one file and forgotten in the other.
+- `tool_pins.tsv` and `marker_manifest.tsv` agree about every typer.
 - The documented mlst scheme count is the one the pinned binary reports.
 - No committed file carries a developer's absolute filesystem path.
 
-Ledger tests deserve their own note, because the ledger is a **seed file that the bot's
-own commits grow**: a monthly run appends about 201 records (21 J1a, 59 J1b, 46 J2 and
-75 Tier-2). A test that pinned the record count, the exact run ids, or "21 Tier-1
-records" would turn the *blocking* test workflow red on the first bot commit. What is
-asserted instead are rules that survive an append: every live lead renders as exactly one
-row carrying its own record's run id, and a Tier-2 run appends only Tier-2 records and
-leaves every Tier-1 record byte-identical. A companion test grows a copy of the ledger by
-one bot month and re-checks those rules; another feeds a deliberately broken ledger, so
-the checks cannot rot into vacuous ones.
+Ledger tests deserve their own note. The ledger is a **seed file that the bot's own
+commits grow**: a monthly run appends about 201 records (21 J1a, 59 J1b, 46 J2 and 75
+Tier-2). So a test that pinned the record count, the exact run ids, or "21 Tier-1
+records" would turn the *blocking* test workflow red on the first bot commit.
+
+What is asserted instead are rules that survive an append:
+
+- Every live lead renders as exactly one row, carrying its own record's run id.
+- A Tier-2 run appends only Tier-2 records, and leaves every Tier-1 record
+  byte-identical.
+
+A companion test grows a copy of the ledger by one bot month and re-checks those rules.
+Another feeds a deliberately broken ledger, so the checks cannot rot into vacuous ones.
 
 ## 10. Honest limits
 
 This is the canonical list. Everything here is a real gap, not a caveat for form's sake.
 
-1. **No workflow has ever run on a real GitHub runner.** Every workflow is lint-clean —
-   `actionlint` 1.7.12 with `shellcheck` 0.11.0 report zero findings on the three
-   fork-owned files — and step scripts have been extracted from the parsed YAML and run
-   locally. But GitHub Actions itself has never executed one. The job to watch first is
-   the AMRFinderPlus environment: its `amrfinder -u` branch is unexercised, because
-   running it locally would destroy the pinned database.
+1. **No workflow has ever run on a real GitHub runner.** They are lint-clean, and their
+   step scripts have been run locally, but GitHub Actions itself has never executed one.
+   The job to watch first is the AMRFinderPlus environment, whose `amrfinder -u` branch
+   is unexercised — running it locally would destroy the pinned database. The evidence
+   for what *was* run is in
+   [running it](CURATION_TRIAGE_RUNNING.md#10-what-is-run-for-real-and-what-is-only-wired).
 2. **The AMRFinderPlus archive has no durable home.** The database is frozen and
    verifiable, but the only copy of the bytes is a single tarball on a single machine,
    and NCBI cannot serve that dated version again. Two copies in institutional storage,
@@ -509,16 +594,19 @@ worklist_from_ledger.py                                 # the release asset's wo
 
 There is no single `run.sh`: each tier is a self-contained command-line tool.
 
-**One structural rule runs through all of it: the network is quarantined in one module
-per tier, and everything else is pure.** [`ncbi.py`](../bin/curation-triage/ncbi.py) is
-the only network code in Tier 0, [`ani_reports.py`](../bin/curation-triage/ani_reports.py),
-[`datasets_summary.py`](../bin/curation-triage/datasets_summary.py) and
-[`lpsn.py`](../bin/curation-triage/lpsn.py) in Tier 1, and
-[`genomes.py`](../bin/curation-triage/genomes.py),
-[`skani_runner.py`](../bin/curation-triage/skani_runner.py) and
-[`typers.py`](../bin/curation-triage/typers.py) in Tier 2. Each has an injectable
-fetcher and a committed cache. That is why Tier 2 is five modules rather than one, and
-it is why the whole test suite runs with no network and no conda environment.
+**One structural rule runs through all of it: the network is quarantined, and everything
+else is pure.** Each tier has its own network modules, and nothing else touches the
+wire:
+
+| Tier | The only modules that reach the network |
+| --- | --- |
+| 0 | [`ncbi.py`](../bin/curation-triage/ncbi.py) |
+| 1 | [`ani_reports.py`](../bin/curation-triage/ani_reports.py), [`datasets_summary.py`](../bin/curation-triage/datasets_summary.py), [`lpsn.py`](../bin/curation-triage/lpsn.py) |
+| 2 | [`genomes.py`](../bin/curation-triage/genomes.py), [`skani_runner.py`](../bin/curation-triage/skani_runner.py), [`typers.py`](../bin/curation-triage/typers.py) |
+
+Each one has an injectable fetcher and a committed cache. That is why Tier 2 is five
+modules rather than one, and why the whole test suite runs with no network and no conda
+environment.
 
 Committed inputs live in [`src/curation-triage/`](../src/curation-triage/): the policy
 table, the caches, the ledger, `reviews.tsv`, the marker and confounded manifests, 17
