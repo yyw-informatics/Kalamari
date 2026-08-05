@@ -52,12 +52,22 @@
 #   rollup_sha256     the digest defined above; also recorded in
 #                     src/curation-triage/tool_pins.tsv as database_digest
 #   frozen_on         the day this manifest was taken from the installed database
+#   archive_name      the file name of the gzipped tar holding the whole database
+#   archive_sha256    that archive's own digest, so a copy in any storage can be
+#                     checked without unpacking it
+#
+# Only the NAME of the archive is recorded, never a path: the archive is kept
+# outside the repository and the whole point of backing it up is that copies live
+# in places this file cannot know about.  Point
+# bin/curation-triage/verify_db_archive.sh at any copy to check it.
 #
 # database_version: 2026-05-15.1
 # files: 162
 # total_bytes: 251050664
 # rollup_sha256: 2fb16b7f3c574c9fc3bc531de922925ebeff5c7722b6d4267d4f523369fd5398
 # frozen_on: 2026-08-04
+# archive_name: amrfinderplus-db-2026-05-15.1.tar.gz
+# archive_sha256: 83c6c5af9b505240e56438acb1ab5f632ad676ab01140b94ba87585023f12217
 #
 # Columns
 #   path         file name, relative to the dated database directory

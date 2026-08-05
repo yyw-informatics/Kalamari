@@ -332,6 +332,33 @@ So the archive is the thing to look after: a 41.9 MiB gzipped tar
 repository. Keep at least two copies on separate machines, check their digests on a
 schedule, and record where they are somewhere that is not one person's laptop.
 
+**Checking a copy.** `verify_db_archive.sh` answers the question a backup raises — *is
+this copy still good?* — and needs only `tar` and coreutils, so it runs wherever the copy
+lives, with no conda, no AMRFinderPlus and no environments checked out.
+
+```bash
+# full check: digest, unpack, file count, every file, roll-up  (~2 s)
+bin/curation-triage/verify_db_archive.sh /path/to/amrfinderplus-db-2026-05-15.1.tar.gz
+
+# digest only, no unpack -- enough for a routine cron check
+bin/curation-triage/verify_db_archive.sh --quick /path/to/archive.tar.gz
+```
+
+It exits `0` verified, `1` a check failed, `2` it could not run the check — so a cron job
+can tell "the backup is bad" apart from "I could not look", which are different
+emergencies. On a mismatch it names the files that differ rather than only reporting a
+digest, because a digest is not actionable.
+
+The two failures it separates are worth naming, because only the first is obvious: an
+archive can be **corrupt** (bit-rot, truncation — the digest catches it), or it can be
+**intact but not this database** — unpacking cleanly while being the wrong bytes. The
+second is what the per-file and roll-up comparison exists for.
+
+The pinned digests live in the manifest header (`archive_name`, `archive_sha256`), not in
+this document, so the script and the check agree by construction. Only the archive's
+*name* is recorded, never a path: the point of a backup is that copies live in storage
+this repository cannot know about.
+
 ```bash
 tar -xzf amrfinderplus-db-2026-05-15.1.tar.gz \
     -C <env-dir>/amrfinderplus/share/amrfinderplus/data
