@@ -250,31 +250,15 @@ as its own field. The rule is ours, and lives in
 [`markers.py`](../bin/curation-triage/markers.py) as code. Any change to the three passes
 the [update gate](CURATION_TRIAGE_RUNNING.md#7-the-update-gate).
 
-### Why these tools, and not the obvious ones
+Two rules the marker logic follows, each because breaking it gives a confident wrong
+answer. **Plasmid-cured *B. anthracis* is still *B. anthracis***, and a *B. cereus*
+carrying anthrax plasmids is never labelled plain *B. cereus*. And **"anthracis" is
+matched as a species epithet, never as a substring** — *Bacillus paranthracis* contains the
+string, is a different organism, and is what NCBI's best ANI match reports for one of
+Kalamari's own picks.
 
-Four tasks reject the tool an experienced reader would reach for first. Three reject
-`abricate` as a **classifier**. Each is a rule, not a taste.
-
-- **Yersinia: not abricate over VFDB/PlasmidFinder.** Plasmid presence alone misclassifies
-  both directions — plasmid-cured *Y. pestis* exists, and so does plasmid-bearing
-  *Y. pseudotuberculosis*. **A plasmid hit must never make the species call.** abricate
-  stays as a cheap pre-screen.
-- **C. botulinum toxin: not abricate with a bont gene set.** abricate's databases carry no
-  version of their own, so a changed call could not be attributed to anything.
-  AMRFinderPlus has a first-class dated database version, so a changed call reads as a
-  database update rather than as biology.
-- **Listeria: do not merge serogroup, MLST and cgMLST into one "lineage" field.** They
-  answer **different questions**; merging destroys the distinction. Outputs stay separate.
-- **Bacillus: do not trust BTyper3's species call.** It gives group taxonomy and a marker
-  profile, not an anthracis verdict. Turning that into "is this anthracis" is our
-  judgement, so it is versioned as ours.
-
-Two more rules, each because breaking it gives a confident wrong answer.
-**Plasmid-cured *B. anthracis* is still *B. anthracis***, and a *B. cereus* carrying
-anthrax plasmids is never labelled plain *B. cereus*. And **"anthracis" is matched as a
-species epithet, never as a substring** — *Bacillus paranthracis* contains the string, is a
-different organism, and is what NCBI's best ANI match reports for one of Kalamari's own
-picks.
+Why each task uses the tool it does — and rejects the more obvious one — is recorded
+against the pin it governs, in the `note` column of `marker_manifest.tsv`.
 
 ### The three gaps
 
