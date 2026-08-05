@@ -66,6 +66,27 @@ src/curation-triage/worklist_tier2.md
 # tier2_typer_cache.json); the FASTA cache itself is local scratch.
 /.cache/
 
+# Belt and braces for the same rule. The line above only covers the default
+# cache location, but --genome-cache takes any path, and a run pointed inside
+# the repo would leave committable sequence behind. These patterns say "no
+# sequence, anywhere", so the rule holds wherever a run happens to write.
+# Nothing tracked matches them (checked); *.gz is deliberately NOT listed,
+# because src/provenance/ ships two committed .gz tables.
+*.fna
+*.fa
+*.fasta
+*.fsa
+*.fna.gz
+*.fasta.gz
+
+# Frozen-database and bundle archives. The docs tell maintainers to keep copies
+# of amrfinderplus-db-2026-05-15.1.tar.gz (44 MB), so a copy landing in the repo
+# is a plausible accident rather than a hypothetical one.
+*.tar.gz
+*.tgz
+*.tar
+*.zip
+
 # ---- DELIBERATELY COMMITTED - do not add ignore rules for these ----
 # The monthly workflow runs `tier1_metadata.py --offline` with no network, and
 # the golden tests rebuild the policy table from cache. These files are inputs,
