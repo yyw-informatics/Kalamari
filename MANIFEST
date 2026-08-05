@@ -12,12 +12,9 @@ src/chromosomes.tsv
 src/chromosomes-todo.tsv
 src/taxonomy/names.dmp
 src/taxonomy/nodes.dmp
+docs/CURATION_TRIAGE_CURATOR.md
 docs/CURATION_TRIAGE_DESIGN.md
-docs/CURATION_TRIAGE_REPRODUCIBILITY.md
-docs/CURATION_TRIAGE_TIER0.md
-docs/CURATION_TRIAGE_TIER1.md
-docs/CURATION_TRIAGE_TIER1_COVERAGE.md
-docs/CURATION_TRIAGE_TIER2.md
+docs/CURATION_TRIAGE_RUNNING.md
 docs/DATABASES.md
 t/01_edirect_setup.t
 t/20_env_Kalamari2.t

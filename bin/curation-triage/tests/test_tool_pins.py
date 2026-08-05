@@ -626,7 +626,7 @@ def test_setup_envs_still_passes_when_every_stubbed_binary_reports_its_pinned_ve
 # --------------------------------------------------------------------------- #
 #  Numbers quoted about a pinned database must be what the binary reports      #
 # --------------------------------------------------------------------------- #
-DOC_PATH = os.path.join(REPO_ROOT, "docs", "CURATION_TRIAGE_REPRODUCIBILITY.md")
+DOC_PATH = os.path.join(REPO_ROOT, "docs", "CURATION_TRIAGE_RUNNING.md")
 CHANGELOG_PATH = os.path.join(SRC, "pin_changelog.tsv")
 
 # `mlst --list` from the pinned 2.23.0-hdfd78af_1 build prints 144 scheme names.

@@ -214,16 +214,15 @@ reserved for those few.
 | **lead** | One flagged item on the worklist. |
 | **epoch** | The tooling/schema version of a signal. Bumping it re-opens previously dismissed leads. |
 
-### Reading order
+### The documentation
 
-| Doc | What it covers |
+Three documents, one per reader.
+
+| Doc | Who it is for |
 | --- | --- |
-| [Design](docs/CURATION_TRIAGE_DESIGN.md) | **Start here.** Why it works this way, the tier architecture, and what is built versus not |
-| [Tier 0](docs/CURATION_TRIAGE_TIER0.md) | The committed policy table: what is checked, and what is deliberately excluded |
-| [Tier 1 coverage](docs/CURATION_TRIAGE_TIER1_COVERAGE.md) | The measurement the whole approach rests on: 249/249 picks have an NCBI verdict |
-| [Tier 1](docs/CURATION_TRIAGE_TIER1.md) | The monthly net, the worklist, and how curators record decisions |
-| [Tier 2](docs/CURATION_TRIAGE_TIER2.md) | Sequence-level confirmation: the ANI gate, the marker resolvers, and the sub-species panels |
-| [Reproducibility and CI](docs/CURATION_TRIAGE_REPRODUCIBILITY.md) | How the tools are pinned, how CI runs both tiers, and the gate a pin change must pass |
+| [For curators](docs/CURATION_TRIAGE_CURATOR.md) | You have a worklist and want to action it: what gets flagged, how to read a lead, how to record a decision |
+| [Design](docs/CURATION_TRIAGE_DESIGN.md) | You are reviewing or taking over the add-on: the architecture, the reasoning, the measurement it rests on, and the honest limits |
+| [Running it](docs/CURATION_TRIAGE_RUNNING.md) | You are running a stage, refreshing a cache, or moving a pin: commands, caches, pinned environments, the update gate, CI |
 
 ### The code
 
@@ -265,33 +264,20 @@ installed: 41 of 41 triggered units evaluated, with the results committed, so an
 reproduces them with no network and no tools. Every tool environment is pinned by a committed
 conda lockfile. Both tiers run in the monthly workflow and end in one ledger commit.
 Refreshing the caches is a separate on-demand workflow, sharded by tool. A change to any
-pinned tool, database, threshold or rule has to pass the update gate. See
-[Reproducibility and CI](docs/CURATION_TRIAGE_REPRODUCIBILITY.md).
+pinned tool, database, threshold or rule has to pass the update gate.
 
-Two data pins carry a stated limit:
+What is **not** proven, and what is still open, is listed once, in
+[the design's honest limits](docs/CURATION_TRIAGE_DESIGN.md#10-honest-limits). Read it
+before relying on any of this.
 
-- The LPSN species list is committed, but LPSN publishes no valid-publication date, so that
-  date is derived from the authority string.
-- The AMRFinderPlus database `2026-05-15.1` is frozen by a per-file digest manifest. The
-  manifest proves that a copy is the same database; it cannot make NCBI serve that version
-  again.
+Two operational notes that live here rather than in a doc:
 
-The monthly workflow (`.github/workflows/curation-triage.yml`) is informational and **must
-be kept out of the branch's required status checks** — a broken shard should go red loudly
-without blocking a merge. The separate test workflow is an ordinary blocking gate.
-
-Some files under `src/curation-triage/` look like caches but are deliberately committed:
-the monthly run and the tests read them, so the whole loop works with no network. See the
-comment block in `.gitignore`.
-
-### Open items
-
-- **Two `gap` marker rows.** The BIGSdb *Yersinia* and *Listeria* cgMLST allele callers, and a
-  genome-wide *C. botulinum* group I–IV classifier. Each needs a new pinned tool, so each is a
-  marker-manifest change that moves calls and must pass the update gate on its way in.
-- **An unattended LPSN refresh.** The REST API path needs credentials as a CI secret, a token
-  exchange, and paging. Today the cache is refreshed by hand.
-- **The embedding novelty radar** (design §7) is a research track and never blocks this.
+- The monthly workflow (`.github/workflows/curation-triage.yml`) is informational and **must
+  be kept out of the branch's required status checks** — a broken shard should go red loudly
+  without blocking a merge. The separate test workflow is an ordinary blocking gate.
+- Some files under `src/curation-triage/` look like caches but are deliberately committed:
+  the monthly run and the tests read them, so the whole loop works with no network. See the
+  comment block in `.gitignore`.
 
 ## Contributing
 

@@ -10,7 +10,7 @@ column).  Every downstream tier keys off this table.
 
 Output columns
 --------------
-Required (docs/CURATION_TRIAGE_DESIGN.md section 4):
+Required (docs/CURATION_TRIAGE_DESIGN.md, "Reference: the committed tables"):
 
     unit_id          stable, readable id: "<repName>~<groupKey>"
     scientificName   Kalamari name(s) for the unit (';'-joined if >1)

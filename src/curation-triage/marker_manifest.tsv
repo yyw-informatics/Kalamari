@@ -3,8 +3,8 @@
 # One row per (identification task, component). A task is the question a
 # confounded taxon poses ("is this Bacillus anthracis or another member of the
 # B. cereus group?"); a component is one tool's contribution to answering it.
-# Several rows share a task_id on purpose: the design (CURATION_TRIAGE_DESIGN.md
-# section 5) requires Listeria serogroup / MLST-CC / cgMLST-LIN to stay SEPARATE
+# Several rows share a task_id on purpose: the design (CURATION_TRIAGE_DESIGN.md,
+# "The confounded taxa") requires Listeria serogroup / MLST-CC / cgMLST-LIN to stay SEPARATE
 # un-merged fields, and requires the Yersinia plasmid screen to be a pre-screen
 # rather than the classifier.
 #

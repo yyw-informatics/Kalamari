@@ -66,7 +66,7 @@ on:
       # offline gate rejects it loudly instead of emitting an empty worklist. No
       # workflow here passes a matching window at replay time, so the input would have
       # no correct use. The CLI flag still exists for a local operator who knows they
-      # must rebuild unwindowed afterwards; see docs/CURATION_TRIAGE_TIER1.md.
+      # must rebuild unwindowed afterwards; see docs/CURATION_TRIAGE_RUNNING.md.
       commit:
         description: 'Commit the refreshed caches. Uncheck for a dry run.'
         type: boolean

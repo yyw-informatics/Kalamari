@@ -5,7 +5,7 @@
 # `regime` and `resolver` columns of taxon_policy.tsv; it does NOT change a
 # unit's biological eligibility (these are all still eligible bacteria).
 #
-# Two regimes (docs/CURATION_TRIAGE_DESIGN.md section 5):
+# Two regimes (docs/CURATION_TRIAGE_DESIGN.md, "The confounded taxa"):
 #   A  ANI cannot split the pair (near-identical backbone; the signal is a small
 #      mobile/accessory gene set)              -> resolver = marker (overrides ANI)
 #   B  ANI/sketch already resolves or over-splits; the residual problem is the

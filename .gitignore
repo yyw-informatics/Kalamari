@@ -76,7 +76,7 @@ src/curation-triage/worklist_tier2.md
 #   src/curation-triage/confounded_manifest.tsv      hand-authored input
 #   src/curation-triage/ledger.ndjson                delta baseline; CI commits it
 #   src/curation-triage/reviews.tsv                  SME decisions (human-edited)
-#   src/curation-triage/coverage_report.tsv          Phase-B evidence (doc-linked)
+#   src/curation-triage/coverage_report.tsv          coverage measurement (doc-linked)
 #   src/curation-triage/lpsn_cache.json              J2 LPSN offline cache (CI)
 #   src/curation-triage/amrfinderplus_db_manifest.tsv  the frozen AMRFinder database's digests
 
