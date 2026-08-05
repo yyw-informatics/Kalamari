@@ -267,7 +267,7 @@ Refreshing the caches is a separate on-demand workflow, sharded by tool. A chang
 pinned tool, database, threshold or rule has to pass the update gate.
 
 What is **not** proven, and what is still open, is listed once, in
-[the design's honest limits](docs/CURATION_TRIAGE_DESIGN.md#10-honest-limits). Read it
+[the design's honest limits](docs/CURATION_TRIAGE_DESIGN.md#8-honest-limits). Read it
 before relying on any of this.
 
 Two operational notes that live here rather than in a doc:
